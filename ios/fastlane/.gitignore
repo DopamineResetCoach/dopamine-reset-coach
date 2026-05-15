@@ -1,0 +1,6 @@
+# Sensitive — never commit
+AuthKey_*.p8
+*.p8
+.env
+.env.local
+report.xml

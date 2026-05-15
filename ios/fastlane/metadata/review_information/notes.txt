@@ -1,0 +1,18 @@
+PAYWALL ACCESS — IAP REVIEW
+
+The app does not require login. To access the paywall:
+1. Open the app and complete the onboarding flow (~30 seconds; choose any plan)
+2. Tap any premium-locked card on the Today tab (e.g., "Waarom je niks voelt") OR tap the step counter strip at the bottom
+3. The PremiumModal opens showing Weekly (€0.99), Monthly (€2.99), Yearly (€14.99 — Save 58%)
+
+SUBSCRIPTIONS INCLUDED
+• com.dopaminereset.coach.premium.weekly — €0.99/week
+• com.dopaminereset.coach.premium.monthly — €2.99/month
+• com.dopaminereset.coach.premium.yearly — €14.99/year
+
+PRIVACY
+The app stores all user data on-device via localStorage. No backend, no analytics, no tracking.
+Apple HealthKit is used read-only for step count (Stride Score feature).
+
+WHAT'S NEW IN 1.1
+Major overhaul: Brain-state UI, expanded step counter (D/W/M tabs with calendar grid), weekly insights with pattern detection, brain challenges reset weekly, welcome intro screen, all-modal swipe-to-dismiss, score logic refactor, 12 languages fully translated.

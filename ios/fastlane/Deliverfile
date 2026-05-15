@@ -1,0 +1,19 @@
+# deliver config — pinned defaults used by the lanes in Fastfile.
+
+app_identifier "com.dopaminereset.coach"
+
+# Where metadata lives (default; explicit for clarity)
+metadata_path "./metadata"
+screenshots_path "./screenshots"
+
+# Apple's "Primary Language" for this app — should match what's set in
+# App Store Connect under App Information. Used as fallback when a locale's
+# metadata is missing a field.
+primary_category "Health & Fitness"
+secondary_category "Lifestyle"
+
+# Pricing & availability — set in App Store Connect manually (deliver leaves
+# these alone unless you set price_tier / availability fields here).
+
+# Auto-accept any TOS prompts so non-interactive runs don't hang
+precheck_include_in_app_purchases false

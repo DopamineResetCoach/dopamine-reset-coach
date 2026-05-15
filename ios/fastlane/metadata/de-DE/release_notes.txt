@@ -1,0 +1,18 @@
+Version 1.1 — ein größerer, smarterer Reset.
+
+NEU
+• "Dein Gehirn heute" — tägliche Neuroscience-Lesung deines Zustands (Fokus / Impuls-Risiko / Erholung)
+• Voller Schrittzähler mit Wochenbalken, Monatskalender, Hirn-Status-Schwellen und 30 Walking-Science-Fakten
+• Wöchentliche Insights — Muster aus deinen Daten ("in Nächten mit schlechtem Schlaf war schnelles Dopamin 2,3× höher")
+• Hirn-Challenges setzen sich jetzt jeden Montag zurück — jede Woche frisch
+• Willkommens-Intro, das den Ton für deinen Reset setzt
+• Swipe nach unten, um jedes Modal zu schließen
+
+VERBESSERT
+• Dopamin-Score-Logik — jede Aktion aktualisiert konsistent (Urge-Resistenz, Profil-Änderungen, Hard-Mode-Toggle berechnen neu)
+• Schrittzähler zählt iPhone + Apple Watch nicht mehr doppelt
+• Score-History-Charts lassen sich jetzt Woche für Woche zurückscrollen
+• 12 Sprachen, voll übersetzt inkl. Schrittzähler- und Hirn-Status-Copy
+• Auto-Refresh um Mitternacht — tägliche Häkchen setzen sich sauber zurück
+
+Danke, dass du mit uns resettest.

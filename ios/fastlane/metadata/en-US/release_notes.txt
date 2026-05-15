@@ -1,0 +1,18 @@
+Version 1.1 — a bigger, smarter reset.
+
+NEW
+• "Your brain today" — daily neuroscience read of your state (Focus / Impulse risk / Recovery)
+• Full step counter with weekly bar chart, monthly calendar, brain-state thresholds, and 30 walking-science facts
+• Weekly Insights — patterns from your data ("on poor-sleep nights, fast dopamine was 2.3× higher")
+• Brain Challenges now reset every Monday — pick them up fresh each week
+• Welcome intro that sets the tone for your reset
+• Swipe-down to dismiss any modal
+
+IMPROVED
+• Dopamine score logic — every action now updates consistently (urge resistance, profile changes, hard-mode toggle all recompute)
+• Step counter no longer double-counts iPhone + Apple Watch sources
+• Score history charts can now scroll back week by week
+• 12 languages, fully translated including step-counter and brain-state copy
+• Auto-refresh at midnight — daily checkmarks reset cleanly
+
+Thanks for resetting with us.

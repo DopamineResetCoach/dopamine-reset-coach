@@ -1,0 +1,18 @@
+Versão 1.1 — um reset maior e mais inteligente.
+
+NOVO
+• "Seu cérebro hoje" — leitura neurociência diária do seu estado (Foco / Risco de impulso / Recuperação)
+• Contador de passos completo com gráfico semanal, calendário mensal, limiares cerebrais e 30 fatos walking-science
+• Insights semanais — padrões nos seus dados ("em noites de sono ruim, dopamina rápida foi 2,3× maior")
+• Desafios cerebrais agora resetam toda segunda — frescos a cada semana
+• Intro de boas-vindas que dá o tom do seu reset
+• Deslize para baixo para fechar qualquer modal
+
+MELHORADO
+• Lógica do score de dopamina — toda ação atualiza consistente (resistência a impulso, perfil, hard mode recalculam)
+• Contador de passos não soma mais iPhone + Apple Watch em duplicidade
+• Gráficos de histórico agora dão scroll semana a semana
+• 12 idiomas, totalmente traduzido incluindo contador e copy cerebral
+• Auto-refresh à meia-noite — checks diários resetam limpos
+
+Obrigado por resetar com a gente.

@@ -1,0 +1,18 @@
+Versiyon 1.1 — daha büyük, daha akıllı bir reset.
+
+YENİ
+• "Beynin bugün" — durumun için günlük nörobilim okuması (Odak / İmpuls riski / Toparlanma)
+• Haftalık çubuk grafik, aylık takvim, beyin durumu eşikleri ve 30 walking-science gerçeğiyle tam adım sayar
+• Haftalık insight'lar — verindeki desenler ("kötü uyku gecelerinde hızlı dopamin 2,3× daha yüksekti")
+• Beyin meydan okumaları artık her pazartesi resetlenir — her hafta taze
+• Resetinin tonunu kuran karşılama intro'su
+• Modalleri kapatmak için aşağı kaydır
+
+İYİLEŞTİRİLDİ
+• Dopamin skor mantığı — her aksiyon tutarlı güncellenir (urge direnci, profil, hard mode yeniden hesaplar)
+• Adım sayar artık iPhone + Apple Watch kaynaklarını çift saymaz
+• Skor geçmişi grafikleri artık hafta hafta geriye scroll edilebilir
+• 12 dil, adım sayar ve beyin durumu copy'si dahil tamamen çevrildi
+• Gece yarısı auto-refresh — günlük tikler temiz resetlenir
+
+Bizimle resetlediğin için sağol.

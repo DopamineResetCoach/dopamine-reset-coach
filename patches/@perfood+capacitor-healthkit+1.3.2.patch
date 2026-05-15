@@ -1,0 +1,59 @@
+diff --git a/node_modules/@perfood/capacitor-healthkit/Package.swift b/node_modules/@perfood/capacitor-healthkit/Package.swift
+new file mode 100644
+index 0000000..9090b6c
+--- /dev/null
++++ b/node_modules/@perfood/capacitor-healthkit/Package.swift
+@@ -0,0 +1,30 @@
++// swift-tools-version: 5.9
++import PackageDescription
++
++let package = Package(
++    name: "PerfoodCapacitorHealthkit",
++    platforms: [.iOS(.v15)],
++    products: [
++        .library(
++            name: "PerfoodCapacitorHealthkit",
++            targets: ["PerfoodCapacitorHealthkit"])
++    ],
++    dependencies: [
++        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.0.0")
++    ],
++    targets: [
++        .target(
++            name: "PerfoodCapacitorHealthkit",
++            dependencies: [
++                .product(name: "Capacitor", package: "capacitor-swift-pm"),
++                .product(name: "Cordova", package: "capacitor-swift-pm")
++            ],
++            path: "ios/Plugin",
++            exclude: [
++                "CapacitorHealthkitPlugin.h",
++                "CapacitorHealthkitPlugin.m",
++                "Info.plist"
++            ]
++        )
++    ]
++)
+diff --git a/node_modules/@perfood/capacitor-healthkit/ios/Plugin/CapacitorHealthkitPlugin.swift b/node_modules/@perfood/capacitor-healthkit/ios/Plugin/CapacitorHealthkitPlugin.swift
+index 0c5d95c..6aebfa6 100644
+--- a/node_modules/@perfood/capacitor-healthkit/ios/Plugin/CapacitorHealthkitPlugin.swift
++++ b/node_modules/@perfood/capacitor-healthkit/ios/Plugin/CapacitorHealthkitPlugin.swift
+@@ -9,7 +9,17 @@ var healthStore = HKHealthStore()
+  * here: https://capacitorjs.com/docs/plugins/ios
+  */
+ @objc(CapacitorHealthkitPlugin)
+-public class CapacitorHealthkitPlugin: CAPPlugin {
++public class CapacitorHealthkitPlugin: CAPPlugin, CAPBridgedPlugin {
++    public let identifier = "CapacitorHealthkitPlugin"
++    public let jsName = "CapacitorHealthkit"
++    public let pluginMethods: [CAPPluginMethod] = [
++        CAPPluginMethod(name: "requestAuthorization", returnType: CAPPluginReturnPromise),
++        CAPPluginMethod(name: "queryHKitSampleType", returnType: CAPPluginReturnPromise),
++        CAPPluginMethod(name: "isAvailable", returnType: CAPPluginReturnPromise),
++        CAPPluginMethod(name: "multipleQueryHKitSampleType", returnType: CAPPluginReturnPromise),
++        CAPPluginMethod(name: "isEditionAuthorized", returnType: CAPPluginReturnPromise),
++        CAPPluginMethod(name: "multipleIsEditionAuthorized", returnType: CAPPluginReturnPromise),
++    ]
+ 
+     enum HKSampleError: Error {
+         case sleepRequestFailed

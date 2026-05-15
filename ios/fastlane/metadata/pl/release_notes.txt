@@ -1,0 +1,18 @@
+Wersja 1.1 — większy, mądrzejszy reset.
+
+NOWE
+• "Twój mózg dziś" — codzienny neuronaukowy odczyt twojego stanu (Focus / Ryzyko impulsu / Regeneracja)
+• Pełny krokomierz z wykresem tygodniowym, kalendarzem miesięcznym, progami mózgu i 30 faktami walking-science
+• Tygodniowe insighty — wzorce z twoich danych ("w nocach ze słabym snem szybka dopamina była 2,3× wyższa")
+• Wyzwania mózgu teraz resetują się w każdy poniedziałek — świeże co tydzień
+• Intro powitalne, które nadaje ton twojemu resetowi
+• Swipe w dół, by zamknąć dowolny modal
+
+POPRAWIONE
+• Logika score dopaminy — każda akcja aktualizuje się spójnie (urge resistance, profil, hard mode przeliczają)
+• Krokomierz nie liczy już podwójnie iPhone + Apple Watch
+• Wykresy historii score teraz scrollują się tydzień po tygodniu
+• 12 języków, w pełni przetłumaczone wraz z krokomierzem i copy mózgu
+• Auto-refresh o północy — codzienne checki resetują się czysto
+
+Dzięki, że resetujesz z nami.

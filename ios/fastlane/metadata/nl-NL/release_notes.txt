@@ -1,0 +1,18 @@
+Versie 1.1 — een grotere, slimmere reset.
+
+NIEUW
+• "Je brein vandaag" — dagelijkse neuroscience-lezing van je staat (Focus / Impuls-risico / Herstel)
+• Volledige stappenteller met weekgrafiek, maandkalender, brein-staat drempels en 30 wandel-wetenschap feiten
+• Wekelijkse inzichten — patronen uit je data ("op nachten met slechte slaap was snelle dopamine 2,3× hoger")
+• Brein-uitdagingen resetten nu elke maandag — pak ze elke week vers op
+• Welkom-intro die de toon zet voor je reset
+• Swipe omlaag om elke modal weg te schuiven
+
+VERBETERD
+• Dopamine-score logica — elke actie update nu consistent (urge-weerstand, profielwijzigingen, hard mode toggle herberekenen)
+• Stappenteller telt iPhone + Apple Watch bronnen niet meer dubbel
+• Score-history grafieken zijn nu week-per-week terug te scrollen
+• 12 talen, volledig vertaald inclusief stappenteller en brein-staat copy
+• Auto-refresh om middernacht — dagelijkse vinkjes resetten netjes
+
+Bedankt dat je met ons reset.

@@ -1,0 +1,18 @@
+Versione 1.1 — un reset più grande e più smart.
+
+NUOVO
+• "Il tuo cervello oggi" — lettura neuroscience quotidiana del tuo stato (Focus / Rischio impulso / Recupero)
+• Contapassi completo con grafico settimanale, calendario mensile, soglie cerebrali e 30 fatti walking-science
+• Insight settimanali — pattern dai tuoi dati ("nelle notti di sonno scarso, la dopamina veloce era 2,3× più alta")
+• Le sfide cerebrali si resettano ogni lunedì — fresche ogni settimana
+• Intro di benvenuto che dà il tono al tuo reset
+• Swipe in basso per chiudere qualsiasi modale
+
+MIGLIORATO
+• Logica dello score dopamina — ogni azione aggiorna in modo consistente (resistenza all'urge, profilo, hard mode ricalcolano)
+• Il contapassi non somma più iPhone + Apple Watch in doppio
+• I grafici dello storico ora si scrollano settimana per settimana
+• 12 lingue, completamente tradotto inclusi contapassi e copy cerebrale
+• Auto-refresh a mezzanotte — i check quotidiani si resettano puliti
+
+Grazie di resettare con noi.

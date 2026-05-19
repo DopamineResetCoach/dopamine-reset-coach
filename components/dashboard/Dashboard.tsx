@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { getTodayString, getTodayScore } from '@/lib/scoring';
 import { getStageProgress, type StageId } from '@/lib/stages';
-import DailyQuote from './DailyQuote';
 import DopamineScoreCard from './DopamineScoreCard';
 import DopamineDebtCard from './DopamineDebtCard';
 import WhyInsight from './WhyInsight';
@@ -61,6 +60,11 @@ function TodayView() {
             <h1 className="text-2xl font-bold text-stone-800 mt-0.5">
               {greeting}
             </h1>
+            {profile?.motivation && profile.motivation.trim() !== '' && (
+              <p className="text-stone-500 text-xs italic mt-1.5 leading-snug">
+                {t.motivationReminderPrefix} <span className="text-stone-600 not-italic">{profile.motivation}</span>
+              </p>
+            )}
           </div>
         </div>
 
@@ -70,7 +74,6 @@ function TodayView() {
         <WhyInsight />
         <DopamineScoreCard />
         <DopamineDebtCard />
-        <DailyQuote />
         <DailyChecklist />
       </div>
 

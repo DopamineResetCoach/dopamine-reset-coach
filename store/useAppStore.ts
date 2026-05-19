@@ -27,7 +27,37 @@ import {
   requestNotificationPermission,
   scheduleDailyCheckInReminder,
   cancelCheckInReminder,
+  scheduleEveningReflection,
+  cancelEveningReflection,
 } from '@/lib/notifications';
+import type { Translations } from '@/lib/i18n/types';
+
+function morningRotation(t: Translations): string[] {
+  return [
+    t.notifReminderBody1,
+    t.notifReminderBody2,
+    t.notifReminderBody3,
+    t.notifReminderBody4,
+    t.notifReminderBody5,
+    t.notifReminderBody6,
+    t.notifReminderBody7,
+  ];
+}
+
+function eveningRotation(t: Translations, motivation?: string): string[] {
+  const base = [
+    t.notifEveningBody1,
+    t.notifEveningBody2,
+    t.notifEveningBody3,
+    t.notifEveningBody4,
+    t.notifEveningBody5,
+  ];
+  const trimmed = motivation?.trim();
+  if (trimmed) {
+    return [`${t.motivationReminderPrefix} ${trimmed}`, ...base];
+  }
+  return base;
+}
 import { getTranslations } from '@/lib/i18n';
 
 /**
@@ -109,6 +139,9 @@ interface AppState {
   // Completed challenges
   completedChallenges: string[];
   lastChallengeWeek: string;
+  lastChallengeDay: string;
+  challengeResetMode: 'daily' | 'weekly';
+  setChallengeResetMode: (mode: 'daily' | 'weekly') => void;
 
   // UI state
   activeTab: 'today' | 'progress' | 'focus' | 'settings';
@@ -130,6 +163,10 @@ interface AppState {
   notificationTime: { hour: number; minute: number };
   setNotificationsEnabled: (enabled: boolean) => Promise<'granted' | 'denied' | 'unavailable'>;
   setNotificationTime: (time: { hour: number; minute: number }) => Promise<void>;
+  eveningReflectionEnabled: boolean;
+  eveningReflectionTime: { hour: number; minute: number };
+  setEveningReflectionEnabled: (enabled: boolean) => Promise<'granted' | 'denied' | 'unavailable'>;
+  setEveningReflectionTime: (time: { hour: number; minute: number }) => Promise<void>;
 
   // Daily check-in prompt
   checkInPromptDisabled: boolean;
@@ -147,11 +184,16 @@ interface AppState {
   toggleTask: (taskId: string) => void;
   logUrge: (urge: Omit<UrgeLog, 'id' | 'timestamp'>) => void;
   logBadHabit: (habit: Omit<BadHabit, 'id' | 'timestamp'>) => void;
+  removeBadHabit: (id: string) => void;
+  deleteVoiceNote: (date: string) => void;
+  deleteVoiceNotesForDates: (dates: string[]) => void;
   saveCheckIn: (input: Omit<DailyCheckIn, 'date' | 'timestamp'>) => void;
   dismissCheckInCard: () => void;
   updateProfileField: (patch: Partial<UserProfile>) => void;
   completeChallenge: (challengeId: string) => void;
   uncompleteChallenge: (challengeId: string) => void;
+  resetChallengesIfNeeded: () => void;
+  /** @deprecated use resetChallengesIfNeeded */
   resetChallengesIfNewWeek: () => void;
   setActiveTab: (tab: AppState['activeTab']) => void;
   toggleHardMode: () => void;
@@ -172,6 +214,8 @@ const initialState = {
   isPremium: false,
   completedChallenges: [] as string[],
   lastChallengeWeek: '',
+  lastChallengeDay: '',
+  challengeResetMode: 'weekly' as 'daily' | 'weekly',
   activeTab: 'today' as const,
   language: 'en' as Locale,
   stepGoal: 10000,
@@ -179,7 +223,9 @@ const initialState = {
   stepsHistory: {} as Record<string, number>,
   lastHistoryRefresh: 0,
   notificationsEnabled: false,
-  notificationTime: { hour: 21, minute: 0 },
+  notificationTime: { hour: 9, minute: 0 },
+  eveningReflectionEnabled: false,
+  eveningReflectionTime: { hour: 21, minute: 0 },
   checkInPromptDisabled: false,
   lastSeenStage: 1,
 };
@@ -198,9 +244,14 @@ export const useAppStore = create<AppState>()(
           dopamineScore: startScore,
           urges: [],
         };
+        // Seed motivation history with the onboarding value so the timeline
+        // begins at day 0, not at the first edit.
+        const seededProfile: UserProfile = profile.motivation && profile.motivation.trim()
+          ? { ...profile, motivationHistory: [{ text: profile.motivation.trim(), setAt: new Date().toISOString() }] }
+          : profile;
         set({
           hasCompletedOnboarding: true,
-          profile,
+          profile: seededProfile,
           dailyLogs: { [today]: initialLog },
         });
       },
@@ -210,6 +261,26 @@ export const useAppStore = create<AppState>()(
         const { profile, dailyLogs, stepGoal, todaySteps } = state;
         if (!profile) return;
         const today = getTodayString();
+
+        // Prune voice notes from check-ins older than 7 days. Audio is
+        // megabyte-scale and would blow past localStorage quota over months.
+        // The transcripted text in `note` stays — only the audio blob expires.
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 7);
+        const cutoffKey = cutoff.toISOString().slice(0, 10);
+        let prunedAny = false;
+        const prunedLogs = Object.fromEntries(
+          Object.entries(dailyLogs).map(([k, log]) => {
+            if (k >= cutoffKey || !log.checkIn?.voiceNote) return [k, log];
+            prunedAny = true;
+            const { voiceNote: _v, voiceNoteDurationMs: _d, ...restCheckIn } = log.checkIn;
+            return [k, { ...log, checkIn: restCheckIn }];
+          }),
+        );
+        if (prunedAny) {
+          set({ dailyLogs: prunedLogs });
+        }
+
         if (!dailyLogs[today]) {
           // Compute the score using the same recalc as every other path. This
           // keeps the first view of the day consistent with what the user
@@ -350,6 +421,64 @@ export const useAppStore = create<AppState>()(
         }));
       },
 
+      removeBadHabit: (id) => {
+        const state = get();
+        const { profile, dailyLogs, todaySteps, stepGoal } = state;
+        const today = getTodayString();
+        const log = dailyLogs[today];
+        if (!log) return;
+        const updatedHabits = (log.badHabits ?? []).filter((h) => h.id !== id);
+        const newScore = recalcScore({
+          profile,
+          dailyLogs,
+          stepGoal,
+          completedTasks: log.completedTasks,
+          badHabits: updatedHabits,
+          todaySteps,
+          todayCheckIn: log.checkIn,
+          challengesToday: (log.challengesCompletedToday ?? []).length,
+        });
+        set((s) => ({
+          dailyLogs: {
+            ...s.dailyLogs,
+            [today]: {
+              ...log,
+              badHabits: updatedHabits,
+              dopamineScore: newScore,
+            },
+          },
+        }));
+      },
+
+      deleteVoiceNote: (date) => {
+        set((s) => {
+          const log = s.dailyLogs[date];
+          if (!log?.checkIn?.voiceNote) return s;
+          const { voiceNote: _v, voiceNoteDurationMs: _d, ...restCheckIn } = log.checkIn;
+          return {
+            dailyLogs: {
+              ...s.dailyLogs,
+              [date]: { ...log, checkIn: restCheckIn },
+            },
+          };
+        });
+      },
+
+      deleteVoiceNotesForDates: (dates) => {
+        set((s) => {
+          const updated: Record<string, DailyLog> = { ...s.dailyLogs };
+          let changed = false;
+          for (const date of dates) {
+            const log = updated[date];
+            if (!log?.checkIn?.voiceNote) continue;
+            const { voiceNote: _v, voiceNoteDurationMs: _d, ...restCheckIn } = log.checkIn;
+            updated[date] = { ...log, checkIn: restCheckIn };
+            changed = true;
+          }
+          return changed ? { dailyLogs: updated } : s;
+        });
+      },
+
       saveCheckIn: (input) => {
         const state = get();
         const { profile, dailyLogs, todaySteps, stepGoal } = state;
@@ -398,9 +527,25 @@ export const useAppStore = create<AppState>()(
 
       updateProfileField: (patch) => {
         const state = get();
-        const { profile, dailyLogs, stepGoal, todaySteps } = state;
+        const { profile, dailyLogs, stepGoal, todaySteps, eveningReflectionEnabled, eveningReflectionTime, language } = state;
         if (!profile) return;
-        const newProfile = { ...profile, ...patch };
+        const newProfile: UserProfile = { ...profile, ...patch };
+
+        // Motivation is an append-only journal: every distinct value the user
+        // commits to gets a timestamp, so the timeline reads as a journey.
+        if ('motivation' in patch) {
+          const next = (patch.motivation ?? '').trim();
+          const prevHistory = profile.motivationHistory ?? [];
+          const lastText = prevHistory.length > 0 ? prevHistory[prevHistory.length - 1].text : '';
+          if (next && next !== lastText) {
+            newProfile.motivationHistory = [...prevHistory, { text: next, setAt: new Date().toISOString() }];
+          }
+          if (eveningReflectionEnabled) {
+            const t = getTranslations(language);
+            scheduleEveningReflection(eveningReflectionTime, t.notifEveningTitle, eveningRotation(t, newProfile.motivation));
+          }
+        }
+
         // Profile changes (sleep/energy/screen-time/habits) shift the baseline
         // used by recalcScore. Recompute today's score so the UI doesn't lag
         // until the next user action.
@@ -514,17 +659,30 @@ export const useAppStore = create<AppState>()(
         }
       },
 
-      resetChallengesIfNewWeek: () => {
+      resetChallengesIfNeeded: () => {
+        const { challengeResetMode, lastChallengeWeek, lastChallengeDay } = get();
+        if (challengeResetMode === 'daily') {
+          const today = getTodayString();
+          if (lastChallengeDay === today) return;
+          if (!lastChallengeDay) {
+            set({ lastChallengeDay: today });
+            return;
+          }
+          set({ completedChallenges: [], lastChallengeDay: today });
+          return;
+        }
         const currentWeek = getWeekKey();
-        const { lastChallengeWeek } = get();
         if (lastChallengeWeek === currentWeek) return;
-        // First-ever check: just record the week, don't wipe existing data
         if (!lastChallengeWeek) {
           set({ lastChallengeWeek: currentWeek });
           return;
         }
         set({ completedChallenges: [], lastChallengeWeek: currentWeek });
       },
+
+      resetChallengesIfNewWeek: () => get().resetChallengesIfNeeded(),
+
+      setChallengeResetMode: (mode) => set({ challengeResetMode: mode }),
 
       setPremium: (value) => set({ isPremium: value }),
 
@@ -674,7 +832,7 @@ export const useAppStore = create<AppState>()(
         }
         const { notificationTime, language } = get();
         const t = getTranslations(language);
-        await scheduleDailyCheckInReminder(notificationTime, t.notifReminderTitle, t.notifReminderBody);
+        await scheduleDailyCheckInReminder(notificationTime, t.notifReminderTitle, morningRotation(t));
         set({ notificationsEnabled: true });
         return 'granted';
       },
@@ -684,12 +842,40 @@ export const useAppStore = create<AppState>()(
         const { notificationsEnabled, language } = get();
         if (notificationsEnabled) {
           const t = getTranslations(language);
-          await scheduleDailyCheckInReminder(time, t.notifReminderTitle, t.notifReminderBody);
+          await scheduleDailyCheckInReminder(time, t.notifReminderTitle, morningRotation(t));
+        }
+      },
+
+      setEveningReflectionEnabled: async (enabled) => {
+        if (!enabled) {
+          await cancelEveningReflection();
+          set({ eveningReflectionEnabled: false });
+          return 'granted';
+        }
+        const result = await requestNotificationPermission();
+        if (result !== 'granted') {
+          set({ eveningReflectionEnabled: false });
+          return result;
+        }
+        const { eveningReflectionTime, language } = get();
+        const t = getTranslations(language);
+        await scheduleEveningReflection(eveningReflectionTime, t.notifEveningTitle, eveningRotation(t, get().profile?.motivation));
+        set({ eveningReflectionEnabled: true });
+        return 'granted';
+      },
+
+      setEveningReflectionTime: async (time) => {
+        set({ eveningReflectionTime: time });
+        const { eveningReflectionEnabled, language } = get();
+        if (eveningReflectionEnabled) {
+          const t = getTranslations(language);
+          await scheduleEveningReflection(time, t.notifEveningTitle, eveningRotation(t, get().profile?.motivation));
         }
       },
 
       resetApp: () => {
         cancelCheckInReminder();
+        cancelEveningReflection();
         set(initialState);
       },
     }),

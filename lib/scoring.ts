@@ -38,6 +38,8 @@ export type BreakdownItem = {
   labelKey: string;
   labelParams?: Record<string, string | number>;
   value: number;
+  /** Maximum positive contribution this category can make in a day. */
+  max?: number;
 };
 
 export type ScoreBreakdown = {
@@ -66,7 +68,7 @@ const HABIT_LABEL_KEYS: Record<keyof UserProfile['habits'], string> = {
   gaming: 'scoreInfoHabitGaming',
 };
 
-const HABIT_PENALTIES: Record<keyof UserProfile['habits'], number> = {
+export const HABIT_PENALTIES: Record<keyof UserProfile['habits'], number> = {
   socialMedia: 5,
   caffeine: 3,
   junkFood: 3,
@@ -152,54 +154,52 @@ export function getScoreBreakdown(
   const urgeBonus = ctx.urgesResisted ? Math.min(15, ctx.urgesResisted * 3) : 0;
   const debtPenalty = ctx.debtPoints ?? 0;
 
-  const todayItems: BreakdownItem[] = [];
-  if (taskBonus !== 0) {
-    todayItems.push({
+  // Always emit all 6 categories (even at 0) so the user sees both their
+  // current value AND the headroom — otherwise score "stuck at 90" feels
+  // like a bug when really 5 categories are sitting unused at +0.
+  const todayItems: BreakdownItem[] = [
+    {
       key: 'tasks',
       labelKey: 'scoreInfoTodayTasks',
       labelParams: { n: completedTaskIds.length },
       value: taskBonus,
-    });
-  }
-  if (checkInBonus !== 0) {
-    todayItems.push({
+      max: 50,
+    },
+    {
       key: 'checkIn',
       labelKey: 'scoreInfoTodayCheckIn',
       value: checkInBonus,
-    });
-  }
-  if (streakBonus !== 0) {
-    todayItems.push({
+      max: 10,
+    },
+    {
       key: 'streak',
       labelKey: 'scoreInfoTodayStreak',
       labelParams: { n: ctx.streak ?? 0 },
       value: streakBonus,
-    });
-  }
-  if (stepsBonus !== 0) {
-    todayItems.push({
+      max: 10,
+    },
+    {
       key: 'steps',
       labelKey: 'scoreInfoTodaySteps',
       labelParams: { steps: ctx.steps ?? 0, goal: ctx.stepGoal ?? 0 },
       value: stepsBonus,
-    });
-  }
-  if (challengeBonus !== 0) {
-    todayItems.push({
+      max: 10,
+    },
+    {
       key: 'challenges',
       labelKey: 'scoreInfoTodayChallenges',
       labelParams: { n: ctx.challengesToday ?? 0 },
       value: challengeBonus,
-    });
-  }
-  if (urgeBonus !== 0) {
-    todayItems.push({
+      max: 15,
+    },
+    {
       key: 'urges',
       labelKey: 'scoreInfoTodayUrges',
       labelParams: { n: ctx.urgesResisted ?? 0 },
       value: urgeBonus,
-    });
-  }
+      max: 15,
+    },
+  ];
 
   const debtItem: BreakdownItem | null =
     debtPenalty > 0
@@ -323,7 +323,7 @@ export function calculateDayScore(
   const positiveTotal =
     baseScore + taskBonus + checkInBonus + streakBonus + stepsBonus + challengeBonus + urgeBonus;
   const positiveClamped = Math.max(0, Math.min(positiveTotal, 100));
-  return Math.max(0, positiveClamped - debtPenalty);
+  return Math.round(Math.max(0, positiveClamped - debtPenalty));
 }
 
 /**
@@ -456,15 +456,6 @@ export function getPlanDay(startDate: string): number {
     (today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
   );
   return Math.max(1, diff + 1);
-}
-
-export function getScoreLabel(score: number): string {
-  if (score < 20) return 'Depleted';
-  if (score < 35) return 'Low';
-  if (score < 50) return 'Recovering';
-  if (score < 65) return 'Balanced';
-  if (score < 80) return 'Energized';
-  return 'Optimal';
 }
 
 export const BAD_HABIT_DEBT: Record<BadHabit['type'], number> = {

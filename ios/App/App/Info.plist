@@ -50,6 +50,8 @@
 	<string>This app reads your step count to calculate your Stride Score and motivate you to move more.</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>This app does not write health data.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to record optional voice notes for your daily check-in. Audio is saved only on this device and never uploaded.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

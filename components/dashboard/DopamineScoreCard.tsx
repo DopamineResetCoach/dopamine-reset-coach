@@ -4,14 +4,26 @@ import { useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import {
   getTodayString,
-  getScoreLabel,
   getScoreColor,
   getPlanDay,
   calculateStreak,
   getTodayScore,
+  getScoreBreakdown,
+  getCheckInAverage,
+  calculateDailyDebt,
 } from '@/lib/scoring';
 import { useT } from '@/hooks/useT';
 import ScoreInfoModal from './ScoreInfoModal';
+import type { Translations } from '@/lib/i18n/types';
+
+function getScoreLabelKey(score: number): keyof Translations {
+  if (score < 20) return 'scoreDepleted';
+  if (score < 35) return 'scoreLow';
+  if (score < 50) return 'scoreRecovering';
+  if (score < 65) return 'scoreBalanced';
+  if (score < 80) return 'scoreEnergized';
+  return 'scoreOptimal';
+}
 
 function ScoreRing({ score }: { score: number }) {
   const radius = 52;
@@ -62,19 +74,46 @@ function ScoreRing({ score }: { score: number }) {
 }
 
 export default function DopamineScoreCard() {
-  const { dailyLogs, profile } = useAppStore();
+  const { dailyLogs, profile, todaySteps, stepGoal } = useAppStore();
   const t = useT();
   const [infoOpen, setInfoOpen] = useState(false);
   const today = getTodayString();
   const log = dailyLogs[today];
   const score = getTodayScore(dailyLogs, profile);
-  const label = getScoreLabel(score);
+  const label = t[getScoreLabelKey(score)] as string;
   const color = getScoreColor(score);
   const streak = calculateStreak(dailyLogs);
   const planDay = profile ? getPlanDay(profile.startDate) : 1;
 
   const completedCount = log?.completedTasks.length ?? 0;
   const urgesResisted = log?.urges.filter((u) => u.completedIntervention).length ?? 0;
+
+  let tasksPart = 0;
+  let otherPart = 0;
+  if (profile) {
+    const fields: Array<'sleep' | 'energy' | 'mood'> = ['sleep', 'energy', 'mood'];
+    const avgs = fields
+      .map((f) => getCheckInAverage(dailyLogs, 7, f))
+      .filter((v): v is number => v != null);
+    const checkInAvg = avgs.length > 0 ? avgs.reduce((s, v) => s + v, 0) / avgs.length : null;
+    const breakdown = getScoreBreakdown(profile, {
+      completedTaskIds: log?.completedTasks ?? [],
+      checkInAvg,
+      streak,
+      steps: todaySteps,
+      stepGoal,
+      debtPoints: calculateDailyDebt(log?.badHabits ?? []),
+      challengesToday: (log?.challengesCompletedToday ?? []).length,
+      urgesResisted,
+    });
+    const taskItem = breakdown.today.items.find((it) => it.key === 'tasks');
+    tasksPart = Math.round(taskItem?.value ?? 0);
+    const others = breakdown.today.items
+      .filter((it) => it.key !== 'tasks')
+      .reduce((s, it) => s + it.value, 0);
+    otherPart = Math.min(50, Math.round(Math.max(0, others)));
+  }
+  const remaining = Math.max(0, 100 - Math.round(score));
 
   return (
     <div className="bg-white rounded-3xl p-5 mb-4 shadow-sm">
@@ -112,9 +151,27 @@ export default function DopamineScoreCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center mb-4">
+      <div className="flex items-center justify-center mb-3">
         <ScoreRing score={score} />
       </div>
+
+      {profile && (
+        <button
+          onClick={() => setInfoOpen(true)}
+          className="w-full flex items-center justify-center gap-2 mb-3 text-xs font-medium tabular-nums"
+          aria-label={t.scoreInfoTitle}
+        >
+          <span className="text-[#5B8A5E]">📋 {t.scoreBreakdownTasks} {tasksPart}/50</span>
+          <span className="text-stone-300">·</span>
+          <span className="text-[#5B8A5E]">⚡ {t.scoreBreakdownOther} {otherPart}/50</span>
+          {remaining > 0 && (
+            <>
+              <span className="text-stone-300">·</span>
+              <span className="text-stone-400">{t.scoreBreakdownToGo.replace('{n}', String(remaining))}</span>
+            </>
+          )}
+        </button>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-stone-50 rounded-2xl px-4 py-3 text-center">

@@ -1,6 +1,9 @@
 import { LocalNotifications } from '@capacitor/local-notifications';
 
-const CHECK_IN_NOTIFICATION_ID = 1001;
+// Reserve ID ranges so morning + evening schedules don't collide.
+const MORNING_ID_BASE = 1001;
+const EVENING_ID_BASE = 1100;
+const SCHEDULE_DAYS = 14;
 
 function isCapacitor(): boolean {
   if (typeof window === 'undefined') return false;
@@ -21,28 +24,48 @@ export async function requestNotificationPermission(): Promise<'granted' | 'deni
   }
 }
 
+function buildScheduleDates(time: { hour: number; minute: number }, days: number): Date[] {
+  const out: Date[] = [];
+  const now = new Date();
+  for (let i = 0; i < days; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + i);
+    d.setHours(time.hour, time.minute, 0, 0);
+    if (i === 0 && d.getTime() <= now.getTime()) continue;
+    out.push(d);
+  }
+  return out;
+}
+
+async function cancelRange(idBase: number, count: number): Promise<void> {
+  if (!isCapacitor()) return;
+  try {
+    await LocalNotifications.cancel({
+      notifications: Array.from({ length: count }, (_, i) => ({ id: idBase + i })),
+    });
+  } catch (e) {
+    console.error('[Notif] cancel error:', e);
+  }
+}
+
 export async function scheduleDailyCheckInReminder(
   time: { hour: number; minute: number },
   title: string,
-  body: string,
+  bodyRotation: string[],
 ): Promise<boolean> {
   if (!isCapacitor()) return false;
+  if (bodyRotation.length === 0) return false;
   try {
-    // Cancel any existing schedule first to avoid duplicates
-    await LocalNotifications.cancel({ notifications: [{ id: CHECK_IN_NOTIFICATION_ID }] });
-
+    await cancelRange(MORNING_ID_BASE, SCHEDULE_DAYS);
+    const dates = buildScheduleDates(time, SCHEDULE_DAYS);
     await LocalNotifications.schedule({
-      notifications: [
-        {
-          id: CHECK_IN_NOTIFICATION_ID,
-          title,
-          body,
-          schedule: {
-            on: { hour: time.hour, minute: time.minute },
-            allowWhileIdle: true,
-          },
-        },
-      ],
+      notifications: dates.map((at, i) => ({
+        id: MORNING_ID_BASE + i,
+        title,
+        // Day-of-week → predictable rotation: Mon=index 0, Sun=index 6.
+        body: bodyRotation[((at.getDay() + 6) % 7) % bodyRotation.length],
+        schedule: { at, allowWhileIdle: true },
+      })),
     });
     return true;
   } catch (e) {
@@ -52,10 +75,34 @@ export async function scheduleDailyCheckInReminder(
 }
 
 export async function cancelCheckInReminder(): Promise<void> {
-  if (!isCapacitor()) return;
+  await cancelRange(MORNING_ID_BASE, SCHEDULE_DAYS);
+}
+
+export async function scheduleEveningReflection(
+  time: { hour: number; minute: number },
+  title: string,
+  bodyRotation: string[],
+): Promise<boolean> {
+  if (!isCapacitor()) return false;
+  if (bodyRotation.length === 0) return false;
   try {
-    await LocalNotifications.cancel({ notifications: [{ id: CHECK_IN_NOTIFICATION_ID }] });
+    await cancelRange(EVENING_ID_BASE, SCHEDULE_DAYS);
+    const dates = buildScheduleDates(time, SCHEDULE_DAYS);
+    await LocalNotifications.schedule({
+      notifications: dates.map((at, i) => ({
+        id: EVENING_ID_BASE + i,
+        title,
+        body: bodyRotation[i % bodyRotation.length],
+        schedule: { at, allowWhileIdle: true },
+      })),
+    });
+    return true;
   } catch (e) {
-    console.error('[Notif] cancel error:', e);
+    console.error('[Notif] evening schedule error:', e);
+    return false;
   }
+}
+
+export async function cancelEveningReflection(): Promise<void> {
+  await cancelRange(EVENING_ID_BASE, SCHEDULE_DAYS);
 }

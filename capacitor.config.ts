@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Dopamine Reset Coach',
   webDir: 'out',
   ios: {
-    contentInset: 'automatic',
+    contentInset: 'never',
   },
   server: {
     // Keeps localStorage working on iOS WKWebView (same origin)

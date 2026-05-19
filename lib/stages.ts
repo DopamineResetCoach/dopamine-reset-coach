@@ -22,12 +22,16 @@ type StageI18n = {
   stage1Science: string; stage2Science: string; stage3Science: string; stage4Science: string; stage5Science: string;
 };
 
+// Emojis trace a healing/growth arc (heal → sprout → grow → tree → peak), not
+// a moon cycle. Lunar icons were misread as "time of day" or "months"; the
+// growth metaphor maps directly to brain recovery and removes the need for
+// any "these are weeks, not months" disclaimer.
 export const STAGES: StageMeta[] = [
-  { id: 1, threshold: 0,  emoji: '🌑', nameKey: 'stage1Name', descKey: 'stage1Desc', scienceKey: 'stage1Science' },
-  { id: 2, threshold: 2,  emoji: '🌒', nameKey: 'stage2Name', descKey: 'stage2Desc', scienceKey: 'stage2Science' },
-  { id: 3, threshold: 4,  emoji: '🌓', nameKey: 'stage3Name', descKey: 'stage3Desc', scienceKey: 'stage3Science' },
-  { id: 4, threshold: 8,  emoji: '🌔', nameKey: 'stage4Name', descKey: 'stage4Desc', scienceKey: 'stage4Science' },
-  { id: 5, threshold: 12, emoji: '🌕', nameKey: 'stage5Name', descKey: 'stage5Desc', scienceKey: 'stage5Science' },
+  { id: 1, threshold: 0,  emoji: '🩹', nameKey: 'stage1Name', descKey: 'stage1Desc', scienceKey: 'stage1Science' },
+  { id: 2, threshold: 2,  emoji: '🌱', nameKey: 'stage2Name', descKey: 'stage2Desc', scienceKey: 'stage2Science' },
+  { id: 3, threshold: 4,  emoji: '🌿', nameKey: 'stage3Name', descKey: 'stage3Desc', scienceKey: 'stage3Science' },
+  { id: 4, threshold: 8,  emoji: '🌳', nameKey: 'stage4Name', descKey: 'stage4Desc', scienceKey: 'stage4Science' },
+  { id: 5, threshold: 12, emoji: '🏔️', nameKey: 'stage5Name', descKey: 'stage5Desc', scienceKey: 'stage5Science' },
 ];
 
 /**

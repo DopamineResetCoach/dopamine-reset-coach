@@ -1,5 +1,5 @@
 import { DailyLog, UserProfile, DailyCheckIn } from '@/types';
-import { calculateStreak, calculateDailyDebt, getTodayString, getPlanDay, toLocalDateString } from './scoring';
+import { calculateStreak, calculateDailyDebt, toLocalDateString } from './scoring';
 
 export type Level = 'low' | 'medium' | 'high';
 
@@ -7,10 +7,20 @@ export interface BrainStateResult {
   stateKey: number;
   params: Record<string, string | number>;
   metrics: {
-    focus: Level;
-    impulse: Level;
-    recovery: Level;
+    focus: number;
+    impulse: number;
+    recovery: number;
   };
+}
+
+export function percentageToLevel(n: number): Level {
+  if (n >= 67) return 'high';
+  if (n <= 33) return 'low';
+  return 'medium';
+}
+
+function clamp(n: number, min = 0, max = 100): number {
+  return Math.max(min, Math.min(max, Math.round(n)));
 }
 
 interface Ctx {
@@ -47,8 +57,12 @@ function buildCtx(
   stepGoal: number,
   now: Date,
 ): Ctx {
-  const today = getTodayString();
-  const sorted = Object.values(dailyLogs).sort((a, b) => b.date.localeCompare(a.date));
+  const today = toLocalDateString(now);
+  // When ctx is built for a past date, exclude any logs after that date so
+  // historical metric snapshots don't peek into the future.
+  const sorted = Object.values(dailyLogs)
+    .filter((l) => l.date <= today)
+    .sort((a, b) => b.date.localeCompare(a.date));
   const todayLog = dailyLogs[today];
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -57,7 +71,7 @@ function buildCtx(
 
   const recentLogs = sorted.slice(0, 14);
   const recentCheckIns = recentLogs.map((l) => l.checkIn).filter(Boolean) as DailyCheckIn[];
-  const totalCheckIns = Object.values(dailyLogs).filter((l) => l.checkIn).length;
+  const totalCheckIns = sorted.filter((l) => l.checkIn).length;
 
   const todayScore = todayLog?.dopamineScore ?? 0;
   const todayDebt = todayLog ? calculateDailyDebt(todayLog.badHabits) : 0;
@@ -85,8 +99,12 @@ function buildCtx(
   const scoreTrend: Ctx['scoreTrend'] =
     risingDays >= 2 ? 'rising' : decliningDays >= 2 ? 'declining' : 'flat';
 
-  const streak = calculateStreak(dailyLogs);
-  const planDay = getPlanDay(profile.startDate);
+  const streakLogs = Object.fromEntries(sorted.map((l) => [l.date, l]));
+  const streak = calculateStreak(streakLogs);
+  const planDay = Math.max(
+    1,
+    Math.floor((now.getTime() - new Date(profile.startDate + 'T00:00:00').getTime()) / 86400000) + 1,
+  );
 
   let urgeFreeStreak = 0;
   for (const l of sorted) {
@@ -223,41 +241,44 @@ function pickState(c: Ctx): { stateKey: number; params: Record<string, string | 
   return { stateKey: 25, params: {} };
 }
 
-function computeFocus(c: Ctx): Level {
+function computeFocus(c: Ctx): number {
+  let v = 50;
   const sleep = c.todayCheckIn?.sleep;
   if (sleep !== undefined) {
-    if (sleep >= 4 && c.todayScore >= 60) return 'high';
-    if (sleep <= 2 || c.todayScore <= 35) return 'low';
-  } else {
-    if (c.todayScore >= 65) return 'high';
-    if (c.todayScore <= 35) return 'low';
+    v += (sleep - 3) * 10;
   }
-  return 'medium';
+  v += (c.todayScore - 50) * 0.4;
+  v -= c.todayBadHabits * 8;
+  if (c.hour >= 6 && c.hour < 11) v += 3;
+  if (c.hour >= 22 || c.hour < 5) v -= 5;
+  return clamp(v);
 }
 
-function computeImpulse(c: Ctx): Level {
+function computeImpulse(c: Ctx): number {
+  let v = 60;
   const sleep = c.todayCheckIn?.sleep;
-  let level: Level = 'medium';
-  if ((sleep !== undefined && sleep <= 2) || c.todayBadHabits >= 2) level = 'high';
-  else if (c.todayScore >= 65 && c.todayBadHabits === 0) level = 'low';
-
-  const isWeekendEvening =
-    (c.dayOfWeek === 5 || c.dayOfWeek === 6) && c.hour >= 18;
-  if (isWeekendEvening && level !== 'high') {
-    level = level === 'low' ? 'medium' : 'high';
+  if (sleep !== undefined) {
+    v += (sleep - 3) * 8;
   }
-  return level;
+  v -= c.todayBadHabits * 12;
+  v += (c.todayScore - 50) * 0.3;
+  if (c.urgeFreeStreak >= 3) v += 10;
+  if (c.todayUrgesAllResisted && c.todayUrgesCount >= 2) v += 8;
+  const isWeekendEvening = (c.dayOfWeek === 5 || c.dayOfWeek === 6) && c.hour >= 18;
+  if (isWeekendEvening) v -= 12;
+  return clamp(v);
 }
 
-function computeRecovery(c: Ctx): Level {
-  const mood = c.todayCheckIn?.mood ?? 3;
-  if (c.streak >= 5 || (c.scoreTrend === 'rising' && c.scoreRisingDays >= 2)) {
-    return 'high';
-  }
-  if (c.scoreTrend === 'declining' && c.scoreDecliningDays >= 2 && mood <= 2) {
-    return 'low';
-  }
-  return 'medium';
+function computeRecovery(c: Ctx): number {
+  let v = 50;
+  const mood = c.todayCheckIn?.mood;
+  if (mood !== undefined) v += (mood - 3) * 8;
+  v += Math.min(c.streak, 10) * 2;
+  if (c.scoreTrend === 'rising') v += c.scoreRisingDays * 5;
+  if (c.scoreTrend === 'declining') v -= c.scoreDecliningDays * 5;
+  v += Math.min(c.cleanDaysInRow, 5) * 2;
+  if (c.todayDebt > 5) v -= 8;
+  return clamp(v);
 }
 
 export function computeBrainState(
@@ -277,5 +298,54 @@ export function computeBrainState(
       impulse: computeImpulse(ctx),
       recovery: computeRecovery(ctx),
     },
+  };
+}
+
+export interface MetricDeltas {
+  focus: number | null;
+  impulse: number | null;
+  recovery: number | null;
+  daysCounted: number;
+}
+
+// Returns delta vs the average of the previous N days (excluding today). null
+// when fewer than `minDays` historical days have any log — avoids showing a
+// noisy delta to brand-new users.
+export function computeMetricDeltas(
+  dailyLogs: Record<string, DailyLog>,
+  profile: UserProfile,
+  now: Date = new Date(),
+  windowDays = 7,
+  minDays = 3,
+): MetricDeltas {
+  const todayCtx = buildCtx(dailyLogs, profile, 0, 0, now);
+  const today = {
+    focus: computeFocus(todayCtx),
+    impulse: computeImpulse(todayCtx),
+    recovery: computeRecovery(todayCtx),
+  };
+  const past: Array<{ focus: number; impulse: number; recovery: number }> = [];
+  for (let i = 1; i <= windowDays; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = toLocalDateString(d);
+    if (!dailyLogs[key]) continue;
+    const ctx = buildCtx(dailyLogs, profile, 0, 0, d);
+    past.push({
+      focus: computeFocus(ctx),
+      impulse: computeImpulse(ctx),
+      recovery: computeRecovery(ctx),
+    });
+  }
+  if (past.length < minDays) {
+    return { focus: null, impulse: null, recovery: null, daysCounted: past.length };
+  }
+  const avg = (k: 'focus' | 'impulse' | 'recovery') =>
+    past.reduce((s, p) => s + p[k], 0) / past.length;
+  return {
+    focus: Math.round(today.focus - avg('focus')),
+    impulse: Math.round(today.impulse - avg('impulse')),
+    recovery: Math.round(today.recovery - avg('recovery')),
+    daysCounted: past.length,
   };
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { useT } from '@/hooks/useT';
 import BottomSheet from '@/components/ui/BottomSheet';
+import VoiceRecorder from './VoiceRecorder';
 
 const SLEEP_EMOJIS = ['😵', '😴', '🛌', '💤', '✨'];
 const ENERGY_EMOJIS = ['🪫', '😩', '😐', '⚡', '🚀'];
@@ -16,6 +17,7 @@ function ScaleRow({
   onChange,
   lowLabel,
   highLabel,
+  levelDescriptions,
 }: {
   question: string;
   emojis: string[];
@@ -23,7 +25,9 @@ function ScaleRow({
   onChange: (v: number) => void;
   lowLabel: string;
   highLabel: string;
+  levelDescriptions?: [string, string, string, string, string];
 }) {
+  const desc = levelDescriptions ? levelDescriptions[Math.max(1, Math.min(5, value)) - 1] : null;
   return (
     <div className="mb-5">
       <p className="text-stone-700 font-semibold text-sm mb-2.5">{question}</p>
@@ -51,11 +55,16 @@ function ScaleRow({
         <span>{lowLabel}</span>
         <span>{highLabel}</span>
       </div>
+      {desc && (
+        <p className="text-stone-500 text-xs mt-2 leading-snug min-h-[1.5em] px-1">
+          <span className="font-semibold text-stone-700">{value} —</span> {desc}
+        </p>
+      )}
     </div>
   );
 }
 
-type Initial = { sleep: number; energy: number; mood: number; note?: string };
+type Initial = { sleep: number; energy: number; mood: number; note?: string; voiceNote?: string; voiceNoteDurationMs?: number };
 
 export default function CheckInModal({
   onClose,
@@ -70,6 +79,11 @@ export default function CheckInModal({
   const [energy, setEnergy] = useState(initialValues?.energy ?? 3);
   const [mood, setMood] = useState(initialValues?.mood ?? 3);
   const [note, setNote] = useState(initialValues?.note ?? '');
+  const [voice, setVoice] = useState<{ dataUri: string; durationMs: number } | null>(
+    initialValues?.voiceNote && initialValues.voiceNoteDurationMs
+      ? { dataUri: initialValues.voiceNote, durationMs: initialValues.voiceNoteDurationMs }
+      : null,
+  );
 
   const handleSave = () => {
     saveCheckIn({
@@ -77,6 +91,8 @@ export default function CheckInModal({
       energy,
       mood,
       note: note.trim() || undefined,
+      voiceNote: voice?.dataUri,
+      voiceNoteDurationMs: voice?.durationMs,
     });
     onClose();
   };
@@ -95,6 +111,7 @@ export default function CheckInModal({
         onChange={setSleep}
         lowLabel={t.checkInScaleLow}
         highLabel={t.checkInScaleHigh}
+        levelDescriptions={[t.sleepLevel1, t.sleepLevel2, t.sleepLevel3, t.sleepLevel4, t.sleepLevel5]}
       />
       <ScaleRow
         question={t.checkInEnergyQ}
@@ -103,6 +120,7 @@ export default function CheckInModal({
         onChange={setEnergy}
         lowLabel={t.checkInScaleLow}
         highLabel={t.checkInScaleHigh}
+        levelDescriptions={[t.energyLevel1, t.energyLevel2, t.energyLevel3, t.energyLevel4, t.energyLevel5]}
       />
       <ScaleRow
         question={t.checkInMoodQ}
@@ -111,6 +129,7 @@ export default function CheckInModal({
         onChange={setMood}
         lowLabel={t.checkInScaleLow}
         highLabel={t.checkInScaleHigh}
+        levelDescriptions={[t.moodLevel1, t.moodLevel2, t.moodLevel3, t.moodLevel4, t.moodLevel5]}
       />
 
       <textarea
@@ -121,6 +140,8 @@ export default function CheckInModal({
         rows={2}
         className="w-full bg-stone-50 rounded-2xl px-4 py-3 text-sm text-stone-700 placeholder:text-stone-400 outline-none resize-none mb-5"
       />
+
+      <VoiceRecorder value={voice} onChange={setVoice} />
 
       <button
         onClick={handleSave}

@@ -2,25 +2,40 @@
 
 import { useMemo, useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
-import { computeBrainState, Level } from '@/lib/brainState';
+import { computeBrainState, computeMetricDeltas, percentageToLevel } from '@/lib/brainState';
 import { useT } from '@/hooks/useT';
 import BrainMetricsInfoModal from './BrainMetricsInfoModal';
 
-function MetricChip({ label, level, t }: { label: string; level: Level; t: ReturnType<typeof useT> }) {
-  const config = {
-    high: { color: '#5B8A5E', bg: 'rgba(91,138,94,0.10)', text: t.brainLevelHigh },
-    medium: { color: '#B8985A', bg: 'rgba(184,152,90,0.12)', text: t.brainLevelMedium },
-    low: { color: '#C97B5B', bg: 'rgba(201,123,91,0.12)', text: t.brainLevelLow },
-  }[level];
+function MetricChip({ label, value, delta }: { label: string; value: number; delta: number | null }) {
+  const palette = {
+    high: { color: '#5B8A5E', bg: 'rgba(91,138,94,0.10)' },
+    medium: { color: '#B8985A', bg: 'rgba(184,152,90,0.12)' },
+    low: { color: '#C97B5B', bg: 'rgba(201,123,91,0.12)' },
+  }[percentageToLevel(value)];
+
+  // Negative delta is shown amber-warm regardless of chip color, so the
+  // "down vs avg" signal reads consistently across all three metrics.
+  const deltaColor = delta == null || delta === 0
+    ? '#A8A29E'
+    : delta > 0
+    ? '#5B8A5E'
+    : '#C97B5B';
 
   return (
-    <div className="flex-1 rounded-xl px-3 py-2.5" style={{ background: config.bg }}>
+    <div className="flex-1 rounded-xl px-3 py-2.5" style={{ background: palette.bg }}>
       <p className="text-stone-500 text-[10px] font-medium uppercase tracking-wider truncate">
         {label}
       </p>
-      <p className="font-bold text-sm mt-0.5" style={{ color: config.color }}>
-        {config.text}
-      </p>
+      <div className="flex items-baseline gap-1 mt-0.5">
+        <p className="font-bold text-base tabular-nums" style={{ color: palette.color }}>
+          {value}%
+        </p>
+        {delta != null && (
+          <p className="text-[10px] font-bold tabular-nums" style={{ color: deltaColor }}>
+            {delta > 0 ? '+' : ''}{delta}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
@@ -43,7 +58,12 @@ export default function BrainTodayCard() {
     return computeBrainState(dailyLogs, profile, todaySteps, stepGoal);
   }, [dailyLogs, profile, todaySteps, stepGoal]);
 
-  if (!profile || !brainState) return null;
+  const deltas = useMemo(() => {
+    if (!profile) return null;
+    return computeMetricDeltas(dailyLogs, profile);
+  }, [dailyLogs, profile]);
+
+  if (!profile || !brainState || !deltas) return null;
 
   const templateMap: Record<number, string> = {
     1: t.brainState1, 2: t.brainState2, 3: t.brainState3, 4: t.brainState4, 5: t.brainState5,
@@ -58,14 +78,18 @@ export default function BrainTodayCard() {
 
   return (
     <div className="bg-white rounded-3xl p-5 mb-4 shadow-sm">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-stone-400 text-[10px] font-bold uppercase tracking-widest">
-          {t.brainTodayTitle}
-        </span>
-        <span className="h-px flex-1 bg-stone-100" />
+      <div className="flex items-start gap-2 mb-3">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-stone-800 font-bold text-base leading-tight">
+            {t.brainTodayTitle}
+          </h2>
+          <p className="text-stone-400 text-xs mt-0.5 leading-snug">
+            {t.brainTodaySubtitle}
+          </p>
+        </div>
         <button
           onClick={() => setInfoOpen(true)}
-          className="w-5 h-5 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors"
+          className="w-5 h-5 mt-0.5 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors flex-shrink-0"
           aria-label={t.brainInfoTitle}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -80,9 +104,9 @@ export default function BrainTodayCard() {
       </p>
 
       <div className="flex gap-2">
-        <MetricChip label={t.brainMetricFocus} level={brainState.metrics.focus} t={t} />
-        <MetricChip label={t.brainMetricImpulse} level={brainState.metrics.impulse} t={t} />
-        <MetricChip label={t.brainMetricRecovery} level={brainState.metrics.recovery} t={t} />
+        <MetricChip label={t.brainMetricFocus} value={brainState.metrics.focus} delta={deltas.focus} />
+        <MetricChip label={t.brainMetricImpulse} value={brainState.metrics.impulse} delta={deltas.impulse} />
+        <MetricChip label={t.brainMetricRecovery} value={brainState.metrics.recovery} delta={deltas.recovery} />
       </div>
 
       {infoOpen && <BrainMetricsInfoModal onClose={() => setInfoOpen(false)} />}

@@ -19,6 +19,11 @@ export default function BrainMetricsInfoModal({ onClose }: { onClose: () => void
           <p className="text-stone-500 text-sm leading-relaxed">{t.brainInfoSubtitle}</p>
         </div>
 
+        <div className="bg-stone-50 rounded-2xl p-4 mb-3">
+          <p className="font-bold text-sm text-stone-800 mb-1.5">{t.brainInfoHeadlineTitle}</p>
+          <p className="text-stone-600 text-xs leading-relaxed">{t.brainInfoHeadlineBody}</p>
+        </div>
+
         <div className="space-y-2.5 mb-5">
           {metrics.map((m, i) => (
             <div key={i} className="bg-stone-50 rounded-2xl p-4">

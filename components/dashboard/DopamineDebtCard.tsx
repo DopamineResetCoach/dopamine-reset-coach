@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { getTodayString, calculateDailyDebt, getDebtLabel, getDebtColor, BAD_HABIT_DEBT, formatDebtDisplay } from '@/lib/scoring';
-import PremiumModal from '@/components/premium/PremiumModal';
 import BottomSheet from '@/components/ui/BottomSheet';
 import { useT } from '@/hooks/useT';
 import type { BadHabit } from '@/types';
@@ -63,10 +62,9 @@ function LogSheet({ onClose }: { onClose: () => void }) {
 }
 
 export default function DopamineDebtCard() {
-  const { dailyLogs, isPremium } = useAppStore();
+  const { dailyLogs, removeBadHabit } = useAppStore();
   const t = useT();
   const [showLog, setShowLog] = useState(false);
-  const [showPremium, setShowPremium] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const today = getTodayString();
   const todayLog = dailyLogs[today];
@@ -85,53 +83,6 @@ export default function DopamineDebtCard() {
     caffeine: t.habitCaffeineShort,
     other: t.habitOther,
   };
-
-  if (!isPremium) {
-    return (
-      <>
-        <div
-          className="relative bg-white rounded-3xl p-5 mb-4 shadow-sm overflow-hidden cursor-pointer"
-          onClick={() => setShowPremium(true)}
-        >
-          <div className="blur-sm pointer-events-none select-none">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-stone-400 text-xs font-medium uppercase tracking-widest">
-                  {t.debtLabel}
-                </p>
-                <p className="text-2xl font-bold text-red-400 mt-0.5">{t.debtHigh}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-4xl font-bold text-red-400">42</p>
-                <p className="text-stone-400 text-sm">{t.debtPtsToday}</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {['📱 Scrolling', '🍔 Junk', '🎮 Gaming'].map((h) => (
-                <div key={h} className="bg-red-50 rounded-xl px-2 py-2 text-center">
-                  <p className="text-sm text-stone-500">{h}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 rounded-3xl">
-            <span className="text-3xl mb-2">🔒</span>
-            <p className="text-stone-700 font-bold text-sm">{t.premiumFeature1.split(' — ')[0]}</p>
-            <p className="text-stone-400 text-sm mt-1 text-center px-4">
-              {t.settingsPremiumFreeDesc}
-            </p>
-            <div
-              className="mt-3 px-5 py-2 rounded-xl text-white text-sm font-bold"
-              style={{ background: '#5B8A5E' }}
-            >
-              {t.premiumLabel}
-            </div>
-          </div>
-        </div>
-        {showPremium && <PremiumModal onClose={() => setShowPremium(false)} />}
-      </>
-    );
-  }
 
   return (
     <>
@@ -177,11 +128,21 @@ export default function DopamineDebtCard() {
             {badHabits.map((h) => (
               <div
                 key={h.id}
-                className="flex items-center gap-1 bg-red-50 rounded-xl px-2.5 py-1.5"
+                className="flex items-center gap-1 bg-red-50 rounded-xl pl-2.5 pr-1 py-1.5"
               >
                 <span className="text-sm">{BAD_HABIT_EMOJIS[h.type]}</span>
                 <span className="text-sm text-stone-500 font-medium">{HABIT_LABELS[h.type]}</span>
                 <span className="text-[10px] text-red-400 font-bold">+{h.debtPoints}</span>
+                <button
+                  type="button"
+                  onClick={() => removeBadHabit(h.id)}
+                  className="ml-0.5 w-5 h-5 flex items-center justify-center rounded-full text-red-400 active:bg-red-100 active:text-red-600"
+                  aria-label={t.debtRemoveAria}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                    <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  </svg>
+                </button>
               </div>
             ))}
           </div>

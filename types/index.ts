@@ -14,6 +14,8 @@ export interface UserProfile {
   planDuration: 7 | 14 | 30;
   hardMode: boolean;
   startDate: string; // ISO date YYYY-MM-DD
+  motivation?: string; // user's own answer to "why are you doing this?"
+  motivationHistory?: { text: string; setAt: string }[]; // append-only log, oldest first; current value lives in `motivation`
 }
 
 export interface Task {
@@ -47,6 +49,8 @@ export interface DailyCheckIn {
   energy: number; // 1–5
   mood: number; // 1–5
   note?: string;
+  voiceNote?: string; // data URI (audio/webm or audio/mp4 base64) — stored locally, never leaves device
+  voiceNoteDurationMs?: number;
   dismissed?: boolean; // user dismissed the "done" confirmation card on Today tab
 }
 

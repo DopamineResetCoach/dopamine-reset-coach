@@ -17,6 +17,8 @@ import { getTranslatedTasks } from '@/lib/tasks';
 import { buildWeeklyInsights, TrendStat } from '@/lib/insights';
 import PremiumModal from '@/components/premium/PremiumModal';
 import StageCard from './StageCard';
+import VoiceJournalCard from './VoiceJournalCard';
+import DopamineScoreDetailModal from './DopamineScoreDetailModal';
 import { useT } from '@/hooks/useT';
 
 function CustomTooltip({ active, payload, label }: any) {
@@ -57,9 +59,9 @@ function StatCard({
 
 function HabitHeatmap() {
   const t = useT();
-  const { dailyLogs, profile } = useAppStore();
+  const { dailyLogs, profile, language } = useAppStore();
   if (!profile) return null;
-  const tasks = getTranslatedTasks(t, profile.hardMode);
+  const tasks = getTranslatedTasks(t, profile.hardMode, profile.habits);
 
   const days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
@@ -69,7 +71,7 @@ function HabitHeatmap() {
 
   const dayLabels = days.map((d, i) => {
     if (i === 6) return t.progressToday;
-    return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+    return new Date(d + 'T12:00:00').toLocaleDateString(language || 'en', { weekday: 'short' });
   });
 
   return (
@@ -132,11 +134,21 @@ function HabitHeatmap() {
 
 function BrainChallenges() {
   const t = useT();
-  const { isPremium, completedChallenges, completeChallenge, uncompleteChallenge } = useAppStore();
+  const { isPremium, profile, completedChallenges, completeChallenge, uncompleteChallenge, challengeResetMode } = useAppStore();
   const [showPremium, setShowPremium] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [infoOpen, setInfoOpen] = useState(false);
 
-  const challenges = [
+  type HabitKey = keyof NonNullable<typeof profile>['habits'];
+  const rawChallenges: {
+    id: string;
+    emoji: string;
+    title: string;
+    description: string;
+    duration: string;
+    reflection: string;
+    habitTag?: HabitKey;
+  }[] = [
     {
       id: 'no-phone-morning',
       emoji: '🌅',
@@ -144,6 +156,7 @@ function BrainChallenges() {
       description: t.challenge1Desc,
       duration: t.challenge1Duration,
       reflection: t.challenge1Reflection,
+      habitTag: 'socialMedia',
     },
     {
       id: 'boredom-session',
@@ -168,6 +181,7 @@ function BrainChallenges() {
       description: t.challenge4Desc,
       duration: t.challenge4Duration,
       reflection: t.challenge4Reflection,
+      habitTag: 'junkFood',
     },
     {
       id: 'walk-no-music',
@@ -179,6 +193,64 @@ function BrainChallenges() {
     },
   ];
 
+  const habits = profile?.habits;
+  const forYou = rawChallenges.filter((c) => c.habitTag && habits?.[c.habitTag]);
+  const others = rawChallenges.filter((c) => !forYou.includes(c));
+
+  const renderChallenge = (c: typeof rawChallenges[number], isForYou: boolean) => {
+    const done = completedChallenges.includes(c.id);
+    const open = expanded === c.id;
+    return (
+      <div
+        key={c.id}
+        className={`rounded-xl overflow-hidden ${
+          done ? 'bg-[#5B8A5E]/8' : isForYou ? 'bg-[#5B8A5E]/6 ring-1 ring-[#5B8A5E]/15' : 'bg-stone-50'
+        }`}
+      >
+        <button
+          className="w-full flex items-center gap-3 p-3 text-left"
+          onClick={() => setExpanded(open ? null : c.id)}
+        >
+          <span className={`text-xl ${done ? '' : isForYou ? '' : 'grayscale'}`}>{c.emoji}</span>
+          <div className="flex-1">
+            <p className={`text-sm font-semibold ${done ? 'text-[#3D6640]' : 'text-stone-700'}`}>
+              {c.title}
+            </p>
+            <p className="text-sm text-stone-400">{c.duration}</p>
+          </div>
+          {done && (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="7" fill="#5B8A5E" />
+              <path d="M5 8l2.5 2.5 3.5-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </button>
+        {open && (
+          <div className="px-3 pb-3">
+            <p className="text-stone-600 text-sm leading-relaxed mb-2">{c.description}</p>
+            <p className="text-stone-400 text-sm italic mb-3">"{c.reflection}"</p>
+            {!done ? (
+              <button
+                onClick={() => { completeChallenge(c.id); setExpanded(null); }}
+                className="w-full py-2 rounded-xl text-white text-sm font-bold"
+                style={{ background: '#5B8A5E' }}
+              >
+                {t.progressMarkComplete}
+              </button>
+            ) : (
+              <button
+                onClick={() => { uncompleteChallenge(c.id); setExpanded(null); }}
+                className="w-full py-2 rounded-xl text-stone-500 text-sm font-semibold border border-stone-200 active:bg-stone-100 transition-colors"
+              >
+                {t.progressMarkUncomplete}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (!isPremium) {
     return (
       <>
@@ -189,7 +261,7 @@ function BrainChallenges() {
           <div className="blur-sm pointer-events-none select-none">
             <h3 className="text-stone-700 font-bold text-sm mb-3">{t.progressChallengesTitle}</h3>
             <div className="space-y-2">
-              {challenges.slice(0, 3).map((c) => (
+              {rawChallenges.slice(0, 3).map((c) => (
                 <div key={c.id} className="flex items-center gap-3 p-3 rounded-xl bg-stone-50">
                   <span className="text-xl">{c.emoji}</span>
                   <div className="flex-1">
@@ -221,60 +293,49 @@ function BrainChallenges() {
 
   return (
     <div className="bg-white rounded-2xl p-4 mb-4">
-      <h3 className="text-stone-700 font-bold text-sm">{t.progressChallengesTitle}</h3>
-      <p className="text-stone-400 text-xs mt-0.5 mb-3">{t.progressChallengesSub}</p>
+      <div className="flex items-center gap-1.5">
+        <h3 className="text-stone-700 font-bold text-sm">{t.progressChallengesTitle}</h3>
+        <button
+          onClick={() => setInfoOpen((v) => !v)}
+          className="w-4 h-4 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors"
+          aria-label={t.progressChallengesInfoBody}
+          aria-expanded={infoOpen}
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.4" />
+            <path d="M8 11.5v-3.8M8 5.5v.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+      <p className="text-stone-400 text-xs mt-0.5 mb-3">
+        {challengeResetMode === 'daily' ? t.progressChallengesSubDaily : t.progressChallengesSub}
+      </p>
+      {infoOpen && (
+        <div className="bg-stone-50 rounded-xl p-3 mb-3 text-stone-600 text-[11px] leading-relaxed">
+          {t.progressChallengesInfoBody}
+        </div>
+      )}
+      {forYou.length > 0 && (
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[10px] font-bold uppercase tracking-wide text-[#3D6640]">
+            🎯 {t.challengesForYouSection}
+          </span>
+          <div className="flex-1 h-px bg-[#5B8A5E]/20" />
+        </div>
+      )}
       <div className="space-y-2">
-        {challenges.map((c) => {
-          const done = completedChallenges.includes(c.id);
-          const open = expanded === c.id;
-          return (
-            <div
-              key={c.id}
-              className={`rounded-xl overflow-hidden ${done ? 'bg-[#5B8A5E]/8' : 'bg-stone-50'}`}
-            >
-              <button
-                className="w-full flex items-center gap-3 p-3 text-left"
-                onClick={() => setExpanded(open ? null : c.id)}
-              >
-                <span className={`text-xl ${done ? '' : 'grayscale'}`}>{c.emoji}</span>
-                <div className="flex-1">
-                  <p className={`text-sm font-semibold ${done ? 'text-[#3D6640]' : 'text-stone-700'}`}>
-                    {c.title}
-                  </p>
-                  <p className="text-sm text-stone-400">{c.duration}</p>
-                </div>
-                {done && (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="8" r="7" fill="#5B8A5E" />
-                    <path d="M5 8l2.5 2.5 3.5-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </button>
-              {open && (
-                <div className="px-3 pb-3">
-                  <p className="text-stone-600 text-sm leading-relaxed mb-2">{c.description}</p>
-                  <p className="text-stone-400 text-sm italic mb-3">"{c.reflection}"</p>
-                  {!done ? (
-                    <button
-                      onClick={() => { completeChallenge(c.id); setExpanded(null); }}
-                      className="w-full py-2 rounded-xl text-white text-sm font-bold"
-                      style={{ background: '#5B8A5E' }}
-                    >
-                      {t.progressMarkComplete}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => { uncompleteChallenge(c.id); setExpanded(null); }}
-                      className="w-full py-2 rounded-xl text-stone-500 text-sm font-semibold border border-stone-200 active:bg-stone-100 transition-colors"
-                    >
-                      {t.progressMarkUncomplete}
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {forYou.map((c) => renderChallenge(c, true))}
+      </div>
+      {forYou.length > 0 && others.length > 0 && (
+        <div className="flex items-center gap-2 mt-4 mb-2">
+          <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
+            {t.challengesOtherSection}
+          </span>
+          <div className="flex-1 h-px bg-stone-200" />
+        </div>
+      )}
+      <div className="space-y-2">
+        {others.map((c) => renderChallenge(c, false))}
       </div>
     </div>
   );
@@ -329,6 +390,7 @@ function WeeklyInsights() {
   const t = useT();
   const { dailyLogs, isPremium } = useAppStore();
   const [showPremium, setShowPremium] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
 
   const insights = useMemo(() => buildWeeklyInsights(dailyLogs), [dailyLogs]);
 
@@ -406,10 +468,28 @@ function WeeklyInsights() {
 
   return (
     <div className="bg-white rounded-2xl p-4 mb-4">
-      <h3 className="text-stone-700 font-bold text-sm mb-1">{t.weeklyInsightsTitle}</h3>
+      <div className="flex items-center gap-1.5 mb-1">
+        <h3 className="text-stone-700 font-bold text-sm">{t.weeklyInsightsTitle}</h3>
+        <button
+          onClick={() => setInfoOpen((v) => !v)}
+          className="w-4 h-4 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors"
+          aria-label={t.weeklyInsightsInfoBody}
+          aria-expanded={infoOpen}
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.4" />
+            <path d="M8 11.5v-3.8M8 5.5v.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
       <p className="text-stone-400 text-sm mb-3">
         {hasBaseline ? t.weeklyInsightsSub : t.trendNoBaseline}
       </p>
+      {infoOpen && (
+        <div className="bg-stone-50 rounded-xl p-3 mb-3 text-stone-600 text-[11px] leading-relaxed">
+          {t.weeklyInsightsInfoBody}
+        </div>
+      )}
 
       <TrendGrid
         trends={insights.trends}
@@ -474,6 +554,8 @@ export default function ProgressView() {
   const { dailyLogs, profile, language } = useAppStore();
   const [weekOffset, setWeekOffset] = useState(0);
   const [scoreChartInfoOpen, setScoreChartInfoOpen] = useState(false);
+  const [scoreDetailOpen, setScoreDetailOpen] = useState(false);
+  const [milestonesInfoOpen, setMilestonesInfoOpen] = useState(false);
   const [checkInChartInfoOpen, setCheckInChartInfoOpen] = useState(false);
   if (!profile) return null;
 
@@ -508,9 +590,10 @@ export default function ProgressView() {
     { days: 14, label: t.milestone14, emoji: '🔥' },
     { days: 21, label: t.milestone21, emoji: '⚡' },
     { days: 30, label: t.milestone30, emoji: '🏆' },
+    { days: 60, label: t.milestone60, emoji: '🦋' },
   ];
 
-  const sinceDate = new Date(profile.startDate + 'T12:00:00').toLocaleDateString('en-US', {
+  const sinceDate = new Date(profile.startDate + 'T12:00:00').toLocaleDateString(language || 'en', {
     month: 'long',
     day: 'numeric',
   });
@@ -543,22 +626,25 @@ export default function ProgressView() {
         </div>
 
         {/* Score Chart */}
-        <div className="bg-white rounded-2xl p-4 mb-4">
-          <div className="flex items-center gap-1.5 mb-3">
-            <h3 className="text-stone-700 font-bold text-sm">
-              {t.progressChartTitle}
-            </h3>
-            <button
-              onClick={() => setScoreChartInfoOpen((v) => !v)}
-              className="w-4 h-4 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors"
-              aria-label={t.progressScoreChartInfoBody}
-              aria-expanded={scoreChartInfoOpen}
-            >
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.4" />
-                <path d="M8 11.5v-3.8M8 5.5v.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
+        <div className="bg-white rounded-2xl p-4 mb-4 active:bg-stone-50/40 transition-colors cursor-pointer" onClick={() => setScoreDetailOpen(true)}>
+          <div className="flex items-center justify-between gap-1.5 mb-3">
+            <div className="flex items-center gap-1.5">
+              <h3 className="text-stone-700 font-bold text-sm">
+                {t.progressChartTitle}
+              </h3>
+              <button
+                onClick={(e) => { e.stopPropagation(); setScoreChartInfoOpen((v) => !v); }}
+                className="w-4 h-4 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors"
+                aria-label={t.progressScoreChartInfoBody}
+                aria-expanded={scoreChartInfoOpen}
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.4" />
+                  <path d="M8 11.5v-3.8M8 5.5v.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+            <span className="text-stone-300 text-[10px] font-medium">{t.scoreChartTapHint}</span>
           </div>
           {scoreChartInfoOpen && (
             <div className="bg-stone-50 rounded-xl p-3 mb-3 text-stone-600 text-[11px] leading-relaxed">
@@ -716,6 +802,9 @@ export default function ProgressView() {
         {/* Habit heatmap */}
         <HabitHeatmap />
 
+        {/* Voice reflection journal */}
+        <VoiceJournalCard />
+
         {/* Weekly Insights */}
         <WeeklyInsights />
 
@@ -724,7 +813,25 @@ export default function ProgressView() {
 
         {/* Milestones */}
         <div className="bg-white rounded-2xl p-4 mb-4">
-          <h3 className="text-stone-700 font-bold text-sm mb-3">{t.progressMilestonesTitle}</h3>
+          <div className="flex items-center gap-1.5 mb-3">
+            <h3 className="text-stone-700 font-bold text-sm">{t.progressMilestonesTitle}</h3>
+            <button
+              onClick={() => setMilestonesInfoOpen((v) => !v)}
+              className="w-4 h-4 rounded-full flex items-center justify-center text-stone-300 active:text-stone-500 transition-colors"
+              aria-label={t.progressMilestonesInfoBody}
+              aria-expanded={milestonesInfoOpen}
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.4" />
+                <path d="M8 11.5v-3.8M8 5.5v.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+          {milestonesInfoOpen && (
+            <div className="bg-stone-50 rounded-xl p-3 mb-3 text-stone-600 text-[11px] leading-relaxed">
+              {t.progressMilestonesInfoBody}
+            </div>
+          )}
           <div className="space-y-2">
             {milestones.map((m) => {
               const unlocked = streak >= m.days;
@@ -773,6 +880,7 @@ export default function ProgressView() {
           </div>
         </div>
       </div>
+      {scoreDetailOpen && <DopamineScoreDetailModal onClose={() => setScoreDetailOpen(false)} />}
     </div>
   );
 }

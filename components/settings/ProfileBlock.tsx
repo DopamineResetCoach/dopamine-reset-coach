@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
-import { getCheckInAverage, getTodayString } from '@/lib/scoring';
+import { getCheckInAverage, getTodayString, HABIT_PENALTIES } from '@/lib/scoring';
 import { useT } from '@/hooks/useT';
 import type { UserProfile } from '@/types';
 import SleepDetailPage from './SleepDetailPage';
 import CheckInModal from '@/components/checkin/CheckInModal';
 import BottomSheet from '@/components/ui/BottomSheet';
 
-type EditMode = 'screen_time' | 'sleep' | 'energy' | 'habits' | null;
+type EditMode = 'screen_time' | 'sleep' | 'energy' | 'habits' | 'motivation' | null;
+
+const MOTIVATION_MAX = 140;
 
 function StarBar({ value }: { value: number }) {
   const rounded = Math.round(value);
@@ -142,13 +144,14 @@ const HABIT_LABELS_KEY: { key: keyof UserProfile['habits']; tKey: 'habitSocialMe
 ];
 
 export default function ProfileBlock() {
-  const { profile, dailyLogs, updateProfileField } = useAppStore();
+  const { profile, dailyLogs, updateProfileField, language } = useAppStore();
   const checkInPromptDisabled = useAppStore((s) => s.checkInPromptDisabled);
   const setCheckInPromptDisabled = useAppStore((s) => s.setCheckInPromptDisabled);
   const t = useT();
   const [edit, setEdit] = useState<EditMode>(null);
   const [sleepDetailOpen, setSleepDetailOpen] = useState(false);
   const [checkInOpen, setCheckInOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   // Edit state buffers
   const [screenTime, setScreenTime] = useState(profile?.screenTimeHours ?? 3);
@@ -157,6 +160,7 @@ export default function ProfileBlock() {
   const [habitsEdit, setHabitsEdit] = useState<UserProfile['habits']>(
     profile?.habits ?? { socialMedia: false, caffeine: false, junkFood: false, alcohol: false, porn: false, gaming: false }
   );
+  const [motivationEdit, setMotivationEdit] = useState(profile?.motivation ?? '');
 
   if (!profile) return null;
 
@@ -178,13 +182,37 @@ export default function ProfileBlock() {
     if (mode === 'sleep') setSleepEdit(Math.round(sleepShown));
     if (mode === 'energy') setEnergyEdit(Math.round(energyShown));
     if (mode === 'habits') setHabitsEdit(profile.habits);
+    if (mode === 'motivation') setMotivationEdit(profile.motivation ?? '');
     setEdit(mode);
   };
 
   return (
     <>
-      <div className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
-        <h3 className="text-stone-700 font-bold text-sm mb-2">{t.settingsProfileTitle}</h3>
+      <div className="bg-white rounded-2xl mb-4 shadow-sm overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="w-full flex items-center justify-between px-5 py-4 active:bg-stone-50"
+          aria-expanded={expanded}
+        >
+          <div className="text-left">
+            <p className="text-stone-700 font-bold text-sm">{t.settingsEditBasicsTitle}</p>
+            <p className="text-stone-400 text-xs mt-0.5">{t.settingsEditBasicsDesc}</p>
+          </div>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            style={{ transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}
+            aria-hidden="true"
+          >
+            <path d="M9 18l6-6-6-6" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+      {expanded && (
+        <div className="px-5 pb-5 pt-1">
         <div className="divide-y divide-stone-100">
           <Row
             label={t.settingsScreenTime}
@@ -232,6 +260,20 @@ export default function ProfileBlock() {
             chevron
           />
           <Row
+            label={t.settingsMotivationLabel}
+            value={
+              profile.motivation && profile.motivation.trim() !== '' ? (
+                <span className="text-stone-700 font-medium text-sm max-w-[180px] truncate">
+                  {profile.motivation}
+                </span>
+              ) : (
+                <span className="text-stone-400 text-xs italic">{t.settingsMotivationEmpty}</span>
+              )
+            }
+            onClick={() => openEdit('motivation')}
+            chevron
+          />
+          <Row
             label={t.profileTodayCheckIn}
             value={
               checkInPromptDisabled ? (
@@ -262,6 +304,8 @@ export default function ProfileBlock() {
             chevron
           />
         </div>
+        </div>
+      )}
       </div>
 
       {edit === 'screen_time' && (
@@ -314,43 +358,124 @@ export default function ProfileBlock() {
         </EditModal>
       )}
 
-      {edit === 'habits' && (
-        <EditModal
-          title={t.profileEditHabitsTitle}
-          onClose={() => setEdit(null)}
-          onSave={() => {
-            updateProfileField({ habits: habitsEdit });
-            setEdit(null);
-          }}
-        >
-          <div className="space-y-2">
-            {HABIT_LABELS_KEY.map(({ key, tKey }) => (
-              <button
-                key={key}
-                onClick={() => setHabitsEdit((h) => ({ ...h, [key]: !h[key] }))}
-                className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all ${
-                  habitsEdit[key]
-                    ? 'bg-[#5B8A5E]/10 ring-2 ring-[#5B8A5E]'
-                    : 'bg-stone-50 ring-1 ring-stone-100'
-                }`}
-              >
-                <span className="text-stone-700 text-sm font-medium">{t[tKey]}</span>
-                <span
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    habitsEdit[key] ? 'bg-[#5B8A5E] border-[#5B8A5E]' : 'border-stone-300 bg-white'
+      {edit === 'habits' && (() => {
+        const impact = HABIT_LABELS_KEY.reduce(
+          (sum, { key }) => sum + (habitsEdit[key] ? HABIT_PENALTIES[key] : 0),
+          0,
+        );
+        return (
+          <EditModal
+            title={t.profileEditHabitsTitle}
+            onClose={() => setEdit(null)}
+            onSave={() => {
+              updateProfileField({ habits: habitsEdit });
+              setEdit(null);
+            }}
+          >
+            <p className="text-stone-500 text-xs mb-3 leading-relaxed">{t.habitsEditExplainer}</p>
+            <div className="space-y-2">
+              {HABIT_LABELS_KEY.map(({ key, tKey }) => (
+                <button
+                  key={key}
+                  onClick={() => setHabitsEdit((h) => ({ ...h, [key]: !h[key] }))}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all ${
+                    habitsEdit[key]
+                      ? 'bg-[#5B8A5E]/10 ring-2 ring-[#5B8A5E]'
+                      : 'bg-stone-50 ring-1 ring-stone-100'
                   }`}
                 >
-                  {habitsEdit[key] && (
-                    <svg width="10" height="8" viewBox="0 0 12 10" fill="none">
-                      <path d="M1 5l4 4 6-8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </span>
-              </button>
-            ))}
-          </div>
-        </EditModal>
-      )}
+                  <span className="text-stone-700 text-sm font-medium">{t[tKey]}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-stone-400 text-xs font-medium tabular-nums">
+                      −{HABIT_PENALTIES[key]}
+                    </span>
+                    <span
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        habitsEdit[key] ? 'bg-[#5B8A5E] border-[#5B8A5E]' : 'border-stone-300 bg-white'
+                      }`}
+                    >
+                      {habitsEdit[key] && (
+                        <svg width="10" height="8" viewBox="0 0 12 10" fill="none">
+                          <path d="M1 5l4 4 6-8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 px-4 py-3 rounded-2xl bg-stone-50 flex items-center justify-between">
+              <span className="text-stone-600 text-sm font-medium">{t.habitsEditImpactLabel}</span>
+              <span className={`text-sm font-bold tabular-nums ${impact > 0 ? 'text-amber-600' : 'text-stone-400'}`}>
+                {impact > 0 ? `−${impact}` : '0'}
+              </span>
+            </div>
+          </EditModal>
+        );
+      })()}
+
+      {edit === 'motivation' && (() => {
+        const history = profile.motivationHistory ?? [];
+        // Exclude the most recent entry if it matches the current motivation —
+        // the current value is already shown in the textarea above, no need to
+        // also list it as "past".
+        const past = profile.motivation && history.length > 0 && history[history.length - 1].text === profile.motivation
+          ? history.slice(0, -1)
+          : history;
+        return (
+          <EditModal
+            title={t.motivationTitle}
+            onClose={() => setEdit(null)}
+            onSave={() => {
+              updateProfileField({ motivation: motivationEdit.trim() });
+              setEdit(null);
+            }}
+          >
+            <p className="text-stone-500 text-xs mb-3 leading-relaxed">{t.motivationSubtitle}</p>
+            <textarea
+              value={motivationEdit}
+              onChange={(e) => setMotivationEdit(e.target.value.slice(0, MOTIVATION_MAX))}
+              placeholder={t.motivationPlaceholder}
+              rows={4}
+              className="w-full rounded-2xl bg-stone-50 px-4 py-3 text-stone-700 text-sm leading-relaxed outline-none focus:bg-stone-100 transition-colors resize-none"
+            />
+            <div className="flex items-center justify-between mt-2 px-1">
+              <span className="text-stone-400 text-[11px] italic">{t.motivationHint}</span>
+              <span className="text-stone-300 text-xs tabular-nums">{motivationEdit.length}/{MOTIVATION_MAX}</span>
+            </div>
+            {past.length > 0 && (
+              <div className="mt-5 pt-4 border-t border-stone-100">
+                <p className="text-stone-400 text-[11px] font-semibold uppercase tracking-wider mb-3">
+                  {t.settingsMotivationHistoryTitle}
+                </p>
+                <ol className="space-y-3">
+                  {past.map((entry, i) => {
+                    let dateStr = entry.setAt;
+                    try {
+                      dateStr = new Date(entry.setAt).toLocaleDateString(language || 'en', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      });
+                    } catch {
+                      // keep ISO fallback
+                    }
+                    return (
+                      <li key={i} className="flex gap-2.5 items-start">
+                        <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-stone-300 mt-1.5" aria-hidden="true" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-stone-300 text-[10px] tabular-nums">{dateStr}</p>
+                          <p className="text-stone-500 text-xs leading-snug italic mt-0.5">{entry.text}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+            )}
+          </EditModal>
+        );
+      })()}
 
       {sleepDetailOpen && <SleepDetailPage onClose={() => setSleepDetailOpen(false)} />}
 

@@ -8,6 +8,7 @@ import { SUPPORTED_LOCALES } from '@/lib/i18n';
 import type { Locale } from '@/lib/i18n';
 import PremiumModal from '@/components/premium/PremiumModal';
 import ProfileBlock from './ProfileBlock';
+import PersonalStats from './PersonalStats';
 import LegalModal from '@/components/legal/LegalModal';
 
 function ToggleRow({
@@ -53,6 +54,8 @@ export default function SettingsView() {
     profile, toggleHardMode, resetApp, dailyLogs, isPremium, language, setLanguage,
     restorePurchases, stepGoal, setStepGoal, setPremium,
     notificationsEnabled, notificationTime, setNotificationsEnabled, setNotificationTime,
+    eveningReflectionEnabled, eveningReflectionTime, setEveningReflectionEnabled, setEveningReflectionTime,
+    challengeResetMode, setChallengeResetMode,
   } = useAppStore();
   const t = useT();
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -60,6 +63,18 @@ export default function SettingsView() {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [legalOpen, setLegalOpen] = useState<null | 'privacy' | 'terms'>(null);
   const [restoreState, setRestoreState] = useState<'idle' | 'loading' | 'done' | 'not_found' | 'error'>('idle');
+  // 7 taps on the premium status pill unlocks the dev toggle. Reviewers won't
+  // discover it; Niek can reach it on any build.
+  const [devUnlocked, setDevUnlocked] = useState(false);
+  const [tapCount, setTapCount] = useState(0);
+  const handleSecretTap = () => {
+    const next = tapCount + 1;
+    setTapCount(next);
+    if (next >= 7) {
+      setDevUnlocked(true);
+      setTapCount(0);
+    }
+  };
 
   if (!profile) return null;
 
@@ -85,7 +100,7 @@ export default function SettingsView() {
             </div>
             <div>
               <p className="font-bold text-stone-800">
-                {profile.planDuration}-{t.days} Reset
+                {t.appName}
               </p>
               <p className="text-stone-400 text-sm">
                 {t.settingsPlanDay} {planDay} • {streak > 0 ? `${streak} 🔥` : '—'}
@@ -151,6 +166,32 @@ export default function SettingsView() {
           />
         </div>
 
+        {/* Brain Challenges reset frequency */}
+        <div className="bg-white rounded-2xl px-5 py-4 mb-4 shadow-sm">
+          <p className="text-stone-700 font-bold text-sm mb-1">{t.settingsChallengeResetTitle}</p>
+          <p className="text-stone-400 text-xs mb-3">{t.settingsChallengeResetDesc}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {(['daily', 'weekly'] as const).map((mode) => {
+              const selected = challengeResetMode === mode;
+              const label = mode === 'daily' ? t.settingsChallengeResetDaily : t.settingsChallengeResetWeekly;
+              return (
+                <button
+                  key={mode}
+                  onClick={() => setChallengeResetMode(mode)}
+                  className="px-3 py-2 rounded-xl text-sm font-semibold border-2 transition-all"
+                  style={{
+                    borderColor: selected ? '#5B8A5E' : '#e7e5e4',
+                    background: selected ? '#f0f7f0' : 'white',
+                    color: selected ? '#3D6640' : '#78716c',
+                  }}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Step goal — Pro only */}
         {isPremium && (
           <div className="bg-white rounded-2xl px-5 py-4 mb-4 shadow-sm">
@@ -202,13 +243,14 @@ export default function SettingsView() {
                   alert(t.notifPermissionDenied);
                 }
               }}
-              className="relative w-11 h-7 rounded-full transition-colors flex-shrink-0"
-              style={{ background: notificationsEnabled ? '#5B8A5E' : '#E7E5E4' }}
+              className="w-12 h-6 rounded-full relative transition-all flex-shrink-0"
+              style={{ backgroundColor: notificationsEnabled ? '#5B8A5E' : '#e7e5e4' }}
               aria-pressed={notificationsEnabled}
             >
               <span
-                className="absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform"
-                style={{ transform: notificationsEnabled ? 'translateX(18px)' : 'translateX(2px)' }}
+                className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${
+                  notificationsEnabled ? 'right-0.5' : 'left-0.5'
+                }`}
               />
             </button>
           </div>
@@ -227,6 +269,50 @@ export default function SettingsView() {
             </div>
           )}
         </div>
+
+        {/* Evening reflection notification */}
+        <div className="bg-white rounded-2xl px-5 py-4 mb-4 shadow-sm">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex-1 pr-3">
+              <p className="text-stone-700 font-bold text-sm">{t.notifEveningSettingsTitle}</p>
+              <p className="text-stone-400 text-xs mt-0.5">{t.notifEveningSettingsDesc}</p>
+            </div>
+            <button
+              onClick={async () => {
+                const result = await setEveningReflectionEnabled(!eveningReflectionEnabled);
+                if (result === 'denied') {
+                  alert(t.notifPermissionDenied);
+                }
+              }}
+              className="w-12 h-6 rounded-full relative transition-all flex-shrink-0"
+              style={{ backgroundColor: eveningReflectionEnabled ? '#5B8A5E' : '#e7e5e4' }}
+              aria-pressed={eveningReflectionEnabled}
+            >
+              <span
+                className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${
+                  eveningReflectionEnabled ? 'right-0.5' : 'left-0.5'
+                }`}
+              />
+            </button>
+          </div>
+          {eveningReflectionEnabled && (
+            <div className="flex items-center justify-between border-t border-stone-100 pt-3">
+              <span className="text-stone-500 text-sm">{t.notifEveningTimeLabel}</span>
+              <input
+                type="time"
+                value={`${String(eveningReflectionTime.hour).padStart(2, '0')}:${String(eveningReflectionTime.minute).padStart(2, '0')}`}
+                onChange={(e) => {
+                  const [h, m] = e.target.value.split(':').map(Number);
+                  if (!isNaN(h) && !isNaN(m)) setEveningReflectionTime({ hour: h, minute: m });
+                }}
+                className="bg-stone-50 rounded-xl px-3 py-2 text-stone-700 font-semibold text-sm outline-none"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Personal stats — the daily "look at what you built" hero */}
+        <PersonalStats />
 
         {/* Profile Details — dynamic + editable */}
         <ProfileBlock />
@@ -282,7 +368,8 @@ export default function SettingsView() {
         <div className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
           <div className="flex items-center justify-between mb-1">
             <p className="text-stone-700 font-bold text-sm">{t.settingsPremiumTitle}</p>
-            <span
+            <button
+              onClick={handleSecretTap}
               className="text-xs font-bold px-2.5 py-1 rounded-full"
               style={{
                 background: isPremium ? '#5B8A5E20' : '#F5F0EB',
@@ -290,18 +377,19 @@ export default function SettingsView() {
               }}
             >
               {isPremium ? t.settingsPremiumActive : t.settingsPremiumFree}
-            </span>
+            </button>
           </div>
           <p className="text-stone-400 text-xs mb-3">
             {isPremium ? t.settingsPremiumActiveDesc : t.settingsPremiumFreeDesc}
           </p>
-          {/* DEV ONLY — remove before App Store submit */}
-          <button
-            className="w-full py-2 mb-2 rounded-xl bg-amber-100 text-amber-800 font-bold text-xs border border-amber-300"
-            onClick={() => setPremium(!isPremium)}
-          >
-            🔧 DEV: Toggle Premium ({isPremium ? 'ON' : 'OFF'})
-          </button>
+          {devUnlocked && (
+            <button
+              className="w-full py-2 mb-2 rounded-xl bg-amber-100 text-amber-800 font-bold text-xs border border-amber-300"
+              onClick={() => setPremium(!isPremium)}
+            >
+              🔧 DEV: Toggle Premium ({isPremium ? 'ON' : 'OFF'})
+            </button>
+          )}
           {!isPremium ? (
             <div className="space-y-2">
               <button
@@ -331,6 +419,19 @@ export default function SettingsView() {
               </button>
             </div>
           ) : null}
+        </div>
+
+        {/* Feedback */}
+        <div className="bg-white rounded-2xl px-5 py-4 mb-4 shadow-sm">
+          <p className="text-stone-700 font-bold text-sm">{t.feedbackTitle}</p>
+          <p className="text-stone-400 text-xs mt-1 mb-3 leading-relaxed">{t.feedbackBody}</p>
+          <a
+            href={`mailto:rebuildwithinofficial@gmail.com?subject=${encodeURIComponent(t.feedbackSubject)}&body=${encodeURIComponent(`\n\n---\nDopamine Reset Coach\nLanguage: ${language}`)}`}
+            className="block w-full py-3 rounded-2xl text-white font-bold text-sm text-center active:scale-[0.98] transition-transform"
+            style={{ background: 'linear-gradient(135deg, #5B8A5E, #3D6640)' }}
+          >
+            {t.feedbackCta}
+          </a>
         </div>
 
         {/* Legal — Privacy Policy + Terms of Use (Apple requirement) */}

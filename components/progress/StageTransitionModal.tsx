@@ -1,8 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useT } from '@/hooks/useT';
 import { getStageMeta, type StageId } from '@/lib/stages';
+import { getInsightsUnlockedByStage } from '@/lib/dopamineInsights';
 import type { Translations } from '@/lib/i18n/types';
+import InsightsSheet from './InsightsSheet';
 
 interface Props {
   stageId: StageId;
@@ -21,12 +24,29 @@ function pick<K extends keyof Translations>(t: Translations, key: K): string {
   return t[key] as string;
 }
 
+function applyParamsLocal(template: string, params: Record<string, string | number>): string {
+  let out = template;
+  for (const [k, v] of Object.entries(params)) out = out.replaceAll(`{${k}}`, String(v));
+  return out;
+}
+
 export default function StageTransitionModal({ stageId, onClose }: Props) {
   const t = useT();
   const meta = getStageMeta(stageId);
   const name = pick(t, meta.nameKey);
   const desc = pick(t, meta.descKey);
   const science = pick(t, meta.scienceKey);
+  const newlyUnlocked = getInsightsUnlockedByStage(stageId);
+  const [showInsights, setShowInsights] = useState(false);
+
+  if (showInsights) {
+    return (
+      <InsightsSheet
+        currentStage={stageId}
+        onClose={onClose}
+      />
+    );
+  }
 
   return (
     <div
@@ -69,7 +89,7 @@ export default function StageTransitionModal({ stageId, onClose }: Props) {
         </div>
 
         <div
-          className="welcome-fade-4 rounded-2xl p-4 mb-5"
+          className="welcome-fade-4 rounded-2xl p-4 mb-3"
           style={{ background: 'rgba(91,138,94,0.07)' }}
         >
           <p className="text-[#3D6640] text-[10px] font-bold uppercase tracking-widest mb-2">
@@ -77,6 +97,20 @@ export default function StageTransitionModal({ stageId, onClose }: Props) {
           </p>
           <p className="text-stone-700 text-sm leading-relaxed">{science}</p>
         </div>
+
+        {newlyUnlocked > 0 && (
+          <button
+            onClick={() => setShowInsights(true)}
+            className="welcome-fade-4 w-full rounded-2xl px-4 py-3 mb-3 flex items-center gap-2 active:scale-[0.99] transition-transform"
+            style={{ background: 'rgba(91,138,94,0.10)' }}
+          >
+            <span className="text-base">🔓</span>
+            <span className="text-[#3D6640] text-xs font-bold flex-1 text-left">
+              {applyParamsLocal(t.insightsUnlockedToast, { n: newlyUnlocked })}
+            </span>
+            <span className="text-[#3D6640] text-xs font-bold">{t.insightsViewBtn} ›</span>
+          </button>
+        )}
 
         <button
           onClick={onClose}

@@ -10,8 +10,13 @@ import {
   getStageProgress,
   type StageId,
 } from '@/lib/stages';
+import {
+  TOTAL_INSIGHTS,
+  getUnlockedInsightCount,
+} from '@/lib/dopamineInsights';
 import type { Translations } from '@/lib/i18n/types';
 import BottomSheet from '@/components/ui/BottomSheet';
+import InsightsSheet from './InsightsSheet';
 
 function applyParams(template: string, params: Record<string, string | number>): string {
   let out = template;
@@ -33,10 +38,21 @@ function stageScience(t: Translations, id: StageId): string {
   return t[getStageMeta(id).scienceKey];
 }
 
+// Per-stage week markers — used as labels below each roadmap dot to make it
+// unmistakable these are weeks, not months.
+const WEEK_MARKER_KEYS: Record<StageId, keyof Translations> = {
+  1: 'stageWeekMarker0',
+  2: 'stageWeekMarker2',
+  3: 'stageWeekMarker4',
+  4: 'stageWeekMarker8',
+  5: 'stageWeekMarker12',
+};
+
 export default function StageCard() {
   const t = useT();
   const { dailyLogs, profile } = useAppStore();
   const [infoOpen, setInfoOpen] = useState(false);
+  const [insightsOpen, setInsightsOpen] = useState(false);
 
   const progress = useMemo(() => {
     if (!profile) return null;
@@ -52,19 +68,15 @@ export default function StageCard() {
 
   const meta = getStageMeta(progress.current);
   const isMax = progress.next == null;
+  const unlockedInsights = getUnlockedInsightCount(progress.current);
 
-  const weeksLabel =
-    progress.qualifyingWeeks === 1
-      ? t.stageWeeksLabelSingular
-      : applyParams(t.stageWeeksLabel, { n: progress.qualifyingWeeks });
-
-  const nextLabel = isMax
+  // Single source of truth for the "next stage" line. Made explicit so the
+  // user can read it without parsing: "1/2 qualifying weeks to <Stage>".
+  const qualifyingProgressLabel = isMax
     ? t.stageReachedMax
-    : applyParams(t.stageNextLabel, {
-        n:
-          progress.weeksToNext === 1
-            ? t.stageWeeksLabelSingular
-            : applyParams(t.stageWeeksLabel, { n: progress.weeksToNext }),
+    : applyParams(t.stageQualifyingProgress, {
+        current: progress.qualifyingWeeks,
+        target: progress.nextThreshold ?? 0,
         stage: stageName(t, progress.next as StageId),
       });
 
@@ -90,7 +102,6 @@ export default function StageCard() {
               </svg>
             </button>
           </div>
-          <span className="text-stone-400 text-[10px] tabular-nums">{weeksLabel}</span>
         </div>
 
         {/* Stage header */}
@@ -122,35 +133,53 @@ export default function StageCard() {
               }}
             />
           </div>
-          <div className="flex justify-between mt-1.5">
-            <span className="text-stone-400 text-[10px]">
-              {stageName(t, progress.current)}
-            </span>
-            <span className="text-stone-400 text-[10px]">
-              {isMax ? '' : stageName(t, progress.next as StageId)}
-            </span>
-          </div>
         </div>
 
-        <p className="text-stone-500 text-[10px] mt-1 tabular-nums">{nextLabel}</p>
+        <p className="text-stone-600 text-[11px] mt-1.5 tabular-nums font-medium">
+          {qualifyingProgressLabel}
+        </p>
 
-        {/* This-week pacer */}
+        {/* This-week pacer — 5 dots cap. The week "counts" once 5 of 7 days
+            are active, so showing 5 dots (not 7) keeps the visual target
+            honest and matches countQualifyingWeeks' ≥5 rule. */}
         <div className="mt-3 rounded-xl p-2.5" style={{ background: 'rgba(91,138,94,0.06)' }}>
+          <div className="flex items-center gap-1.5 mb-1.5" aria-hidden>
+            {[0, 1, 2, 3, 4].map((i) => {
+              const filled = i < Math.min(5, thisWeekDays);
+              return (
+                <span
+                  key={i}
+                  className="w-2.5 h-2.5 rounded-full transition-colors"
+                  style={{
+                    background: filled ? '#5B8A5E' : 'rgba(91,138,94,0.18)',
+                  }}
+                />
+              );
+            })}
+          </div>
           <p className="text-[#3D6640] text-[10px] font-medium leading-snug">
-            {applyParams(t.stageThisWeekDays, { n: thisWeekDays })}
+            {(() => {
+              const remaining = Math.max(0, 5 - thisWeekDays);
+              if (remaining === 0) return t.stageWeekDotsComplete;
+              if (remaining === 1) return t.stageWeekDotsRemainingOne;
+              return applyParams(t.stageWeekDotsRemaining, { n: remaining });
+            })()}
           </p>
         </div>
 
-        {/* Stage roadmap */}
-        <div className="flex items-center justify-between gap-1 mt-3">
+        {/* Stage roadmap — growth-arc icons (heal → sprout → grow → tree →
+            peak) with a 1..5 order badge and week-marker label under each
+            dot. Order badges remove any residual "lunar cycle" ambiguity. */}
+        <div className="flex items-start justify-between gap-1 mt-3">
           {STAGES.map((s) => {
             const reached = progress.current >= s.id;
             const isCurrent = progress.current === s.id;
+            const weekLabel = t[WEEK_MARKER_KEYS[s.id]];
             return (
               <div
                 key={s.id}
                 className={`flex-1 flex flex-col items-center ${
-                  reached ? '' : 'opacity-35'
+                  reached ? '' : 'opacity-50'
                 }`}
               >
                 <div
@@ -163,10 +192,54 @@ export default function StageCard() {
                 >
                   {s.emoji}
                 </div>
+                <span
+                  className={`text-[9px] mt-0.5 tabular-nums font-bold ${
+                    isCurrent
+                      ? 'text-[#3D6640]'
+                      : reached
+                      ? 'text-stone-500'
+                      : 'text-stone-400'
+                  }`}
+                >
+                  {s.id}
+                </span>
+                <span
+                  className={`text-[9px] tabular-nums ${
+                    isCurrent
+                      ? 'text-[#3D6640] font-bold'
+                      : reached
+                      ? 'text-stone-500 font-medium'
+                      : 'text-stone-400'
+                  }`}
+                >
+                  {weekLabel}
+                </span>
+                {isCurrent && (
+                  <span className="text-[9px] text-[#3D6640] font-bold leading-tight text-center mt-0.5 max-w-[60px]">
+                    {stageName(t, s.id)}
+                  </span>
+                )}
               </div>
             );
           })}
         </div>
+
+        {/* Insights unlock pill */}
+        <button
+          onClick={() => setInsightsOpen(true)}
+          className="w-full mt-3 rounded-xl px-3 py-2.5 flex items-center gap-2 active:scale-[0.99] transition-transform"
+          style={{ background: 'rgba(91,138,94,0.08)' }}
+          aria-label={t.insightsSheetTitle}
+        >
+          <span className="text-base">💡</span>
+          <span className="text-[#3D6640] text-[11px] font-bold flex-1 text-left">
+            {applyParams(t.insightsCardLabel, {
+              unlocked: unlockedInsights,
+              total: TOTAL_INSIGHTS,
+            })}
+          </span>
+          <span className="text-[#3D6640] text-[11px] font-bold">›</span>
+        </button>
       </div>
 
       {infoOpen && (
@@ -184,6 +257,9 @@ export default function StageCard() {
                   <p className="font-bold text-sm text-stone-800">
                     {stageName(t, s.id)}
                   </p>
+                  <span className="ml-auto text-stone-400 text-[10px] tabular-nums">
+                    {t[WEEK_MARKER_KEYS[s.id]]}+
+                  </span>
                 </div>
                 <p className="text-stone-600 text-xs leading-relaxed">
                   {stageScience(t, s.id)}
@@ -200,6 +276,13 @@ export default function StageCard() {
             {t.ariaClose}
           </button>
         </BottomSheet>
+      )}
+
+      {insightsOpen && (
+        <InsightsSheet
+          currentStage={progress.current}
+          onClose={() => setInsightsOpen(false)}
+        />
       )}
     </>
   );

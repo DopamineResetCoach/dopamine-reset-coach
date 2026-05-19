@@ -71,7 +71,7 @@ export default function WhyInsight() {
   const debt = calculateDailyDebt(log?.badHabits ?? []);
   const urgesLogged = log?.urges.length ?? 0;
   const urgesResisted = log?.urges.filter((u) => u.completedIntervention).length ?? 0;
-  const totalTasks = getTasksForProfile(profile?.hardMode ?? false).length;
+  const totalTasks = getTasksForProfile(profile?.hardMode ?? false, profile?.habits).length;
 
   const insight = getInsight(t, score, completedCount, totalTasks, debt, urgesLogged, urgesResisted);
 

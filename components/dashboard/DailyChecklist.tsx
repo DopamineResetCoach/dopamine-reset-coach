@@ -48,7 +48,7 @@ function TaskItem({
               ? 'bg-[#5B8A5E] border-[#5B8A5E]'
               : 'border-stone-300 bg-white active:scale-95'
           }`}
-          aria-label={completed ? 'Mark incomplete' : 'Mark complete'}
+          aria-label={completed ? t.ariaMarkIncomplete : t.ariaMarkComplete}
         >
           {completed && (
             <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
@@ -106,7 +106,7 @@ function TaskItem({
           <button
             onClick={() => setShowTooltip((v) => !v)}
             className="text-stone-300 hover:text-stone-500 transition-colors"
-            aria-label="Why does this help?"
+            aria-label={t.ariaWhyHelps}
           >
             <TooltipIcon />
           </button>
@@ -121,7 +121,7 @@ export default function DailyChecklist() {
   const t = useT();
   if (!profile) return null;
 
-  const tasks = getTranslatedTasks(t, profile.hardMode);
+  const tasks = getTranslatedTasks(t, profile.hardMode, profile.habits);
   const today = getTodayString();
   const log = dailyLogs[today];
   const completedTasks = log?.completedTasks ?? [];

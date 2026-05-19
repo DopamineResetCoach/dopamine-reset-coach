@@ -47,27 +47,46 @@ body {
   border-radius: 4px;
 }
 
-/* Range input */
+/* Range input — WKWebView on iOS ignores ::-webkit-slider-track; needs
+   ::-webkit-slider-runnable-track. Track color also has to contrast with
+   the warm-beige page background or it visually disappears. */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
   cursor: pointer;
   width: 100%;
+  height: 32px;
+  accent-color: #5B8A5E;
 }
-input[type="range"]::-webkit-slider-track {
-  background: #E8E3DC;
+input[type="range"]::-webkit-slider-runnable-track {
+  background: #D6D3D1;
   border-radius: 99px;
-  height: 6px;
+  height: 8px;
+}
+input[type="range"]::-moz-range-track {
+  background: #D6D3D1;
+  border-radius: 99px;
+  height: 8px;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   background: #5B8A5E;
+  border: 3px solid #FFFFFF;
   border-radius: 50%;
-  height: 22px;
-  width: 22px;
+  height: 24px;
+  width: 24px;
   margin-top: -8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+input[type="range"]::-moz-range-thumb {
+  background: #5B8A5E;
+  border: 3px solid #FFFFFF;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 /* Prevent zoom on iOS */

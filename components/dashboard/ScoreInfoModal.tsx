@@ -51,11 +51,33 @@ function ValuePill({ value }: { value: number }) {
   );
 }
 
-function BreakdownRow({ label, value, dim }: { label: string; value: number; dim?: boolean }) {
+function BreakdownRow({
+  label,
+  value,
+  max,
+  dim,
+  t,
+}: {
+  label: string;
+  value: number;
+  max?: number;
+  dim?: boolean;
+  t?: Translations;
+}) {
+  const isZero = Math.round(value * 10) / 10 === 0;
   return (
     <div className="flex items-center justify-between py-1.5">
-      <span className={`text-sm ${dim ? 'text-stone-400' : 'text-stone-700'}`}>{label}</span>
-      <ValuePill value={value} />
+      <span className={`text-sm ${dim || isZero ? 'text-stone-400' : 'text-stone-700'}`}>
+        {label}
+      </span>
+      <div className="flex items-baseline gap-1.5">
+        <ValuePill value={value} />
+        {max != null && t && (
+          <span className="text-stone-400 text-[10px] tabular-nums">
+            {t.scoreInfoMaxOf.replace('{n}', String(max))}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -122,7 +144,7 @@ export default function ScoreInfoModal({ onClose }: { onClose: () => void }) {
             <div className="divide-y divide-stone-200/60">
               <BreakdownRow label={t.scoreInfoBaselineStart} value={breakdown.baseline.start} />
               {breakdown.baseline.items.map((it) => (
-                <BreakdownRow key={it.key} label={formatLabel(t, it)} value={it.value} />
+                <BreakdownRow key={it.key} label={formatLabel(t, it)} value={it.value} max={it.max} t={t} />
               ))}
             </div>
 
@@ -149,23 +171,37 @@ export default function ScoreInfoModal({ onClose }: { onClose: () => void }) {
           <div className="bg-stone-50 rounded-2xl p-4 mb-3">
             <p className="text-stone-800 font-semibold text-sm mb-2">{t.scoreInfoTodayTitle}</p>
 
-            {breakdown.today.items.length === 0 && !breakdown.today.debtItem ? (
-              <p className="text-stone-400 text-xs italic leading-relaxed">
-                {t.scoreInfoTodayEmpty}
-              </p>
-            ) : (
-              <div className="divide-y divide-stone-200/60">
-                {breakdown.today.items.map((it) => (
-                  <BreakdownRow key={it.key} label={formatLabel(t, it)} value={it.value} />
-                ))}
-                {breakdown.today.debtItem && (
-                  <BreakdownRow
-                    label={formatLabel(t, breakdown.today.debtItem)}
-                    value={breakdown.today.debtItem.value}
-                  />
-                )}
-              </div>
-            )}
+            <div className="divide-y divide-stone-200/60">
+              {breakdown.today.items.map((it) => (
+                <BreakdownRow
+                  key={it.key}
+                  label={formatLabel(t, it)}
+                  value={it.value}
+                  max={it.max}
+                  t={t}
+                />
+              ))}
+              {breakdown.today.debtItem && (
+                <BreakdownRow
+                  label={formatLabel(t, breakdown.today.debtItem)}
+                  value={breakdown.today.debtItem.value}
+                />
+              )}
+            </div>
+
+            {(() => {
+              const headroom = breakdown.today.items.reduce(
+                (sum, it) => sum + (it.max != null ? Math.max(0, it.max - it.value) : 0),
+                0,
+              );
+              const stillReachable = Math.max(0, 100 - breakdown.today.final);
+              const shown = Math.min(headroom, stillReachable);
+              return shown > 0 ? (
+                <p className="text-stone-400 text-[11px] mt-2 leading-relaxed">
+                  {t.scoreInfoTodayHeadroom.replace('{n}', String(Math.round(shown)))}
+                </p>
+              ) : null;
+            })()}
 
             <div className="border-t border-stone-300 mt-2 pt-2 flex items-center justify-between">
               <span className="text-stone-700 text-sm font-semibold">{t.scoreInfoTodayFinal}</span>

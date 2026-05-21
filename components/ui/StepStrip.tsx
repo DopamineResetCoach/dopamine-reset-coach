@@ -68,7 +68,15 @@ export default function StepStrip() {
                   PRO
                 </span>
               </div>
-              <p className="text-stone-400 text-[11px] leading-snug truncate">{t.stepCounterScience}</p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="flex-shrink-0">
+                  <path
+                    d="M6 10.5S1 7.5 1 4.5A2.5 2.5 0 0 1 6 3.2 2.5 2.5 0 0 1 11 4.5C11 7.5 6 10.5 6 10.5Z"
+                    fill="#FF2D55"
+                  />
+                </svg>
+                <p className="text-stone-400 text-[11px] leading-snug truncate">{t.appleHealthSubLabel}</p>
+              </div>
             </div>
           </div>
         </button>
@@ -102,6 +110,15 @@ export default function StepStrip() {
               >
                 {state}
               </p>
+              <span className="flex items-center gap-0.5 flex-shrink-0">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path
+                    d="M6 10.5S1 7.5 1 4.5A2.5 2.5 0 0 1 6 3.2 2.5 2.5 0 0 1 11 4.5C11 7.5 6 10.5 6 10.5Z"
+                    fill="#FF2D55"
+                  />
+                </svg>
+                <span className="text-stone-400 text-[10px] font-medium">{t.appleHealthLabel}</span>
+              </span>
             </div>
             <p className="text-stone-700 font-bold text-sm tabular-nums flex-shrink-0">
               {todaySteps.toLocaleString(locale)}

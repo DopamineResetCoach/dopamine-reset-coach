@@ -205,6 +205,30 @@ export default function PremiumModal({ onClose }: PremiumModalProps) {
           </div>
         )}
 
+        {/* Required by Guideline 3.1.2(c) — Privacy Policy + Terms (EULA) links
+            ABOVE the CTA so reviewers see them without scrolling. Opens inline
+            LegalModal — no external URL or network required. */}
+        <div className="bg-stone-50 rounded-2xl px-4 py-3 mb-4">
+          <p className="text-stone-500 text-[11px] leading-relaxed text-center">
+            {t.paywallLegalIntro}{' '}
+            <button
+              type="button"
+              onClick={() => setLegalOpen('privacy')}
+              className="text-[#5B8A5E] font-semibold underline underline-offset-2"
+            >
+              {t.privacyPolicy}
+            </button>
+            {' · '}
+            <button
+              type="button"
+              onClick={() => setLegalOpen('terms')}
+              className="text-[#5B8A5E] font-semibold underline underline-offset-2"
+            >
+              {t.termsOfUse}
+            </button>
+          </p>
+        </div>
+
         {errorMsg ? (
           <p className="text-red-500 text-xs text-center mb-3">{errorMsg}</p>
         ) : null}
@@ -228,25 +252,6 @@ export default function PremiumModal({ onClose }: PremiumModalProps) {
         </button>
 
         <p className="text-stone-400 text-xs text-center mt-3">{t.premiumBilling}</p>
-
-        {/* Required by Guideline 3.1.2(c) — Privacy Policy + Terms links.
-            Opens inline LegalModal so content is always available (no external
-            URL dependency, no network required). */}
-        <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t border-stone-100">
-          <button
-            onClick={() => setLegalOpen('privacy')}
-            className="text-xs text-[#5B8A5E] font-medium underline"
-          >
-            {t.privacyPolicy ?? 'Privacy Policy'}
-          </button>
-          <span className="text-stone-300 text-xs">·</span>
-          <button
-            onClick={() => setLegalOpen('terms')}
-            className="text-xs text-[#5B8A5E] font-medium underline"
-          >
-            {t.termsOfUse ?? 'Terms of Use (EULA)'}
-          </button>
-        </div>
       </BottomSheet>
 
       {legalOpen && (

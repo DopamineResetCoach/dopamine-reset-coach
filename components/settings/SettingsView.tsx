@@ -52,7 +52,7 @@ function ToggleRow({
 export default function SettingsView() {
   const {
     profile, toggleHardMode, resetApp, dailyLogs, isPremium, language, setLanguage,
-    restorePurchases, stepGoal, setStepGoal, setPremium,
+    restorePurchases, stepGoal, setStepGoal, setPremium, todaySteps,
     notificationsEnabled, notificationTime, setNotificationsEnabled, setNotificationTime,
     eveningReflectionEnabled, eveningReflectionTime, setEveningReflectionEnabled, setEveningReflectionTime,
     challengeResetMode, setChallengeResetMode,
@@ -153,6 +153,33 @@ export default function SettingsView() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Apple Health — required by Guideline 2.5.1 to clearly identify
+            HealthKit functionality in the UI. Always visible, regardless of
+            Pro status, so reviewers see HealthKit transparency upfront. */}
+        <div className="bg-white rounded-2xl px-5 py-4 mb-4 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-[#FF2D55]/10 flex items-center justify-center flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path
+                  d="M6 10.5S1 7.5 1 4.5A2.5 2.5 0 0 1 6 3.2 2.5 2.5 0 0 1 11 4.5C11 7.5 6 10.5 6 10.5Z"
+                  fill="#FF2D55"
+                />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-stone-700 font-bold text-sm">{t.settingsHealthTitle}</p>
+              <p
+                className="text-[11px] font-semibold"
+                style={{ color: isPremium && todaySteps > 0 ? '#5B8A5E' : '#9CA3AF' }}
+              >
+                {isPremium && todaySteps > 0 ? t.settingsHealthConnected : t.settingsHealthDisconnected}
+              </p>
+            </div>
+          </div>
+          <p className="text-stone-500 text-xs leading-relaxed mb-2">{t.settingsHealthDesc}</p>
+          <p className="text-stone-400 text-[11px] leading-relaxed">{t.settingsHealthReadOnlyNote}</p>
         </div>
 
         {/* Mode Settings */}

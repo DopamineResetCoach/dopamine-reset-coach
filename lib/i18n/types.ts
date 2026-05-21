@@ -457,6 +457,14 @@ export interface Translations {
   paywallPerLifetime: string;
   // Step card Apple Health attribution
   stepCardAttribution: string;
+  appleHealthLabel: string;
+  appleHealthSubLabel: string;
+  settingsHealthTitle: string;
+  settingsHealthDesc: string;
+  settingsHealthConnected: string;
+  settingsHealthDisconnected: string;
+  settingsHealthReadOnlyNote: string;
+  paywallLegalIntro: string;
   // Daily Check-in
   checkInCardTitle: string;
   checkInCardSubtitle: string;

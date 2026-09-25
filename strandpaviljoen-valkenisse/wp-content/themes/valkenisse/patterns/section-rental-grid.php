@@ -7,10 +7,10 @@
  * Viewport Width: 1400
  */
 $vk_items = array(
-	array( 'strandstoelen', __( 'Strandstoelen', 'valkenisse' ), __( 'Strandstoelen op het strand van Valkenisse', 'valkenisse' ) ),
-	array( 'ligbedden', __( 'Ligbedden', 'valkenisse' ), __( 'Ligbedden op het strand bij het paviljoen', 'valkenisse' ) ),
-	array( 'parasols', __( 'Parasols', 'valkenisse' ), __( 'Parasols op het strand', 'valkenisse' ) ),
-	array( 'windschermen', __( 'Windschermen', 'valkenisse' ), __( 'Windschermen op het strand', 'valkenisse' ) ),
+	array( 'strandstoelen', __( 'Strandstoelen', 'valkenisse' ), __( 'Houten strandstoel met rood doek op het strand van Valkenisse, met zee en een passerend schip op de achtergrond', 'valkenisse' ) ),
+	array( 'ligbedden', __( 'Ligbedden', 'valkenisse' ), __( 'Rood ligbed op het strand van Valkenisse, met zee en een passerend schip op de achtergrond', 'valkenisse' ) ),
+	array( 'parasols', __( 'Parasols', 'valkenisse' ), __( 'Kleurrijke parasol op het strand van Valkenisse, met zee en een passerend schip op de achtergrond', 'valkenisse' ) ),
+	array( 'windschermen', __( 'Windschermen', 'valkenisse' ), __( 'Roze windscherm op het strand van Valkenisse, met zee en een passerend schip op de achtergrond', 'valkenisse' ) ),
 );
 ?>
 <!-- wp:group {"align":"wide","className":"vk-rental-grid","layout":{"type":"grid","minimumColumnWidth":"14rem"}} -->

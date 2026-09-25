@@ -7,7 +7,7 @@
  * Viewport Width: 1400
  * Inserter: false
  */
-echo valkenisse_page_hero( 'strandstoelen', __( 'Strandstoelen en parasols op het strand van Valkenisse', 'valkenisse' ), __( 'Strandverhuur', 'valkenisse' ), __( 'Alles voor een heerlijke stranddag', 'valkenisse' ), __( 'Strandstoelen, ligbedden, parasols en windschermen, direct bij het paviljoen.', 'valkenisse' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo valkenisse_page_hero( 'strandstoelen', __( 'Houten strandstoel op het strand van Valkenisse, met zicht op zee en een passerend schip', 'valkenisse' ), __( 'Strandverhuur', 'valkenisse' ), __( 'Alles voor een heerlijke stranddag', 'valkenisse' ), __( 'Strandstoelen, ligbedden, parasols en windschermen, direct bij het paviljoen.', 'valkenisse' ), array( 0.5, 0.3 ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 ?>
 
 <!-- wp:group {"tagName":"section","align":"full","className":"vk-section","layout":{"type":"constrained"}} -->

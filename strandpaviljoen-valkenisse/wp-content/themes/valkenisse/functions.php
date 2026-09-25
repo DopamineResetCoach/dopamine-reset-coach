@@ -140,13 +140,16 @@ add_action( 'admin_notices', static function () {
 /**
  * Hero voor subpagina's (gebruikt in de paginapatronen): grote foto, kruimelpad, kleine kop, H1 en intro.
  */
-function valkenisse_page_hero( string $photo, string $alt, string $eyebrow, string $title, string $lead = '' ): string {
+function valkenisse_page_hero( string $photo, string $alt, string $eyebrow, string $title, string $lead = '', array $focal = array() ): string {
 	$src = valkenisse_photo( $photo );
 	$alt = esc_attr( $alt );
+	// Optioneel focuspunt (0–1), bv. array( 0.5, 0.3 ) om het bovenste deel van de foto in beeld te houden.
+	$fp  = $focal ? array( 'x' => (float) $focal[0], 'y' => (float) $focal[1] ) : null;
+	$pos = $fp ? round( $fp['x'] * 100 ) . '% ' . round( $fp['y'] * 100 ) . '%' : '';
 	ob_start();
 	?>
-<!-- wp:cover {"url":"<?php echo $src; ?>","alt":"<?php echo $alt; ?>","dimRatio":0,"minHeight":68,"minHeightUnit":"vh","contentPosition":"bottom left","align":"full","className":"is-style-hero vk-hero vk-hero--page"} -->
-<div class="wp-block-cover alignfull has-custom-content-position is-position-bottom-left is-style-hero vk-hero vk-hero--page" style="min-height:68vh"><img class="wp-block-cover__image-background" alt="<?php echo $alt; ?>" src="<?php echo $src; ?>" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:group {"className":"vk-hero__content vk-reveal","layout":{"type":"constrained","contentSize":"820px","justifyContent":"left"}} -->
+<!-- wp:cover {"url":"<?php echo $src; ?>","alt":"<?php echo $alt; ?>","dimRatio":0,<?php echo $fp ? '"focalPoint":' . wp_json_encode( $fp ) . ',' : ''; ?>"minHeight":68,"minHeightUnit":"vh","contentPosition":"bottom left","align":"full","className":"is-style-hero vk-hero vk-hero--page"} -->
+<div class="wp-block-cover alignfull has-custom-content-position is-position-bottom-left is-style-hero vk-hero vk-hero--page" style="min-height:68vh"><img class="wp-block-cover__image-background" alt="<?php echo $alt; ?>" src="<?php echo $src; ?>"<?php echo $pos ? ' style="object-position:' . esc_attr( $pos ) . '"' : ''; ?> data-object-fit="cover"<?php echo $pos ? ' data-object-position="' . esc_attr( $pos ) . '"' : ''; ?>/><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:group {"className":"vk-hero__content vk-reveal","layout":{"type":"constrained","contentSize":"820px","justifyContent":"left"}} -->
 <div class="wp-block-group vk-hero__content vk-reveal"><!-- wp:valkenisse/breadcrumbs /-->
 
 <!-- wp:paragraph {"className":"is-style-eyebrow vk-hero__eyebrow"} -->

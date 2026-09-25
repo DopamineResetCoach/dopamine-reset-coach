@@ -54,7 +54,7 @@ echo valkenisse_page_hero( 'strandhuisjes', __( 'De strandhuisjes van Strandpavi
 <!-- /wp:image -->
 
 <!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large","className":"vk-reveal"} -->
-<figure class="wp-block-image size-large vk-reveal"><img src="<?php echo valkenisse_photo( 'strandstoelen' ); ?>" alt="<?php esc_attr_e( 'Strandstoelen en windscherm bij een strandhuisje', 'valkenisse' ); ?>" style="aspect-ratio:4/3;object-fit:cover"/></figure>
+<figure class="wp-block-image size-large vk-reveal"><img src="<?php echo valkenisse_photo( 'strandstoelen' ); ?>" alt="<?php esc_attr_e( 'Houten strandstoel op het strand van Valkenisse, met zicht op zee', 'valkenisse' ); ?>" style="aspect-ratio:4/3;object-fit:cover"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:image {"aspectRatio":"4/3","scale":"cover","sizeSlug":"large","className":"vk-reveal"} -->

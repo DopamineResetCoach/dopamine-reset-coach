@@ -1,0 +1,13 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/",
+	"login": true,
+	"steps": [
+		{ "step": "activateTheme", "themeFolderName": "vankeulen" },
+		{ "step": "activatePlugin", "pluginPath": "vankeulen-core/vankeulen-core.php" },
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; if ( ! get_page_by_path( 'caravanstalling' ) ) { vk_setup_run(); }"
+		}
+	]
+}

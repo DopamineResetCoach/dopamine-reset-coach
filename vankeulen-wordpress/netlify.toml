@@ -1,0 +1,13 @@
+# Netlify haalt de site automatisch op uit GitHub (branch vankeulen-live).
+# Instellingen in Netlify: Base directory = vankeulen-wordpress, build command leeg.
+# De kant-en-klare statische site staat in statisch/.
+[build]
+  publish = "statisch"
+  command = ""
+
+# Zolang de site op *.netlify.app staat: niet laten indexeren door Google.
+# Verwijder dit blok zodra vankeulencaravanstalling.nl is gekoppeld.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

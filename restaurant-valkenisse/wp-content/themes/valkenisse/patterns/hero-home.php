@@ -18,6 +18,7 @@ echo valkenisse_hero(
 		array(
 			array( 'Reserveer een tafel', '#reserveren', '' ),
 			array( 'Bekijk de menukaart', '/menukaart/', 'light' ),
+			array( 'Overnachten', '/overnachten/', 'light' ),
 		),
 		'hero__buttons'
 	) . "\n\n" . valkenisse_group( valkenisse_block( 'openingstijden' ), 'hero__meta' ),

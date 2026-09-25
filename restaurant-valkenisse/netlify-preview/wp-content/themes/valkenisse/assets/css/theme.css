@@ -180,6 +180,8 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 	.wp-block-cover.is-style-hero.hero--home { min-height: calc(100svh - 60px) !important; }
 	.hero__buttons { margin-top: 1.4rem !important; }
 	.hero__buttons .wp-block-button { flex: 1 1 100%; }
+	.hero__buttons .wp-block-button + .wp-block-button { flex: 1 1 calc(50% - .4rem); }
+	.hero__buttons .wp-block-button + .wp-block-button .wp-block-button__link { padding-inline: .5em; font-size: .88rem; white-space: nowrap; }
 	.hero__buttons .wp-block-button__link { width: 100%; min-height: 54px; }
 	.hero__meta { margin-top: 1.4rem !important; padding-top: 1rem; }
 	.hero__meta .valk-hours__link { display: none; }

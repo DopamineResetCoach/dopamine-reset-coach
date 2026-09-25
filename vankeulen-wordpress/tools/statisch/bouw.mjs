@@ -19,6 +19,7 @@
  *
  * Geen externe npm-pakketten nodig (Node 20+).
  */
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -181,6 +182,33 @@ async function main() {
 		}
 	}
 	console.log(assets.size, 'bestanden');
+
+	// Versiecode (inhoudshash) achter iedere asset-link: bestanden mogen dan een
+	// jaar in de browser-cache blijven, en een nieuwe foto met dezelfde
+	// bestandsnaam is toch direct zichtbaar.
+	const hashes = new Map();
+	const versie = (rel) => {
+		if (!hashes.has(rel)) {
+			const bestand = path.join(UIT, rel);
+			hashes.set(rel, fs.existsSync(bestand) ? crypto.createHash('sha1').update(fs.readFileSync(bestand)).digest('hex').slice(0, 10) : '');
+		}
+		return hashes.get(rel);
+	};
+	const htmlBestanden = [];
+	(function zoek(map) {
+		for (const f of fs.readdirSync(map, { withFileTypes: true })) {
+			const vol = path.join(map, f.name);
+			if (f.isDirectory()) zoek(vol);
+			else if (f.name.endsWith('.html')) htmlBestanden.push(vol);
+		}
+	})(UIT);
+	for (const bestand of htmlBestanden) {
+		const html = fs.readFileSync(bestand, 'utf8').replace(/((?:\.\.\/|\.\/)*)(wp-(?:content|includes)\/[^"'\s)>,?]+\.(?:webp|avif|jpe?g|png|svg|woff2|css|js))(?![?\w])/g, (m, pre, rel) => {
+			const v = versie(rel);
+			return v ? `${pre}${rel}?v=${v}` : m;
+		});
+		fs.writeFileSync(bestand, html);
+	}
 
 	// Eigen script, sitemap, robots, redirects/headers voor Netlify/Cloudflare.
 	fs.mkdirSync(path.join(UIT, 'assets'), { recursive: true });

@@ -25,7 +25,7 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 | Dieet | gerechten voor vegetariërs en glutenvrij dieet | teksten, dieetlabels |
 | Menu-onderdelen | Lunch, Diner, Pizza, Noord-Afrikaans menu, Pannenkoeken/poffertjes/wafels, Kindermenu | categorieën |
 | Diner | vlees- en visgerechten worden geserveerd met friet | intro categorie Hoofdgerechten |
-| Noord-Afrikaans | tajine met kip, vis of garnalen en diverse groenten, met brood | gerecht "Tajine" (zonder prijs) |
+| Noord-Afrikaans | tajine met kip, vis of garnalen en diverse groenten, met brood | categorie Noord-Afrikaans menu (3 tajine-menu's met prijs) |
 | Reserveren | gasten wordt gevraagd vooraf te reserveren | tekst "Kom langs" |
 | Openingstijden april–juni (vanaf Pasen) | 7 dagen vanaf 10:30, keuken 12:00–22:00 | instellingen |
 | Juli en augustus | vanaf 10:00, keuken 12:00–22:00 | instellingen |
@@ -43,8 +43,6 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
       periode kunt u ons het beste even bellen." Vul periodes in onder *Openingstijden* als die er zijn.
 - [ ] **Sluitingstijd april–augustus**: alleen "vanaf 10:30/10:00" gevonden. Nu "vanaf …". Vul een sluitingstijd in
       als u die wilt tonen (dan komt hij ook in Google).
-- [ ] **Menukaart**: gerechten en prijzen konden niet worden overgenomen. Importeer de kaart via
-      *Menukaart → Importeren (CSV)* of voer ze in. Vul de prijs van "Tajine" in.
 - [ ] **Feesten & Partijen**: capaciteit (circa 100 personen?), verjaardagen/bruiloften/feesten/catering-teksten.
 - [ ] **Buffetten** (barbecuebuffet, steengrill, Marokkaans buffet, warm en koud buffet): staan als **concept**.
       Alleen publiceren als ze nog actueel zijn, met omschrijving en prijs. "Koude schotels" (catering) toevoegen indien actueel.
@@ -63,10 +61,13 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
       gebruikt hem als deelafbeelding (Open Graph) en zet hem in de galerij (Restaurant, Terras).
 - [x] **Dinerkaart**: twee gerechtfoto's (vleesgerecht met jus; gamba's met spaghetti) aangeleverd door de
       opdrachtgever. De setup zet ze in de mediabibliotheek en toont ze onder de titel "Diner" op de menukaart.
-- [ ] **Dinerkaart – gerechten**: de categorieën Voorgerechten, Vleesgerechten, Visgerechten en Desserts staan klaar,
-      maar de gerechten en prijzen moeten nog worden ingevoerd (de huidige pagina /menukaart/diner/ was niet bereikbaar).
-      In zoekresultaten stond dat vleesgerechten met friet en courgette/barbecue- of pepersaus, en visgerechten met
-      friet, gebakken groenten en salade worden geserveerd – controleer dit en vul zo nodig de categorie-intro's aan.
+- [x] **Menukaart** (lunch, diner, Noord-Afrikaans menu, pizza): tekst en prijzen aangeleverd door de opdrachtgever,
+      vastgelegd in `wp-content/plugins/valkenisse-site/data/menukaart.csv` (66 gerechten). De setup importeert deze
+      kaart; dezelfde data wordt gebruikt voor de PDF in `menukaart-pdf/`. Alleen spelling en hoofdletters zijn
+      rechtgezet (bijv. "Vitello tonnato", "Pizzabaguette", "Biefstuk van de grill – met pepersaus").
+- [ ] **Noord-Afrikaans menu**: in de aangeleverde tekst stond bij de tajines met kip en vis "wordt geserveerd met brood of"
+      – de zin houdt op. Nu staat er "geserveerd met brood". Aanvullen als er een keuze is (bijv. brood of couscous).
+- [ ] **Dranken**: nog geen drankenkaart aangeleverd (categorie staat klaar en blijft verborgen zolang hij leeg is).
 - [ ] **Overige foto's**: de illustraties met "FOTO VERVANGEN" vervangen door echte foto's (restaurant, terras,
       gerechten, studio's, feest, omgeving) en de galerij verder vullen. Download de bestaande foto's van de huidige site
       (`/fotos/binnen/`, `/fotos/gerechten/`) als uitgangspunt.

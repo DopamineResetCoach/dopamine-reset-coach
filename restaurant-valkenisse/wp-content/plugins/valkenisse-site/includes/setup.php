@@ -127,15 +127,20 @@ function valkenisse_run_setup(): array {
 	// Menukaart-categorieën (structuur van de huidige website + gevraagde indeling).
 	$categories = array(
 		array( 'Lunch', 'lunch', 10, '', '' ),
-		array( 'Diner', 'diner', 20, '', '' ),
+		array( "Tosti's en broodjes", 'tostis-en-broodjes', 11, '', 'lunch' ),
+		array( '12-uurtje', '12-uurtje', 12, '', 'lunch' ),
+		array( 'Pannenkoeken, poffertjes & wafels', 'pannenkoeken-poffertjes-wafels', 15, '', '' ),
+		array( 'Diner', 'diner', 20, 'Eén rekening per tafel.', '' ),
 		array( 'Voorgerechten', 'voorgerechten', 21, '', 'diner' ),
-		array( 'Vleesgerechten', 'vleesgerechten', 22, 'Alle vleesgerechten worden geserveerd met friet.', 'diner' ),
-		array( 'Visgerechten', 'visgerechten', 23, 'Alle visgerechten worden geserveerd met friet.', 'diner' ),
-		array( 'Desserts', 'desserts', 24, '', 'diner' ),
-		array( 'Pizza', 'pizza', 30, '', '' ),
-		array( 'Noord-Afrikaans menu', 'noord-afrikaans', 40, '', '' ),
-		array( 'Pannenkoeken, poffertjes & wafels', 'pannenkoeken-poffertjes-wafels', 50, '', '' ),
-		array( 'Kindermenu', 'kindermenu', 60, '', '' ),
+		array( 'Vleesgerechten', 'vleesgerechten', 22, 'Alle vleesgerechten zijn inclusief friet.', 'diner' ),
+		array( 'Visgerechten', 'visgerechten', 23, 'Alle visgerechten zijn inclusief friet.', 'diner' ),
+		array( 'Vegetarisch', 'vegetarisch', 24, '', 'diner' ),
+		array( 'Maaltijdsalades', 'maaltijdsalades', 25, '', 'diner' ),
+		array( 'Bijgerechten', 'bijgerechten', 26, '', 'diner' ),
+		array( 'Desserts', 'desserts', 27, '', 'diner' ),
+		array( 'Noord-Afrikaans menu', 'noord-afrikaans', 30, 'Driegangenmenu: vooraf een gebakken sardientje op een bedje van frisse sla, daarna een tajine naar keuze en tot slot een kannetje verse muntthee.', '' ),
+		array( 'Pizza', 'pizza', 40, '', '' ),
+		array( 'Kindermenu', 'kindermenu', 50, 'Alle kindergerechten zijn inclusief kinderijsje en voor kinderen tot 12 jaar.', '' ),
 		array( 'Dranken', 'dranken', 70, '', '' ),
 	);
 	foreach ( $categories as [ $name, $slug, $order, $desc, $parent ] ) {
@@ -176,17 +181,8 @@ function valkenisse_run_setup(): array {
 
 	// Startinhoud – uitsluitend wat op de huidige website staat (zie BRONNEN-EN-CONTROLE.md).
 	if ( ! get_posts( array( 'post_type' => 'gerecht', 'posts_per_page' => 1, 'post_status' => 'any' ) ) ) {
-		$tajine = wp_insert_post(
-			array(
-				'post_type'   => 'gerecht',
-				'post_status' => 'publish',
-				'post_title'  => 'Tajine',
-			)
-		);
-		update_post_meta( $tajine, '_valk_omschrijving', 'Stoofgerecht met kip, vis of garnalen en diverse groenten, geserveerd met brood.' );
-		update_post_meta( $tajine, '_valk_prijs', '' );
-		wp_set_object_terms( $tajine, array( 'noord-afrikaans' ), 'menu_categorie' );
-		$log[] = 'Voorbeeldgerecht Tajine aangemaakt (prijs nog invullen)';
+		$result = valkenisse_import_csv( VALKENISSE_DIR . 'data/menukaart.csv', true );
+		$log[]  = sprintf( 'Menukaart geïmporteerd: %d gerechten', $result['added'] );
 	}
 
 	if ( ! get_posts( array( 'post_type' => 'studio', 'posts_per_page' => 1, 'post_status' => 'any' ) ) ) {

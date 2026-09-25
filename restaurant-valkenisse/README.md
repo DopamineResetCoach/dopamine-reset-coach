@@ -33,7 +33,7 @@ Vereist: WordPress 6.6 of hoger (getest op **7.1.2**), PHP 8.1+.
    - pagina's: Home, Restaurant, Menukaart, Overnachten, Feesten & Partijen, Galerij, Contact,
      Reserveren, Nieuws, Privacybeleid, Cookiebeleid (met SEO-titels en -omschrijvingen);
    - het hoofdmenu, de menukaartcategorieën, fotocategorieën en dieetlabels;
-   - twee studio's, één gerecht (Tajine, zonder prijs) en vier buffetten **als concept**.
+   - de volledige menukaart (66 gerechten uit `data/menukaart.csv`), twee studio's en vier buffetten **als concept**.
 
    Bestaande pagina's worden nooit overschreven; het is veilig om dit opnieuw te draaien.
 5. **Instellingen → Permalinks:** "Berichtnaam" (`/%postname%/`) – wordt door de setup al gezet.
@@ -141,6 +141,9 @@ Lokaal op WordPress 7.1.2 (SQLite) met Chromium (Playwright):
 
 ```bash
 python3 tools/make-placeholders.py   # SVG-placeholders opnieuw genereren
+python3 tools/make-menukaart-pdf.py  # print-HTML van de menukaart uit data/menukaart.csv
+# daarna PDF maken: open menukaart-pdf/menukaart.html in Chrome → Afdrukken → Opslaan als PDF
+# (A4, marges "Geen", "Achtergrondafbeeldingen" aan) of via Playwright page.pdf()
 wp valkenisse setup                  # pagina's/menu/categorieën aanmaken
 ```
 Wijzigingen in `patterns/*.php` werken alleen door in **nieuwe** pagina's (bestaande pagina-inhoud staat in

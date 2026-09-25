@@ -11,6 +11,7 @@ Overgenomen van de bestaande website (vankeulencaravanstalling.nl, via zoekresul
 |---|---|---|
 | Van Keulen Caravanstalling, Dorpsstraat 57A, 4373 AD Biggekerke | overal | ☐ |
 | info@vankeulencaravanstalling.nl | contact, footer, formulier-ontvanger | ☐ |
+| Telefoon **0118-639869** (aangeleverd door opdrachtgever) | belknoppen, mobiele balk, contact, footer, Google | ✔ |
 | Stalling van caravans, boten, vouwwagens, aanhangwagens, strandhuisjes, slaaphuisjes | overal | ☐ |
 | **Binnenstalling** in droge, geventileerde loodsen – voor caravans, vouwwagens, aanhangwagens en strandhuisjes | home, caravan-, vouwwagen-, strandhuisjespagina, FAQ | ☐ |
 | **Buitenstalling** op verhard terrein van **ca. 2.000 m²** – voor slaaphuisjes, caravans en aanhangwagens | idem | ☐ |
@@ -20,7 +21,7 @@ Klopt iets niet? Pas het aan in de betreffende pagina, of vraag de bouwer het in
 
 ## 2. Bedrijfsgegevens (Van Keulen → Bedrijfsgegevens)
 
-- [ ] **Telefoonnummer** – nodig voor de belknoppen, de mobiele balk en Google.
+- [x] **Telefoonnummer** – 0118-639869 (ingevuld).
 - [ ] **Zakelijk WhatsApp-nummer** – alleen als dit bestaat; anders leeg laten (dan geen WhatsApp-knop).
 - [ ] **Openingstijden / contactmomenten** – of “op afspraak”.
 - [ ] **Link naar het Google Bedrijfsprofiel**.

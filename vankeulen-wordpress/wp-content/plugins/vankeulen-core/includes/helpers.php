@@ -31,7 +31,7 @@ function vk_default_settings() {
 		'straat'                => 'Dorpsstraat 57A',
 		'postcode'              => '4373 AD',
 		'plaats'                => 'Biggekerke',
-		'telefoon'              => '',
+		'telefoon'              => '0118-639869',
 		'whatsapp'              => '',
 		'email'                 => 'info@vankeulencaravanstalling.nl',
 		'kvk'                   => '',

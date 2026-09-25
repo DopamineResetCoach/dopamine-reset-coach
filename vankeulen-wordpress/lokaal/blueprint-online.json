@@ -1,0 +1,39 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Van Keulen Caravanstalling – voorbeeldsite",
+		"description": "Thema en plugin rechtstreeks uit GitHub; alle pagina's worden automatisch aangemaakt."
+	},
+	"landingPage": "/",
+	"preferredVersions": { "php": "8.3", "wp": "latest" },
+	"features": { "networking": true },
+	"login": true,
+	"steps": [
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "git:directory",
+				"url": "https://github.com/DopamineResetCoach/dopamine-reset-coach",
+				"ref": "claude/relaxed-lamport-0ga307",
+				"refType": "branch",
+				"path": "vankeulen-wordpress/wp-content/themes/vankeulen"
+			},
+			"options": { "activate": true, "targetFolderName": "vankeulen" }
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "git:directory",
+				"url": "https://github.com/DopamineResetCoach/dopamine-reset-coach",
+				"ref": "claude/relaxed-lamport-0ga307",
+				"refType": "branch",
+				"path": "vankeulen-wordpress/wp-content/plugins/vankeulen-core"
+			},
+			"options": { "activate": true, "targetFolderName": "vankeulen-core" }
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; if ( function_exists( 'vk_setup_run' ) && ! get_page_by_path( 'caravanstalling' ) ) { vk_setup_run(); }"
+		}
+	]
+}

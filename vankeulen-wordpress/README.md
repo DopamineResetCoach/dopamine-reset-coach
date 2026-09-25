@@ -31,7 +31,7 @@ Open daarna **http://127.0.0.1:9400**. U bent automatisch ingelogd (beheer: http
 ## Installatie (± 15 minuten)
 
 1. **Hosting**: PHP 8.1+ (8.3 aanbevolen), MySQL/MariaDB, **SSL (https)**, bij voorkeur met serverside caching (LiteSpeed, Nginx FastCGI of vergelijkbaar) en dagelijkse back-ups.
-2. Installeer een **verse, actuele WordPress** (6.8 of nieuwer) in het Nederlands. Neem niets over van de oude installatie.
+2. Installeer een **verse, actuele WordPress** (6.6 of nieuwer; gebruik altijd de nieuwste versie) in het Nederlands. Neem niets over van de oude installatie.
 3. Maak een beheerder aan met een **eigen gebruikersnaam (niet “admin”)** en een sterk wachtwoord.
 4. Upload `wp-content/themes/vankeulen` en `wp-content/plugins/vankeulen-core` (of pak ze als zip in en upload ze via het beheer).
 5. **Weergave → Thema's**: activeer *Van Keulen Caravanstalling*.

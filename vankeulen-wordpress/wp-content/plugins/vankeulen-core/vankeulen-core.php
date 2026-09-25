@@ -3,7 +3,7 @@
  * Plugin Name:       Van Keulen Core
  * Description:       Centrale bedrijfsgegevens, stallingsaanvraag-wizard, veelgestelde vragen, lokale SEO (schema.org, Open Graph, sitemap) en veiligheid voor Van Keulen Caravanstalling.
  * Version:           1.0.0
- * Requires at least: 6.8
+ * Requires at least: 6.6
  * Requires PHP:      8.0
  * Author:            Van Keulen Caravanstalling
  * License:           GPL-2.0-or-later

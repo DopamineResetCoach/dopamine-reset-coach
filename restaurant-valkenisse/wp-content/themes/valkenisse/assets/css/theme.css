@@ -266,6 +266,10 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 .hero--home .hero__buttons .wp-block-button__link:hover,
 .hero--home .hero__buttons .wp-block-button__link:focus-visible { background: #fff; border-color: #fff; color: var(--vk-green-deep); }
 
+/* Intro: liggende hoofdfoto met kleinere accentfoto */
+.vk-intro .vk-intro__images { padding: 0 8% 24% 0; }
+.vk-intro .vk-intro__accent { width: 36%; }
+
 /* Eten & drinken: grote gerechtfoto onder de kop */
 .vk-food__photo { margin-top: 0 !important; margin-bottom: clamp(1.5rem, 3vw, 2.5rem) !important; overflow: hidden; }
 .vk-food__photo img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; object-position: center 32%; }

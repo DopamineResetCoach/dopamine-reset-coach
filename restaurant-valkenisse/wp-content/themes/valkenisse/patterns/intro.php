@@ -9,8 +9,8 @@
  */
 
 $images = valkenisse_group(
-	valkenisse_image( 'terras.svg', 'Het terras van Restaurant Valkenisse', '4/5', 'vk-intro__main is-style-reveal' ) . "\n\n" .
-	valkenisse_image( 'gerecht-lunch.svg', 'Een gerecht van Restaurant Valkenisse', '1', 'vk-intro__accent' ),
+	valkenisse_image( 'restaurant-terras-fietsers.webp', 'Het terras van Restaurant Valkenisse onder de bomen, met fietsers langs de weg', '4/3', 'vk-intro__main is-style-reveal' ) . "\n\n" .
+	valkenisse_image( 'diner-gamba-pasta.webp', "Gamba's met spaghetti en geroosterde trostomaatjes", '1', 'vk-intro__accent' ),
 	'vk-intro__images'
 );
 $text = valkenisse_p( 'Welkom bij Valkenisse', 'is-style-eyebrow' ) . "\n\n" .

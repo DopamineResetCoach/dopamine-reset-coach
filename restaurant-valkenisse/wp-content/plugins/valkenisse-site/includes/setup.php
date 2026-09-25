@@ -206,11 +206,13 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
-	// Foto's in de sectie "Blijf nog wat langer" op de homepage.
+	// Foto's in de secties "Even weg. Even genieten." en "Blijf nog wat langer" op de homepage.
 	if ( isset( $ids['home'] ) ) {
 		foreach ( array(
 			'overnachten-studio.webp' => array( 'Zonnige entree van de studio met terras, bankje en olijfboompje', 'studios' ),
 			'studio-gang.webp'        => array( 'Lichte gang met houten vloer en sfeervolle verlichting', 'studios' ),
+			'restaurant-terras-fietsers.webp' => array( 'Het terras van Restaurant Valkenisse onder de bomen, met fietsers langs de weg', 'terras' ),
+			'diner-gamba-pasta.webp'  => array( "Gamba's met spaghetti, knoflookolie en geroosterde trostomaatjes", 'gerechten' ),
 		) as $file => [ $alt, $cat ] ) {
 			$photo = valkenisse_import_theme_photo( $file, $alt, array( $cat ) );
 			if ( $photo ) {

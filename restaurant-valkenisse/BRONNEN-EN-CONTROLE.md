@@ -71,6 +71,7 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 - [x] **Hoofdfoto Overnachten**: foto van een entree met terras (aangeleverd door de opdrachtgever,
       `assets/img/overnachten-studio.webp`), bovenaan de pagina Overnachten en in de galerij (Studio's).
 - [x] **Studiofoto's**: gang, badkamer en inloopdouche (aangeleverd) in de fotogalerij op Overnachten en in de galerij (Studio's).
+- [x] **Even weg. Even genieten. (homepage)**: foto van het terras met fietsers als hoofdfoto, met de gamba-foto ernaast. Let op: de gezichten van gasten op de voorgrond zijn deels vervaagd; controleer of alle herkenbare personen toestemming hebben gegeven (AVG/portretrecht).
 - [x] **Blijf nog wat langer (homepage)**: entreefoto van de studio als hoofdfoto, met de gangfoto ernaast.
 - [x] **Eten & drinken**: de dinerfoto (vleesgerecht) staat ook groot onder "Van zonnige lunch tot lange avond aan tafel" op de homepage en Restaurant.
 - [x] **Omgeving**: panoramafoto van strand, zee en duinen (aangeleverd) onder "Zee, strand en duinen binnen handbereik" op de homepage en Overnachten, en in de galerij (Omgeving).

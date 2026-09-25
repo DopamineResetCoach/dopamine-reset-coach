@@ -5,7 +5,7 @@
  *
  *   node tools/statisch/bouw.mjs --bron=http://127.0.0.1:9400 \
  *        --site-url=https://www.vankeulencaravanstalling.nl \
- *        [--formulier-sleutel=<Web3Forms access key>] [--uit=statisch]
+ *        [--formulier-sleutel=<Web3Forms access key>] [--uit=statisch] [--noindex]
  *
  * Resultaat: een map met gewone HTML/CSS/JS/afbeeldingen die op iedere
  * webhost werkt (ook in een submap), zonder PHP, database of updates.
@@ -33,6 +33,7 @@ const args = Object.fromEntries(
 const BRON = String(args.bron || 'http://127.0.0.1:9400').replace(/\/$/, '');
 const SITE = String(args['site-url'] || 'https://www.vankeulencaravanstalling.nl').replace(/\/$/, '');
 const SLEUTEL = args['formulier-sleutel'] ? String(args['formulier-sleutel']) : '';
+const VOORBEELD = Boolean(args.noindex); // --noindex: voorbeeldlink, niet indexeren
 const UIT = path.resolve(String(args.uit || path.join(HIER, '..', '..', 'statisch')));
 
 const PAGINAS = [
@@ -106,7 +107,7 @@ function verwerk(html, pagina) {
 	if (!/rel=["']canonical/.test(html)) {
 		html = html.replace('</head>', `<link rel="canonical" href="${absoluut}">\n</head>`);
 	}
-	if (NOINDEX.has(pagina) && !/name=['"]robots['"][^>]*noindex/.test(html)) {
+	if ((VOORBEELD || NOINDEX.has(pagina)) && !/name=['"]robots['"][^>]*noindex/.test(html)) {
 		html = html.replace(/<meta name=['"]robots['"][^>]*>/, '').replace('</head>', '<meta name="robots" content="noindex, follow">\n</head>');
 	}
 
@@ -191,7 +192,7 @@ async function main() {
 			.map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${vandaag}</lastmod></url>`)
 			.join('\n')}\n</urlset>\n`
 	);
-	schrijf('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+	schrijf('robots.txt', VOORBEELD ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 	schrijf(
 		'_headers',
 		`/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: SAMEORIGIN\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n\n/wp-content/*\n  Cache-Control: public, max-age=31536000, immutable\n/wp-includes/*\n  Cache-Control: public, max-age=31536000, immutable\n`

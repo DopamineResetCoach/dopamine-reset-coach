@@ -1,0 +1,481 @@
+/* ==========================================================================
+   Valkenisse – thema
+   Warm, licht, zomers. Kleuren en lettertypes komen uit theme.json.
+   ========================================================================== */
+
+:root {
+	--vk-header-h: 76px;
+	--vk-ease: cubic-bezier(.22, .61, .36, 1);
+	--vk-radius: 14px;
+	--vk-shadow: 0 1px 2px rgba(28, 47, 65, .06), 0 10px 34px rgba(28, 47, 65, .1);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--vk-header-h) + 1rem); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip; }
+img { height: auto; }
+::selection { background: var(--wp--preset--color--zee-licht); color: var(--wp--preset--color--marine); }
+:focus-visible { outline: 2px solid var(--wp--preset--color--zon); outline-offset: 3px; }
+h1, h2, h3 { text-wrap: balance; font-variation-settings: "SOFT" 50, "WONK" 0; }
+p { text-wrap: pretty; }
+
+/* Kleine kop boven een titel ------------------------------------------ */
+.is-style-eyebrow {
+	font-size: .8rem !important;
+	font-weight: 600;
+	letter-spacing: .2em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--zee);
+	margin-bottom: .9rem !important;
+	display: flex;
+	align-items: center;
+	gap: .75rem;
+}
+.is-style-eyebrow::before {
+	content: "";
+	width: 1.75rem;
+	height: 2px;
+	background: currentColor;
+	opacity: .6;
+	flex: none;
+}
+.has-text-align-center.is-style-eyebrow, .vk-center .is-style-eyebrow { justify-content: center; }
+
+.vk-lead { font-size: var(--wp--preset--font-size--large); line-height: 1.55; color: var(--wp--preset--color--marine); }
+.vk-small-title { font-family: var(--wp--preset--font-family--figtree) !important; font-size: .95rem !important; font-weight: 700 !important; letter-spacing: .06em; text-transform: uppercase; margin-top: 2rem !important; }
+.vk-h2-small { font-size: var(--wp--preset--font-size--x-large) !important; }
+.vk-center { text-align: center; }
+
+/* Secties ------------------------------------------------------------- */
+.vk-section { padding-top: var(--wp--preset--spacing--60); padding-bottom: var(--wp--preset--spacing--60); }
+.wp-block-post-content > .vk-section:not(.has-background):not(.wp-block-cover) + .vk-section:not(.has-background) { padding-top: 0; }
+.vk-main > .wp-block-post-content > :first-child { margin-top: 0; }
+.vk-main .wp-block-post-content > .alignfull + .alignfull { margin-top: 0; }
+
+/* Knoppen ------------------------------------------------------------- */
+.wp-block-button__link { transition: background-color .25s var(--vk-ease), color .25s var(--vk-ease), border-color .25s var(--vk-ease), transform .25s var(--vk-ease); }
+.wp-block-button__link:hover { transform: translateY(-1px); }
+.wp-block-button.is-style-outline > .wp-block-button__link {
+	background: transparent;
+	color: var(--wp--preset--color--marine);
+	border: 1.5px solid currentColor;
+	padding: calc(.9rem - 1.5px) calc(1.5rem - 1.5px);
+}
+.wp-block-button.is-style-outline > .wp-block-button__link:hover { background: var(--wp--preset--color--marine); color: var(--wp--preset--color--gebroken-wit); border-color: var(--wp--preset--color--marine); }
+.vk-btn-light > .wp-block-button__link { background: var(--wp--preset--color--gebroken-wit); color: var(--wp--preset--color--marine); }
+.vk-btn-light > .wp-block-button__link:hover { background: var(--wp--preset--color--zand); color: var(--wp--preset--color--marine); }
+.wp-block-button.vk-btn-on-photo > .wp-block-button__link { color: #fff; border-color: rgba(255, 255, 255, .85); backdrop-filter: blur(4px); background: rgba(255, 255, 255, .06); }
+.wp-block-button.vk-btn-on-photo > .wp-block-button__link:hover { background: #fff; color: var(--wp--preset--color--marine); border-color: #fff; }
+.vk-center-buttons .vk-buttons, .vk-cta .vk-buttons { justify-content: center; }
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.vk-site-header {
+	position: sticky;
+	top: var(--wp-admin--admin-bar--height, 0px);
+	z-index: 100;
+	background: rgba(252, 250, 245, .94);
+	-webkit-backdrop-filter: saturate(1.4) blur(12px);
+	backdrop-filter: saturate(1.4) blur(12px);
+	box-shadow: 0 1px 0 rgba(28, 47, 65, .08);
+	color: var(--wp--preset--color--marine);
+	transition: background-color .35s var(--vk-ease), box-shadow .35s var(--vk-ease), color .35s var(--vk-ease);
+}
+.has-overlay-header .vk-site-header {
+	position: fixed;
+	left: 0;
+	right: 0;
+	background: transparent;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+	box-shadow: none;
+	color: #fff;
+}
+.has-overlay-header.is-scrolled .vk-site-header {
+	background: rgba(252, 250, 245, .95);
+	-webkit-backdrop-filter: saturate(1.4) blur(12px);
+	backdrop-filter: saturate(1.4) blur(12px);
+	box-shadow: 0 6px 30px rgba(28, 47, 65, .1);
+	color: var(--wp--preset--color--marine);
+}
+.vk-header { margin: 0; }
+.vk-header > * { margin-block: 0 !important; }
+.vk-header__bar { max-width: 1440px; margin-inline: auto !important; gap: 1rem; transition: padding .35s var(--vk-ease); }
+.is-scrolled .vk-header__bar { padding-top: .55rem !important; padding-bottom: .55rem !important; }
+
+.vk-brand { gap: .75rem; min-width: 0; }
+.vk-brand .wp-block-site-logo img { width: 44px; height: auto; }
+.vk-brand__text { gap: 0 !important; }
+.vk-brand__name { margin: 0; font-family: var(--wp--preset--font-family--fraunces); font-size: clamp(1.15rem, 1rem + .6vw, 1.45rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; }
+.vk-brand__name a { color: inherit; text-decoration: none; }
+.vk-brand__since { margin: .15rem 0 0 !important; font-size: .7rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; opacity: .8; }
+
+.vk-header__right { gap: 1.25rem !important; }
+.vk-nav a { color: inherit; text-decoration: none; }
+.vk-nav .wp-block-navigation-item__content { position: relative; padding-block: .35rem; }
+.vk-nav .wp-block-navigation-item__content::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 2px;
+	background: currentColor;
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform .3s var(--vk-ease);
+}
+.vk-nav .wp-block-navigation-item__content:hover::after,
+.vk-nav .current-menu-item > .wp-block-navigation-item__content::after { transform: scaleX(1); }
+
+/* Belknop in de header */
+.vk-buttons--header .vk-btn { padding: .6rem 1.1rem; font-size: .92rem; }
+.has-overlay-header:not(.is-scrolled) .vk-buttons--header .vk-btn--primary { background: rgba(255, 255, 255, .95); color: var(--wp--preset--color--marine) !important; }
+.has-overlay-header:not(.is-scrolled) .vk-lang a { color: #fff; }
+
+/* Mobiel menu (overlay) */
+.vk-nav .wp-block-navigation__responsive-container.is-menu-open {
+	background: var(--wp--preset--color--zand-licht) !important;
+	color: var(--wp--preset--color--marine) !important;
+	padding: 5rem 1.5rem 2rem;
+}
+.vk-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container { gap: .5rem !important; }
+.vk-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
+	font-family: var(--wp--preset--font-family--fraunces);
+	font-size: clamp(1.75rem, 1.2rem + 3vw, 2.5rem);
+	font-weight: 500;
+}
+.vk-nav .wp-block-navigation__responsive-container-open, .vk-nav .wp-block-navigation__responsive-container-close { color: inherit; }
+.vk-nav .wp-block-navigation__responsive-container-open svg { width: 30px; height: 30px; }
+
+/* Hamburger tot 1080px (6 menu-items + logo passen anders niet netjes). */
+@media (min-width: 600px) and (max-width: 1080px) {
+	.vk-nav .wp-block-navigation__responsive-container-open:not(.always-shown) { display: flex; }
+	.vk-nav .wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) { display: none; }
+}
+@media (max-width: 781px) {
+	.vk-header__call { display: none; }
+	.vk-header__right .vk-lang { display: none; }
+	.vk-brand .wp-block-site-logo img { width: 38px; }
+}
+
+/* Melding van vandaag bovenaan */
+.vk-site-header .vk-notice { font-size: .85rem; padding: .45rem 1rem; }
+.is-scrolled .vk-site-header .vk-notice { display: none; }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.vk-hero { color: #fff; overflow: hidden; isolation: isolate; }
+.vk-hero.wp-block-cover { min-height: 94svh !important; padding-top: calc(var(--vk-header-h) + 3rem); padding-bottom: clamp(4.5rem, 10vh, 7.5rem); }
+.vk-hero--page.wp-block-cover { min-height: 64svh !important; padding-bottom: clamp(2.5rem, 7vh, 5rem); }
+.vk-hero::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background:
+		linear-gradient(180deg, rgba(16, 26, 36, .5) 0%, rgba(16, 26, 36, 0) 24%),
+		linear-gradient(0deg, rgba(16, 26, 36, .7) 0%, rgba(16, 26, 36, .25) 40%, rgba(16, 26, 36, 0) 62%),
+		linear-gradient(90deg, rgba(16, 26, 36, .35) 0%, rgba(16, 26, 36, 0) 55%);
+}
+.vk-hero .wp-block-cover__inner-container { position: static; width: 100%; max-width: 1240px; margin-inline: auto; box-sizing: border-box; min-width: 0; }
+.vk-hero__content { max-width: 100%; }
+.vk-hero .wp-block-cover__inner-container > * { position: relative; z-index: 2; }
+.vk-hero .wp-block-cover__image-background { animation: vk-hero-zoom 2.6s var(--vk-ease) both; }
+@keyframes vk-hero-zoom { from { transform: scale(1.07); } to { transform: scale(1); } }
+
+.vk-hero__content { animation: vk-rise 1.1s .25s var(--vk-ease) both; }
+.vk-hero__content > * { margin-block: 0; }
+.vk-hero__eyebrow { color: var(--wp--preset--color--zand) !important; }
+.vk-hero__title {
+	color: #fff !important;
+	font-size: clamp(2.35rem, 1.1rem + 6.2vw, 6.25rem) !important;
+	line-height: .98 !important;
+	overflow-wrap: break-word;
+	font-weight: 500 !important;
+	letter-spacing: -.025em !important;
+	margin: 0 0 1rem !important;
+	text-shadow: 0 2px 30px rgba(16, 26, 36, .25);
+}
+.vk-hero--page .vk-hero__title { font-size: clamp(2.5rem, 1.8rem + 3.4vw, 4.75rem) !important; }
+.vk-hero__lead {
+	font-family: var(--wp--preset--font-family--fraunces);
+	font-size: clamp(1.35rem, 1.1rem + 1.2vw, 2rem);
+	line-height: 1.25;
+	font-weight: 400;
+	margin: 0 0 .75rem !important;
+}
+.vk-hero__text { font-size: var(--wp--preset--font-size--large); max-width: 34rem; opacity: .95; margin-bottom: 2rem !important; }
+.vk-hero__buttons { gap: .75rem; }
+.vk-hero .vk-breadcrumbs { margin-bottom: 1.25rem !important; opacity: .85; color: #fff; }
+.vk-hero .vk-breadcrumbs a { color: #fff; }
+
+.vk-hero .vk-hero__scroll {
+	position: absolute;
+	z-index: 2;
+	left: 50%;
+	bottom: 1.5rem;
+	transform: translateX(-50%);
+	margin: 0 !important;
+	font-size: .8rem;
+	font-weight: 600;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+	animation: vk-fade 1s 1.2s both;
+}
+.vk-hero__scroll a { color: #fff; text-decoration: none; display: inline-block; animation: vk-bob 2.8s 2s ease-in-out infinite; }
+@keyframes vk-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+@keyframes vk-rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes vk-fade { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 781px) {
+	.vk-hero.wp-block-cover { min-height: 88svh !important; }
+	.vk-hero__scroll { display: none; }
+	.vk-hero__buttons .wp-block-button { width: 100%; }
+	.vk-hero__buttons .wp-block-button__link { width: 100%; }
+}
+
+/* ==========================================================================
+   Secties op de homepage
+   ========================================================================== */
+
+/* Intro: 1956 → vandaag */
+.vk-intro__cols { gap: clamp(2rem, 5vw, 6rem) !important; }
+.vk-intro__photos { display: grid !important; grid-template-columns: repeat(12, 1fr); align-items: start; }
+.vk-intro__photos > figure { margin: 0 !important; position: relative; }
+.vk-intro__then { grid-column: 1 / 8; grid-row: 1; transform: rotate(-3deg); z-index: 2; }
+.vk-intro__now { grid-column: 5 / 13; grid-row: 1; margin-top: 30% !important; }
+.vk-intro__now img { border-radius: var(--vk-radius); box-shadow: var(--vk-shadow); }
+.vk-intro__photos figcaption {
+	position: absolute;
+	left: 1rem;
+	bottom: 1rem;
+	margin: 0;
+	background: var(--wp--preset--color--gebroken-wit);
+	color: var(--wp--preset--color--marine);
+	font-family: var(--wp--preset--font-family--fraunces);
+	font-size: 1.1rem;
+	font-weight: 600;
+	padding: .3rem .8rem;
+	border-radius: 999px;
+	box-shadow: var(--vk-shadow);
+}
+.vk-intro__then figcaption { bottom: 2.25rem; left: 1.5rem; }
+
+/* Historische foto met wit kader */
+.wp-block-image.is-style-foto-kader img {
+	border-radius: 3px !important;
+	border: 10px solid #fff;
+	border-bottom-width: 42px;
+	box-shadow: 0 18px 50px rgba(28, 47, 65, .22);
+	filter: sepia(.12) contrast(1.02);
+}
+
+/* Eten & drinken: twee foto's over elkaar */
+.vk-food__photos { position: relative; padding-bottom: 12%; }
+.vk-food__main { margin: 0 !important; }
+.vk-food__main img, .vk-food__small img { border-radius: var(--vk-radius); }
+.vk-food__small {
+	position: absolute !important;
+	width: 36%;
+	left: -6%;
+	bottom: 0;
+	margin: 0 !important;
+}
+.vk-food__small img { border: 8px solid var(--wp--preset--color--zand-licht); box-shadow: var(--vk-shadow); }
+@media (max-width: 781px) { .vk-food__small { left: auto; right: 4%; width: 42%; } }
+
+/* Uitzicht */
+.vk-view { color: #fff; }
+.vk-view::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background: linear-gradient(20deg, rgba(16, 26, 36, .75) 0%, rgba(16, 26, 36, .25) 45%, rgba(16, 26, 36, 0) 70%);
+}
+.vk-view .wp-block-cover__inner-container { z-index: 2; max-width: 1240px; margin-inline: auto; width: 100%; }
+.vk-view .is-style-eyebrow { color: var(--wp--preset--color--zand); }
+.vk-view__title { color: #fff !important; font-size: clamp(2.4rem, 1.6rem + 4vw, 5rem) !important; margin-top: 0 !important; }
+.vk-view p:not(.is-style-eyebrow) { font-size: var(--wp--preset--font-size--large); }
+
+/* Strandhuisjes */
+.vk-huts__cols { gap: clamp(2rem, 5vw, 5rem) !important; }
+.vk-huts__visual { align-self: flex-start; position: sticky; top: calc(var(--vk-header-h) + 1.5rem); }
+.vk-huts__photo { margin: 0 !important; }
+.vk-huts__photo img { border-radius: var(--vk-radius); }
+@media (max-width: 781px) { .vk-huts__visual { position: static; } }
+.vk-huts__prices { margin-top: 1.75rem; }
+.vk-huts__text .wp-block-buttons { margin-top: 2rem; }
+
+/* Strandverhuur: fotogrid */
+.vk-section-head { gap: 1.5rem; margin-bottom: 2.5rem !important; }
+.vk-rental-grid { gap: 1rem !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+@media (max-width: 900px) { .vk-rental-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+.vk-rental-grid__item { margin: 0 !important; position: relative; overflow: hidden; border-radius: var(--vk-radius); }
+.vk-rental-grid__item img { border-radius: var(--vk-radius); transition: transform .8s var(--vk-ease); }
+.vk-rental-grid__item:hover img { transform: scale(1.04); }
+.vk-rental-grid__item figcaption {
+	position: absolute;
+	left: .75rem;
+	bottom: .75rem;
+	margin: 0 !important;
+	background: rgba(252, 250, 245, .95);
+	color: var(--wp--preset--color--marine);
+	font-weight: 700;
+	font-size: .95rem;
+	padding: .35rem .85rem;
+	border-radius: 999px;
+}
+.vk-rental__prices { margin-top: var(--wp--preset--spacing--50) !important; }
+
+/* Vandaag */
+.vk-today-section .vk-buttons { margin-top: 2rem; }
+.vk-today-section__photo { margin: 0 !important; }
+.vk-today-section__photo img { border-radius: var(--vk-radius); }
+
+/* Omgeving: fotomozaïek */
+.vk-mosaic {
+	display: grid;
+	grid-template-columns: 1.6fr 1fr;
+	grid-template-rows: repeat(2, minmax(12rem, 22vw));
+	gap: 1rem;
+	margin-top: var(--wp--preset--spacing--40) !important;
+}
+.vk-mosaic > figure { margin: 0 !important; height: 100%; }
+.vk-mosaic img { width: 100%; height: 100% !important; object-fit: cover; border-radius: var(--vk-radius); }
+.vk-mosaic__a { grid-row: 1 / 3; }
+@media (max-width: 700px) {
+	.vk-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 16rem 11rem; }
+	.vk-mosaic__a { grid-column: 1 / 3; grid-row: 1; }
+}
+
+/* Gastreacties: sectie verdwijnt als er (nog) geen echte reacties zijn */
+.vk-reviews-section:not(:has(.vk-reviews)) { display: none; }
+
+/* Oproep */
+.vk-cta { position: relative; overflow: hidden; }
+.vk-cta .vk-lead { color: inherit; opacity: .92; }
+
+/* ==========================================================================
+   Subpagina's
+   ========================================================================== */
+.vk-photo-row { gap: 1rem !important; margin-bottom: var(--wp--preset--spacing--50) !important; }
+.vk-photo-row figure { margin: 0 !important; }
+.vk-photo-row img { border-radius: var(--vk-radius); }
+
+.vk-request .vk-form { margin-top: 2rem; }
+
+/* Tijdlijn */
+.vk-timeline { position: relative; margin-top: 3rem !important; padding-left: 2.25rem; }
+.vk-timeline::before { content: ""; position: absolute; left: .45rem; top: .5rem; bottom: .5rem; width: 2px; background: var(--wp--preset--color--duin); }
+.vk-timeline__item { position: relative; margin: 0 0 2.5rem !important; }
+.vk-timeline__item::before {
+	content: "";
+	position: absolute;
+	left: -2.2rem;
+	top: .55rem;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+	background: var(--wp--preset--color--zon);
+	box-shadow: 0 0 0 5px var(--wp--preset--color--zand-licht);
+}
+.vk-timeline__item > * { margin-block: 0 !important; }
+.vk-timeline__year { font-family: var(--wp--preset--font-family--fraunces); font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.4rem); font-weight: 500; color: var(--wp--preset--color--marine); line-height: 1.1; margin-bottom: .35rem !important; }
+
+/* Checklist */
+.vk-checklist { list-style: none; padding: 0; display: grid; gap: .75rem; }
+.vk-checklist li { position: relative; padding-left: 2.25rem; font-size: 1.05rem; }
+.vk-checklist li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: .15rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: 50%;
+	background: var(--wp--preset--color--helmgras) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center / 70% no-repeat;
+}
+
+/* Veelgestelde vragen */
+.wp-block-details.is-style-faq summary {
+	list-style: none;
+	cursor: pointer;
+	font-family: var(--wp--preset--font-family--fraunces);
+	font-size: var(--wp--preset--font-size--large);
+	font-weight: 500;
+	color: var(--wp--preset--color--marine);
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-block: .35rem;
+}
+.wp-block-details.is-style-faq summary::-webkit-details-marker { display: none; }
+.wp-block-details.is-style-faq summary::after { content: "+"; font-family: var(--wp--preset--font-family--figtree); font-size: 1.6rem; line-height: 1; transition: transform .25s var(--vk-ease); }
+.wp-block-details.is-style-faq[open] summary::after { transform: rotate(45deg); }
+.wp-block-details.is-style-faq > :not(summary) { margin-top: .75rem; }
+
+/* Kaart-stijl voor groepen */
+.wp-block-group.is-style-kaart { background: var(--wp--preset--color--gebroken-wit); border-radius: var(--vk-radius); box-shadow: var(--vk-shadow); padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); margin-top: var(--wp--preset--spacing--40); }
+
+/* Contact */
+.vk-contact-section > * + * { margin-top: 2rem !important; }
+.vk-contact-buttons .vk-buttons { justify-content: flex-start; }
+
+/* Pagina zonder hero */
+.vk-main .wp-block-post-title { margin-top: .5rem; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.vk-site-footer { position: relative; margin-top: 0; }
+.vk-site-footer::before {
+	content: "";
+	display: block;
+	height: clamp(28px, 4vw, 60px);
+	margin-bottom: -1px;
+	background: var(--wp--preset--color--marine);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0 60V32C120 12 240 4 360 14s240 34 360 30 240-30 360-34 240 12 360 22v28z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0 60V32C120 12 240 4 360 14s240 34 360 30 240-30 360-34 240 12 360 22v28z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.vk-footer { margin-top: 0 !important; }
+.vk-footer a { color: inherit; text-decoration: none; }
+.vk-footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.vk-footer__name { font-family: var(--wp--preset--font-family--fraunces); font-size: 1.75rem; line-height: 1.1; color: #fff; margin-bottom: .5rem !important; }
+.vk-footer__tagline { opacity: .85; margin-bottom: 1.5rem !important; }
+.vk-footer__title {
+	font-family: var(--wp--preset--font-family--figtree) !important;
+	font-size: .78rem !important;
+	font-weight: 700 !important;
+	letter-spacing: .18em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--duin) !important;
+	margin-bottom: 1.1rem !important;
+}
+.vk-footer__links { list-style: none; padding: 0; display: grid; gap: .45rem; }
+.vk-footer .vk-contact-compact a { overflow-wrap: anywhere; }
+.vk-footer .vk-hours__table th, .vk-footer .vk-hours__table td { border-color: rgba(247, 241, 230, .15); padding: .35rem 0; color: inherit; }
+.vk-footer .vk-hours__table tr.is-today th, .vk-footer .vk-hours__table tr.is-today td { color: #fff; }
+.vk-footer__bottom { border-top: 1px solid rgba(247, 241, 230, .18); margin-top: var(--wp--preset--spacing--40) !important; padding-top: 1.5rem; opacity: .85; }
+
+/* ==========================================================================
+   Rustige animaties bij scrollen (alleen met JavaScript, en niet bij "minder beweging")
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+	.vk-js .vk-reveal:not(.vk-hero__content) { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--vk-ease), transform .9s var(--vk-ease); }
+	.vk-js .vk-reveal.is-visible { opacity: 1; transform: none; }
+	.vk-js .vk-intro__then.vk-reveal.is-visible { transform: rotate(-3deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+	.vk-hero .wp-block-cover__image-background, .vk-hero__content, .vk-hero__scroll, .vk-hero__scroll a { animation: none !important; }
+}
+
+/* Editor: alles gewoon zichtbaar */
+.editor-styles-wrapper .vk-reveal { opacity: 1 !important; transform: none !important; }
+.editor-styles-wrapper .vk-intro__then { transform: rotate(-3deg) !important; }

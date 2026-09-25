@@ -1,0 +1,341 @@
+/* Valkenisse – dynamische blokken. Gebruikt de kleuren/fonts van het thema (theme.json) met veilige terugvaloptie. */
+
+:root {
+	--vk-sand: var(--wp--preset--color--zand, #efe4cf);
+	--vk-sand-light: var(--wp--preset--color--zand-licht, #f7f1e6);
+	--vk-white: var(--wp--preset--color--gebroken-wit, #fcfaf5);
+	--vk-dune: var(--wp--preset--color--duin, #d8c7a3);
+	--vk-grass: var(--wp--preset--color--helmgras, #6f7d45);
+	--vk-sea: var(--wp--preset--color--zee, #2f6f7e);
+	--vk-sea-light: var(--wp--preset--color--zee-licht, #bfd8da);
+	--vk-wood: var(--wp--preset--color--hout, #8b7b69);
+	--vk-navy: var(--wp--preset--color--marine, #1c2f41);
+	--vk-ink: var(--wp--preset--color--inkt, #2a3440);
+	--vk-sun: var(--wp--preset--color--zon, #e9a55c);
+	--vk-serif: var(--wp--preset--font-family--fraunces, Georgia, serif);
+	--vk-radius: 14px;
+	--vk-shadow: 0 1px 2px rgba(28, 47, 65, .06), 0 8px 30px rgba(28, 47, 65, .08);
+}
+
+.vk-icon { flex: none; }
+
+/* Nog aan te leveren informatie: valt op vóór livegang. */
+.vk-todo {
+	background: #fff3b0;
+	color: #5b4a00;
+	padding: .05em .35em;
+	border-radius: 4px;
+	font-size: .85em;
+	font-weight: 600;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.vk-eyebrow {
+	font-size: .78rem;
+	font-weight: 600;
+	letter-spacing: .18em;
+	text-transform: uppercase;
+	color: var(--vk-sea);
+	margin: 0 0 .75rem;
+}
+
+/* Knoppen ------------------------------------------------------------ */
+.vk-buttons { display: flex; flex-wrap: wrap; gap: .75rem; }
+.vk-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: .55rem;
+	padding: .85rem 1.35rem;
+	border-radius: 999px;
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 1.2;
+	text-decoration: none !important;
+	border: 1.5px solid transparent;
+	transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+	cursor: pointer;
+}
+.vk-btn:hover { transform: translateY(-1px); }
+.vk-btn--primary { background: var(--vk-navy); color: var(--vk-white) !important; }
+.vk-btn--primary:hover { background: var(--vk-sea); }
+.vk-btn--ghost { background: transparent; color: var(--vk-navy) !important; border-color: currentColor; }
+.vk-btn--ghost:hover { background: var(--vk-navy); color: var(--vk-white) !important; border-color: var(--vk-navy); }
+.vk-btn--large { padding: 1.05rem 1.75rem; font-size: 1.05rem; }
+.vk-buttons--light .vk-btn--primary { background: var(--vk-white); color: var(--vk-navy) !important; }
+.vk-buttons--light .vk-btn--primary:hover { background: var(--vk-sand); }
+.vk-buttons--light .vk-btn--ghost { color: var(--vk-white) !important; }
+.vk-buttons--light .vk-btn--ghost:hover { background: var(--vk-white); color: var(--vk-navy) !important; border-color: var(--vk-white); }
+
+/* Melding bovenaan --------------------------------------------------- */
+.vk-notice {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: .25rem .75rem;
+	padding: .55rem 1rem;
+	font-size: .9rem;
+	font-weight: 500;
+	text-align: center;
+	background: var(--vk-sand);
+	color: var(--vk-navy);
+}
+.vk-notice--closed { background: var(--vk-navy); color: var(--vk-white); }
+.vk-notice a { color: inherit; text-underline-offset: 3px; }
+.vk-notice__sep { opacity: .5; }
+
+/* Vandaag ------------------------------------------------------------ */
+.vk-today__date {
+	display: flex;
+	align-items: center;
+	gap: .6rem;
+	margin: 0 0 .5rem;
+	font-weight: 600;
+	color: var(--vk-wood);
+}
+.vk-today__dot {
+	width: .7rem;
+	height: .7rem;
+	border-radius: 50%;
+	background: var(--vk-grass);
+	box-shadow: 0 0 0 0 rgba(111, 125, 69, .5);
+	animation: vk-pulse 2.4s ease-out infinite;
+}
+.vk-today--closed .vk-today__dot { background: var(--vk-wood); animation: none; }
+@keyframes vk-pulse {
+	0% { box-shadow: 0 0 0 0 rgba(111, 125, 69, .45); }
+	80%, 100% { box-shadow: 0 0 0 .7rem rgba(111, 125, 69, 0); }
+}
+.vk-today__headline {
+	font-family: var(--vk-serif);
+	font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3.1rem);
+	line-height: 1.1;
+	font-weight: 500;
+	letter-spacing: -.01em;
+	color: var(--vk-navy);
+	margin: 0 0 1.5rem;
+	text-wrap: balance;
+}
+.vk-today__sub { margin-top: -.75rem; }
+
+/* Openingstijden ----------------------------------------------------- */
+.vk-hours__table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.vk-hours__table th, .vk-hours__table td { text-align: left; padding: .6rem 0; border-bottom: 1px solid rgba(28, 47, 65, .12); font-weight: 400; }
+.vk-hours__table th { width: 40%; }
+.vk-hours__table tr.is-today th, .vk-hours__table tr.is-today td { font-weight: 700; color: var(--vk-navy); }
+.vk-hours__badge { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; background: var(--vk-grass); color: #fff; border-radius: 999px; padding: .15rem .5rem; margin-left: .35rem; vertical-align: middle; }
+.vk-hours--compact .vk-hours__table { max-width: 26rem; font-size: .95rem; }
+.vk-hours--compact .vk-hours__table th { width: 7.5rem; }
+.vk-hours__variable { font-size: .9rem; opacity: .8; margin: .6rem 0 0; }
+.vk-hours__season, .vk-hours__note { margin-top: 1rem; }
+
+/* Tarieven ----------------------------------------------------------- */
+.vk-pricecard {
+	background: var(--vk-white);
+	border-radius: var(--vk-radius);
+	padding: clamp(1.4rem, 1rem + 2vw, 2.4rem);
+	box-shadow: var(--vk-shadow);
+}
+.vk-pricecard__season { font-size: .8rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--vk-sea); margin: 0 0 1rem; }
+.vk-pricecard__period { display: flex; gap: .5rem; align-items: center; margin: 1.25rem 0 0; color: var(--vk-wood); font-size: .95rem; }
+.vk-prices { list-style: none; margin: 0; padding: 0; }
+.vk-prices__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .5rem; padding: .7rem 0; border-bottom: 1px dashed rgba(28, 47, 65, .18); }
+.vk-prices__row:last-child { border-bottom: 0; }
+.vk-menu__item .vk-prices__row { border-bottom: 0; padding: 0; }
+.vk-prices__label { font-weight: 600; font-size: 1.05rem; color: var(--vk-navy); }
+.vk-prices__leader { flex: 1 1 1.5rem; border-bottom: 2px dotted rgba(28, 47, 65, .25); transform: translateY(-.3rem); min-width: 1.5rem; }
+.vk-prices__price { font-family: var(--vk-serif); font-size: 1.2rem; font-weight: 600; color: var(--vk-navy); font-variant-numeric: tabular-nums; }
+.vk-prices__note { flex-basis: 100%; font-size: .88rem; color: var(--vk-wood); }
+
+.vk-included { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.vk-included li { display: flex; gap: .75rem; align-items: center; font-size: 1.05rem; }
+.vk-included .vk-icon { width: 1.75rem; height: 1.75rem; padding: .3rem; border-radius: 50%; background: var(--vk-grass); color: #fff; }
+
+/* Menukaart ---------------------------------------------------------- */
+.vk-menu__nav { position: sticky; top: var(--vk-header-h, 64px); z-index: 5; background: var(--vk-sand-light); margin: 0 0 2rem; padding: .6rem 0; }
+.vk-menu__nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: .5rem; overflow-x: auto; scrollbar-width: none; }
+.vk-menu__nav a { display: block; white-space: nowrap; padding: .5rem 1rem; border-radius: 999px; background: var(--vk-white); color: var(--vk-navy); text-decoration: none; font-weight: 600; font-size: .92rem; border: 1px solid rgba(28, 47, 65, .12); }
+.vk-menu__nav a:hover { background: var(--vk-navy); color: var(--vk-white); }
+.vk-menu__group { margin: 0 0 2.75rem; scroll-margin-top: 140px; }
+.vk-menu__title { font-family: var(--vk-serif); font-size: 1.75rem; font-weight: 500; margin: 0 0 1rem; padding-bottom: .5rem; border-bottom: 2px solid var(--vk-navy); }
+.vk-menu__items { list-style: none; margin: 0; padding: 0; }
+.vk-menu__item { padding: .85rem 0; border-bottom: 1px solid rgba(28, 47, 65, .1); }
+.vk-menu__desc { margin: .25rem 0 0; color: var(--vk-wood); font-size: .95rem; }
+.vk-menu__tags { margin: .25rem 0 0; font-size: .8rem; font-weight: 600; color: var(--vk-grass); text-transform: uppercase; letter-spacing: .08em; }
+.vk-menu--empty, .vk-gallery--empty, .vk-jobs--empty {
+	padding: 2rem;
+	border: 2px dashed var(--vk-dune);
+	border-radius: var(--vk-radius);
+	text-align: center;
+}
+
+/* Vacatures ---------------------------------------------------------- */
+.vk-jobs { display: grid; gap: 1.5rem; }
+.vk-job { background: var(--vk-white); border-radius: var(--vk-radius); padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); box-shadow: var(--vk-shadow); border-left: 6px solid var(--vk-sun); }
+.vk-job__badge { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; background: var(--vk-sun); color: var(--vk-navy); padding: .25rem .7rem; border-radius: 999px; margin: 0 0 .75rem; }
+.vk-job__title { font-family: var(--vk-serif); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); margin: 0 0 1rem; }
+.vk-job__title a { color: var(--vk-navy); text-decoration: none; }
+.vk-job__meta { display: flex; flex-wrap: wrap; gap: .5rem 2rem; margin: 0 0 1rem; }
+.vk-job__meta dt { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--vk-wood); }
+.vk-job__meta dd { margin: 0; font-weight: 600; }
+.vk-job__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+.vk-job__contact { font-size: .9rem; color: var(--vk-wood); }
+.vk-jobs__empty-title { font-family: var(--vk-serif); font-size: 1.5rem; margin: 0 0 .5rem; color: var(--vk-navy); }
+
+/* Galerij ------------------------------------------------------------ */
+.vk-gallery__filters { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.75rem; }
+.vk-gallery__filters button { font: inherit; font-weight: 600; font-size: .92rem; padding: .55rem 1.1rem; border-radius: 999px; border: 1px solid rgba(28, 47, 65, .2); background: transparent; color: var(--vk-navy); cursor: pointer; }
+.vk-gallery__filters button.is-active, .vk-gallery__filters button:hover { background: var(--vk-navy); color: var(--vk-white); border-color: var(--vk-navy); }
+.vk-gallery__grid { list-style: none; margin: 0; padding: 0; columns: 2 12rem; column-gap: .75rem; }
+@media (min-width: 900px) { .vk-gallery__grid { columns: 3; column-gap: 1rem; } }
+.vk-gallery__item { break-inside: avoid; margin: 0 0 .75rem; }
+@media (min-width: 900px) { .vk-gallery__item { margin-bottom: 1rem; } }
+.vk-gallery__item[hidden] { display: none; }
+.vk-gallery__item a { display: block; border-radius: 10px; overflow: hidden; }
+.vk-gallery__item img { display: block; width: 100%; height: auto; transition: transform .6s ease; }
+.vk-gallery__item a:hover img { transform: scale(1.03); }
+.vk-gallery__howto { font-size: .9rem; color: var(--vk-wood); }
+
+.vk-lightbox { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; }
+.vk-lightbox::backdrop { background: rgba(16, 26, 36, .92); }
+.vk-lightbox[open] { display: flex; align-items: center; justify-content: center; }
+.vk-lightbox figure { margin: 0; max-width: min(92vw, 1400px); text-align: center; }
+.vk-lightbox img { max-width: 100%; max-height: 82vh; width: auto; height: auto; border-radius: 6px; }
+.vk-lightbox figcaption { color: #fff; margin-top: .75rem; font-size: .95rem; }
+.vk-lightbox button { position: absolute; background: rgba(255, 255, 255, .12); color: #fff; border: 0; border-radius: 50%; width: 3rem; height: 3rem; font-size: 2rem; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+.vk-lightbox button:hover { background: rgba(255, 255, 255, .25); }
+.vk-lightbox__close { top: 1rem; right: 1rem; }
+.vk-lightbox__prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+.vk-lightbox__next { right: 1rem; top: 50%; transform: translateY(-50%); }
+
+/* Gastreacties ------------------------------------------------------- */
+.vk-reviews { text-align: center; }
+.vk-reviews__title { font-family: var(--vk-serif); font-weight: 500; font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); margin: 0 0 2rem; }
+.vk-reviews__list { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); text-align: left; }
+.vk-review { margin: 0; background: var(--vk-white); padding: 1.75rem; border-radius: var(--vk-radius); box-shadow: var(--vk-shadow); }
+.vk-review blockquote { margin: 0; border: 0; padding: 0; }
+.vk-review blockquote p { font-family: var(--vk-serif); font-size: 1.2rem; line-height: 1.45; margin: 0; }
+.vk-review blockquote p::before { content: "“"; }
+.vk-review blockquote p::after { content: "”"; }
+.vk-review figcaption { margin-top: 1rem; font-weight: 600; font-size: .92rem; }
+.vk-review figcaption span { font-weight: 400; color: var(--vk-wood); }
+.vk-reviews__google { margin-top: 1.75rem; }
+
+/* Contact ------------------------------------------------------------ */
+.vk-contact { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr)); }
+.vk-contact__card { background: var(--vk-white); padding: 1.75rem; border-radius: var(--vk-radius); box-shadow: var(--vk-shadow); }
+.vk-contact__card--nav { background: var(--vk-navy); color: var(--vk-white); }
+.vk-contact__card--nav .vk-eyebrow { color: var(--vk-sea-light); }
+.vk-contact__card--nav h3, .vk-contact__card--nav .vk-contact__big { color: var(--vk-white); }
+.vk-contact__card--nav .vk-btn--primary { background: var(--vk-white); color: var(--vk-navy) !important; }
+.vk-contact__card h3 { font-family: var(--vk-serif); font-weight: 500; font-size: 1.5rem; margin: 0 0 .75rem; }
+.vk-contact__big { font-family: var(--vk-serif); font-size: 1.35rem; margin: 0 0 .75rem; }
+.vk-contact__big a { color: inherit; text-decoration: none; }
+.vk-contact__card address { font-style: normal; line-height: 1.6; }
+.vk-contact__warn { font-size: .88rem; color: var(--vk-wood); border-top: 1px solid rgba(28, 47, 65, .12); padding-top: .75rem; margin-top: 1rem; }
+
+.vk-contact-compact { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.vk-contact-compact li { display: flex; gap: .6rem; align-items: center; }
+.vk-contact-compact a { color: inherit; }
+
+.vk-map { border-radius: var(--vk-radius); overflow: hidden; min-height: 380px; background: var(--vk-sea-light) linear-gradient(135deg, var(--vk-sea-light) 0 55%, var(--vk-sand) 55% 70%, #cdd6a8 70%); position: relative; }
+.vk-map iframe { display: block; width: 100%; height: 440px; border: 0; }
+.vk-map__placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; gap: .25rem; }
+.vk-map__placeholder > p:first-child { font-family: var(--vk-serif); font-size: 1.25rem; max-width: 28rem; color: var(--vk-navy); }
+.vk-map__note { font-size: .82rem; color: var(--vk-navy); opacity: .75; }
+.vk-map__placeholder a { color: var(--vk-navy); }
+
+/* Formulier ---------------------------------------------------------- */
+.vk-form { background: var(--vk-white); border-radius: var(--vk-radius); padding: clamp(1.5rem, 1rem + 2.5vw, 3rem); box-shadow: var(--vk-shadow); }
+.vk-form__grid { display: grid; gap: 0 1.25rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.vk-field { margin: 0 0 1.1rem; }
+.vk-field label, .vk-field legend { display: block; font-weight: 600; margin-bottom: .4rem; color: var(--vk-navy); }
+.vk-form *, .vk-form *::before, .vk-form *::after { box-sizing: border-box; }
+.vk-field input, .vk-field textarea {
+	width: 100%;
+	font: inherit;
+	font-size: 1rem; /* ≥16px: geen automatische zoom op iPhone */
+	padding: .85rem 1rem;
+	border: 1.5px solid rgba(28, 47, 65, .2);
+	border-radius: 10px;
+	background: #fff;
+	color: var(--vk-ink);
+}
+.vk-field input:focus, .vk-field textarea:focus { outline: 3px solid var(--vk-sea-light); border-color: var(--vk-sea); }
+.vk-choice { border: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+.vk-choice legend { width: 100%; }
+.vk-choice__option { position: relative; flex: 1 1 6rem; }
+.vk-choice__option input { position: absolute; opacity: 0; inset: 0; }
+.vk-choice__option span { display: block; text-align: center; padding: .9rem 1rem; border: 1.5px solid rgba(28, 47, 65, .2); border-radius: 10px; font-weight: 600; cursor: pointer; background: #fff; }
+.vk-choice__option input:checked + span { background: var(--vk-navy); color: var(--vk-white); border-color: var(--vk-navy); }
+.vk-choice__option input:focus-visible + span { outline: 3px solid var(--vk-sea-light); }
+.vk-form__hp { position: absolute !important; left: -9999px; }
+.vk-form__privacy, .vk-form__disclaimer { font-size: .88rem; color: var(--vk-wood); }
+.vk-form__submit .vk-btn { width: 100%; justify-content: center; }
+@media (min-width: 700px) { .vk-form__submit .vk-btn { width: auto; } }
+.vk-form__error { background: #fde8e4; color: #7a2413; padding: .9rem 1.1rem; border-radius: 10px; margin-bottom: 1.25rem; }
+.vk-form--done, .vk-form--closed { text-align: center; }
+.vk-form__done-icon { font-size: 2.5rem; margin: 0; }
+.vk-form__done-title { font-family: var(--vk-serif); font-size: 2rem; margin: .25rem 0; color: var(--vk-navy); }
+
+/* Kruimelpad, social, taal, telefoon --------------------------------- */
+.vk-breadcrumbs { font-size: .88rem; }
+.vk-breadcrumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
+.vk-breadcrumbs li + li::before { content: "›"; margin-right: .35rem; opacity: .6; }
+.vk-breadcrumbs a { color: inherit; }
+
+.vk-social { list-style: none; margin: 0; padding: 0; display: flex; gap: .5rem; }
+.vk-social a { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid currentColor; color: inherit; }
+.vk-social a:hover { background: var(--vk-white); color: var(--vk-navy); }
+
+.vk-lang { list-style: none; margin: 0; padding: 0; display: flex; gap: .25rem; font-size: .85rem; font-weight: 600; }
+.vk-lang li + li::before { content: "|"; opacity: .5; margin-right: .25rem; }
+.vk-lang a { color: inherit; text-decoration: none; opacity: .7; }
+.vk-lang a[aria-current] { opacity: 1; text-decoration: underline; }
+
+.vk-phone { display: inline-flex; gap: .45rem; align-items: center; color: inherit; text-decoration: none; font-weight: 600; }
+
+.vk-copyright { margin: 0; font-size: .88rem; }
+.vk-copyright a { color: inherit; }
+
+/* Mobiele knoppenbalk ------------------------------------------------ */
+.vk-mobilebar { display: none; }
+@media (max-width: 781px) {
+	.vk-mobilebar {
+		position: fixed;
+		z-index: 90;
+		left: .5rem;
+		right: .5rem;
+		bottom: calc(.5rem + env(safe-area-inset-bottom));
+		display: grid;
+		grid-template-columns: 1fr 1fr 1.6fr 1fr;
+		background: var(--vk-white);
+		border-radius: 18px;
+		box-shadow: 0 10px 40px rgba(16, 26, 36, .22);
+		padding: .35rem;
+		gap: .25rem;
+	}
+	.vk-mobilebar a, .vk-mobilebar button {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: .15rem;
+		padding: .5rem .25rem;
+		font: inherit;
+		font-size: .72rem;
+		font-weight: 600;
+		line-height: 1.1;
+		color: var(--vk-navy);
+		text-decoration: none;
+		background: transparent;
+		border: 0;
+		border-radius: 14px;
+		cursor: pointer;
+		text-align: center;
+	}
+	.vk-mobilebar .vk-mobilebar__primary { background: var(--vk-navy); color: var(--vk-white); }
+	body { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+}
+
+.vk-editor-hint { font-size: 12px; opacity: .6; margin: .5rem 0 0; }

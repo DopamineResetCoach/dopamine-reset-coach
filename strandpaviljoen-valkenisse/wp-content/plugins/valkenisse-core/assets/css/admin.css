@@ -1,0 +1,17 @@
+/* Beheer: groot, duidelijk en rustig. */
+.vk-admin__lead { font-size: 15px; max-width: 760px; }
+.vk-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin-top: 20px; max-width: 1100px; }
+.vk-tile { display: flex; flex-direction: column; gap: 6px; padding: 22px; background: #fff; border: 1px solid #dcdcde; border-radius: 12px; text-decoration: none; color: #1c2f41; transition: border-color .15s, box-shadow .15s; }
+.vk-tile:hover, .vk-tile:focus { border-color: #2f6f7e; box-shadow: 0 4px 18px rgba(28, 47, 65, .1); color: #1c2f41; }
+.vk-tile .dashicons { font-size: 30px; width: 30px; height: 30px; color: #2f6f7e; margin-bottom: 6px; }
+.vk-tile strong { font-size: 16px; }
+.vk-tile span:last-child { color: #646970; }
+.vk-card { background: #fff; border: 1px solid #dcdcde; border-radius: 12px; padding: 8px 24px 16px; margin: 20px 0; max-width: 1000px; }
+.vk-card h2 { font-size: 17px; }
+.vk-radio { display: grid; gap: 8px; }
+.vk-radio label { font-size: 14px; }
+.vk-hours { display: inline-flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.vk-rows input { width: 100%; }
+.vk-widget__now { font-size: 15px; background: #f7f1e6; padding: 10px 12px; border-radius: 8px; }
+#vk_today_widget .vk-radio { margin-bottom: 10px; }
+.vk-meta p { margin: 0 0 12px; }

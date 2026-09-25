@@ -1,0 +1,15 @@
+/*
+Theme Name: Valkenisse
+Theme URI: https://strandpaviljoenherwegh.nl
+Description: Blokthema voor Strandpaviljoen Valkenisse – familie Herwegh, sinds 1956. Warme, lichte kuststijl met grote fotografie. Werkt samen met de plugin "Strandpaviljoen Valkenisse – Beheer".
+Author: Familie Herwegh
+Version: 1.0.0
+Requires at least: 6.6
+Tested up to: 6.8
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: valkenisse
+*/
+
+/* De stijl staat in theme.json (kleuren, lettertypes, maten) en assets/css/theme.css. */

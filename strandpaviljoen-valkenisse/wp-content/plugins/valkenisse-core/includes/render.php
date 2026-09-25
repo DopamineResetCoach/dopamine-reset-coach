@@ -121,8 +121,20 @@ function vk_render_price_rows( array $rows, string $modifier ): string {
 	if ( ! $rows ) {
 		return '<p>' . vk_text( VK_TODO ) . '</p>';
 	}
-	$html = '<ul class="vk-prices vk-prices--' . esc_attr( $modifier ) . '" role="list">';
+	$html  = '';
+	$group = null;
 	foreach ( $rows as $row ) {
+		$row_group = (string) ( $row['group'] ?? '' );
+		if ( $row_group !== $group ) {
+			if ( null !== $group ) {
+				$html .= '</ul>';
+			}
+			if ( '' !== $row_group ) {
+				$html .= '<p class="vk-prices__group">' . esc_html( $row_group ) . '</p>';
+			}
+			$html .= '<ul class="vk-prices vk-prices--' . esc_attr( $modifier ) . '" role="list">';
+			$group = $row_group;
+		}
 		$html .= '<li class="vk-prices__row">';
 		$html .= '<span class="vk-prices__label">' . vk_text( $row['label'] ) . '</span>';
 		$html .= '<span class="vk-prices__leader" aria-hidden="true"></span>';
@@ -135,12 +147,32 @@ function vk_render_price_rows( array $rows, string $modifier ): string {
 	return $html . '</ul>';
 }
 
+/**
+ * "Wilt u reserveren?": reserveringstekst + knoppen mailen, bellen en aanvraagformulier.
+ */
+function vk_render_hut_booking( array $attrs = array() ): string {
+	$html  = '<div class="vk-booking">';
+	$html .= '<h3 class="vk-booking__title">' . esc_html__( 'Wilt u reserveren?', 'valkenisse' ) . '</h3>';
+	$html .= '<p class="vk-booking__text">' . vk_text( vk_tr( (string) vk_get( 'huts_booking' ), 'huts_booking' ) ) . '</p>';
+	$html .= '<ul class="vk-booking__contact" role="list">';
+	if ( vk_mail_url() ) {
+		$html .= '<li>' . vk_icon( 'mail' ) . '<a href="' . esc_url( vk_mail_url() . '?subject=' . rawurlencode( __( 'Reservering strandhuisje', 'valkenisse' ) ) ) . '">' . esc_html( antispambot( (string) vk_get( 'email' ) ) ) . '</a></li>';
+	}
+	if ( vk_tel_url() ) {
+		$html .= '<li>' . vk_icon( 'phone' ) . '<a href="' . esc_url( vk_tel_url() ) . '">' . esc_html( (string) vk_get( 'phone' ) ) . '</a></li>';
+	}
+	$html .= '<li>' . vk_icon( 'clock' ) . '<a href="' . esc_url( vk_page_url( 'contact' ) . '#openingstijden' ) . '">' . esc_html__( 'Actuele openingstijden', 'valkenisse' ) . '</a></li>';
+	$html .= '</ul>';
+	$html .= vk_render_contact_buttons( array( 'buttons' => 'hut,mail,call' ) );
+	return $html . '</div>';
+}
+
 function vk_render_hut_prices( array $attrs = array() ): string {
 	$html  = '<div class="vk-pricecard">';
 	$html .= '<p class="vk-pricecard__season">' . vk_text( vk_get( 'huts_season' ) ) . '</p>';
 	$html .= vk_render_price_rows( (array) vk_get( 'huts_prices' ), 'huts' );
 	$html .= '<p class="vk-pricecard__period">' . vk_icon( 'sun' ) . ' ' . vk_text( vk_tr( (string) vk_get( 'huts_period' ), 'huts_period' ) ) . '</p>';
-	$booking = (string) vk_get( 'huts_booking' );
+	$booking = empty( $attrs['hideBooking'] ) ? (string) vk_get( 'huts_booking' ) : '';
 	if ( '' !== $booking ) {
 		$html .= '<p class="vk-pricecard__booking">' . vk_text( vk_tr( $booking, 'huts_booking' ) ) . '</p>';
 	}
@@ -536,7 +568,7 @@ function vk_render_contact_details( array $attrs = array() ): string {
 }
 
 function vk_render_contact_buttons( array $attrs = array() ): string {
-	$style   = in_array( $attrs['style'] ?? 'solid', array( 'solid', 'light', 'header' ), true ) ? $attrs['style'] : 'solid';
+	$style   = in_array( $attrs['style'] ?? 'solid', array( 'solid', 'light', 'header' ), true ) ? ( $attrs['style'] ?? 'solid' ) : 'solid';
 	$buttons = array_map( 'trim', explode( ',', (string) ( $attrs['buttons'] ?? 'call,route,mail' ) ) );
 	$html    = '<div class="vk-buttons vk-buttons--' . esc_attr( $style ) . '">';
 	foreach ( $buttons as $i => $button ) {

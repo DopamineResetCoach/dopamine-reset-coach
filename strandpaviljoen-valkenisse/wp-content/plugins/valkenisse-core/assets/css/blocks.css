@@ -391,3 +391,18 @@
 }
 /* Op een foto (hero) klapt het menu omhoog open, zodat het niet wordt afgesneden. */
 .vk-reserve--light .vk-reserve__options { top: auto; bottom: calc(100% + .5rem); }
+
+/* Tariefgroepen & reserveren --------------------------------------- */
+.vk-prices__group { margin: 1.25rem 0 .1rem; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--vk-wood); }
+.vk-pricecard__season + .vk-prices__group { margin-top: 0; }
+.vk-booking { background: var(--vk-white); border-radius: var(--vk-radius); box-shadow: var(--vk-shadow); padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+.vk-booking__title { font-family: var(--vk-serif); font-weight: 500; font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin: 0 0 .75rem; }
+.vk-booking__text { margin: 0 0 1.25rem; }
+.vk-booking__contact { list-style: none; margin: 0 0 1.5rem; padding: 0; display: grid; gap: .6rem; }
+.vk-booking__contact li { display: flex; align-items: center; gap: .6rem; }
+.vk-booking__contact a { color: var(--vk-navy); font-weight: 600; overflow-wrap: anywhere; }
+
+/* Prijsregels als raster: omschrijving mag afbreken, prijs blijft altijd rechts op dezelfde regel. */
+.vk-prices__row { display: grid; grid-template-columns: minmax(0, auto) minmax(1.25rem, 1fr) auto; align-items: baseline; column-gap: .5rem; }
+.vk-prices__price { white-space: nowrap; }
+.vk-prices__note { grid-column: 1 / -1; }

@@ -160,13 +160,22 @@ function vk_admin_field( array $field ): void {
 			);
 			break;
 		case 'rows':
-			$rows = array_values( (array) $value );
-			echo '<table class="vk-rows widefat striped"><thead><tr><th>' . esc_html__( 'Omschrijving', 'valkenisse' ) . '</th><th>' . esc_html__( 'Prijs', 'valkenisse' ) . '</th><th>' . esc_html__( 'Toelichting (optioneel)', 'valkenisse' ) . '</th></tr></thead><tbody>';
+			$rows   = array_values( (array) $value );
+			$groups = ! empty( $field['groups'] );
+			echo '<table class="vk-rows widefat striped"><thead><tr>';
+			if ( $groups ) {
+				echo '<th>' . esc_html__( 'Groep (bv. Per week)', 'valkenisse' ) . '</th>';
+			}
+			echo '<th>' . esc_html__( 'Omschrijving', 'valkenisse' ) . '</th><th>' . esc_html__( 'Prijs', 'valkenisse' ) . '</th><th>' . esc_html__( 'Toelichting (optioneel)', 'valkenisse' ) . '</th></tr></thead><tbody>';
 			$count = max( (int) $field['rows'], count( $rows ) + 2 );
 			for ( $i = 0; $i < $count; $i++ ) {
-				$row = wp_parse_args( $rows[ $i ] ?? array(), array( 'label' => '', 'price' => '', 'note' => '' ) );
+				$row = wp_parse_args( $rows[ $i ] ?? array(), array( 'group' => '', 'label' => '', 'price' => '', 'note' => '' ) );
+				echo '<tr>';
+				if ( $groups ) {
+					printf( '<td><input type="text" name="%1$s[%2$d][group]" value="%3$s" /></td>', esc_attr( $name ), (int) $i, esc_attr( $row['group'] ) );
+				}
 				printf(
-					'<tr><td><input type="text" name="%1$s[%2$d][label]" value="%3$s" class="regular-text" /></td><td><input type="text" name="%1$s[%2$d][price]" value="%4$s" placeholder="€ 0,00" /></td><td><input type="text" name="%1$s[%2$d][note]" value="%5$s" class="regular-text" /></td></tr>',
+					'<td><input type="text" name="%1$s[%2$d][label]" value="%3$s" class="regular-text" /></td><td><input type="text" name="%1$s[%2$d][price]" value="%4$s" placeholder="€ 0,00" /></td><td><input type="text" name="%1$s[%2$d][note]" value="%5$s" class="regular-text" /></td></tr>',
 					esc_attr( $name ),
 					(int) $i,
 					esc_attr( $row['label'] ),
@@ -175,7 +184,7 @@ function vk_admin_field( array $field ): void {
 				);
 			}
 			echo '</tbody></table>';
-			echo '<p class="description">' . esc_html__( 'Maak de omschrijving leeg om een regel te verwijderen.', 'valkenisse' ) . '</p>';
+			echo '<p class="description">' . esc_html__( 'Maak de omschrijving leeg om een regel te verwijderen. Regels met dezelfde groep worden onder één kopje getoond.', 'valkenisse' ) . '</p>';
 			break;
 		default:
 			$type = in_array( $field['type'], array( 'email', 'url', 'time', 'date' ), true ) ? $field['type'] : 'text';

@@ -231,10 +231,10 @@ function vk_settings_schema(): array {
 				array(
 					'title'  => __( 'Algemeen', 'valkenisse' ),
 					'fields' => array(
-						array( 'key' => 'huts_season', 'label' => __( 'Tarieven geldig voor', 'valkenisse' ), 'type' => 'text', 'default' => sprintf( /* translators: %s: jaar */ __( 'Seizoen %s', 'valkenisse' ), VK_TODO ) ),
+						array( 'key' => 'huts_season', 'label' => __( 'Titel boven de tarieven', 'valkenisse' ), 'type' => 'text', 'default' => __( 'Huurprijzen 2026', 'valkenisse' ), 'description' => __( 'Nieuw seizoen? Verander hier het jaartal.', 'valkenisse' ) ),
 						array( 'key' => 'huts_period', 'label' => __( 'Verhuurperiode', 'valkenisse' ), 'type' => 'text', 'default' => __( 'Van begin april tot en met september', 'valkenisse' ) ),
 						array( 'key' => 'huts_included', 'label' => __( 'Inbegrepen (één per regel)', 'valkenisse' ), 'type' => 'textarea', 'default' => __( "2 strandstoelen\n1 windscherm / luifel\nTafeltje", 'valkenisse' ) ),
-						array( 'key' => 'huts_booking', 'label' => __( 'Reserveren', 'valkenisse' ), 'type' => 'textarea', 'default' => __( 'Een strandhuisje kun je het hele jaar door aanvragen via e-mail, of telefonisch wanneer het paviljoen geopend is.', 'valkenisse' ) ),
+						array( 'key' => 'huts_booking', 'label' => __( 'Reserveren', 'valkenisse' ), 'type' => 'textarea', 'default' => __( 'Strandhuisjes reserveren kan het gehele jaar door via e-mail, of persoonlijk/telefonisch wanneer Strandpaviljoen Valkenisse geopend is.', 'valkenisse' ) ),
 						array( 'key' => 'huts_available', 'label' => __( 'Aanvraagformulier tonen', 'valkenisse' ), 'type' => 'checkbox', 'default' => 1, 'description' => __( 'Uitvinken als alles is verhuurd.', 'valkenisse' ) ),
 						array( 'key' => 'huts_full_text', 'label' => __( 'Tekst als het formulier uit staat', 'valkenisse' ), 'type' => 'text', 'default' => __( 'Alle strandhuisjes zijn op dit moment verhuurd. Neem gerust contact op voor het volgende seizoen.', 'valkenisse' ) ),
 					),
@@ -246,11 +246,15 @@ function vk_settings_schema(): array {
 							'key'     => 'huts_prices',
 							'label'   => __( 'Tarieven', 'valkenisse' ),
 							'type'    => 'rows',
-							'rows'    => 6,
+							'rows'    => 10,
+							'groups'  => true,
 							'default' => array(
-								array( 'label' => __( 'Per dag', 'valkenisse' ), 'price' => VK_TODO, 'note' => '' ),
-								array( 'label' => __( 'Per week', 'valkenisse' ), 'price' => VK_TODO, 'note' => '' ),
-								array( 'label' => __( 'Per seizoen', 'valkenisse' ), 'price' => VK_TODO, 'note' => __( 'begin april t/m september', 'valkenisse' ) ),
+								array( 'group' => __( 'Per dag', 'valkenisse' ), 'label' => __( 'Strandhuisje', 'valkenisse' ), 'price' => '€ 20,00', 'note' => '' ),
+								array( 'group' => __( 'Per week', 'valkenisse' ), 'label' => __( 'Vóór 23 mei', 'valkenisse' ), 'price' => '€ 75,00', 'note' => '' ),
+								array( 'group' => __( 'Per week', 'valkenisse' ), 'label' => __( 'Van 23 mei tot 27 juni', 'valkenisse' ), 'price' => '€ 90,00', 'note' => '' ),
+								array( 'group' => __( 'Per week', 'valkenisse' ), 'label' => __( 'Van 27 juni tot 29 augustus', 'valkenisse' ), 'price' => '€ 110,00', 'note' => '' ),
+								array( 'group' => __( 'Per week', 'valkenisse' ), 'label' => __( 'Vanaf 29 augustus', 'valkenisse' ), 'price' => '€ 75,00', 'note' => '' ),
+								array( 'group' => __( 'Per seizoen', 'valkenisse' ), 'label' => __( 'Van 25 april t/m 20 september', 'valkenisse' ), 'price' => '€ 645,00', 'note' => '' ),
 							),
 						),
 					),
@@ -264,20 +268,21 @@ function vk_settings_schema(): array {
 				array(
 					'title'  => __( 'Tarieven', 'valkenisse' ),
 					'fields' => array(
-						array( 'key' => 'rental_season', 'label' => __( 'Tarieven geldig voor', 'valkenisse' ), 'type' => 'text', 'default' => sprintf( __( 'Seizoen %s', 'valkenisse' ), VK_TODO ) ),
+						array( 'key' => 'rental_season', 'label' => __( 'Titel boven de tarieven', 'valkenisse' ), 'type' => 'text', 'default' => __( 'Huurprijzen 2026', 'valkenisse' ) ),
 						array(
 							'key'     => 'rental_prices',
 							'label'   => __( 'Tarieven', 'valkenisse' ),
 							'type'    => 'rows',
 							'rows'    => 8,
+							'groups'  => true,
 							'default' => array(
-								array( 'label' => __( 'Strandstoel', 'valkenisse' ), 'price' => VK_TODO, 'note' => '' ),
-								array( 'label' => __( 'Ligbed', 'valkenisse' ), 'price' => VK_TODO, 'note' => '' ),
-								array( 'label' => __( 'Parasol', 'valkenisse' ), 'price' => VK_TODO, 'note' => '' ),
-								array( 'label' => __( 'Windscherm', 'valkenisse' ), 'price' => VK_TODO, 'note' => '' ),
+								array( 'group' => __( 'Per dag', 'valkenisse' ), 'label' => __( 'Strandstoel', 'valkenisse' ), 'price' => '€ 5,00', 'note' => '' ),
+								array( 'group' => __( 'Per dag', 'valkenisse' ), 'label' => __( 'Parasol', 'valkenisse' ), 'price' => '€ 5,00', 'note' => '' ),
+								array( 'group' => __( 'Per dag', 'valkenisse' ), 'label' => __( 'Ligbed', 'valkenisse' ), 'price' => '€ 5,00', 'note' => '' ),
+								array( 'group' => __( 'Per dag', 'valkenisse' ), 'label' => __( 'Windscherm', 'valkenisse' ), 'price' => '€ 5,00', 'note' => '' ),
 							),
 						),
-						array( 'key' => 'rental_note', 'label' => __( 'Toelichting', 'valkenisse' ), 'type' => 'textarea', 'default' => __( 'Vraag ernaar in het paviljoen.', 'valkenisse' ) ),
+						array( 'key' => 'rental_note', 'label' => __( 'Toelichting', 'valkenisse' ), 'type' => 'textarea', 'default' => '' ),
 					),
 				),
 			),
@@ -363,6 +368,7 @@ function vk_sanitize_field( array $field, $value ) {
 					continue;
 				}
 				$rows[] = array(
+					'group' => sanitize_text_field( $row['group'] ?? '' ),
 					'label' => $label,
 					'price' => sanitize_text_field( $row['price'] ?? '' ),
 					'note'  => sanitize_text_field( $row['note'] ?? '' ),

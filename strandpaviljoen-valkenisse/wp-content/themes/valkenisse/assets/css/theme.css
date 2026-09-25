@@ -482,3 +482,9 @@ p { text-wrap: pretty; }
 /* Editor: alles gewoon zichtbaar */
 .editor-styles-wrapper .vk-reveal { opacity: 1 !important; transform: none !important; }
 .editor-styles-wrapper .vk-intro__then { transform: rotate(-3deg) !important; }
+
+/* Verhuurpagina: huurprijzen */
+.vk-prices-cols { gap: clamp(1.5rem, 4vw, 3rem) !important; margin-top: 1.5rem !important; }
+.vk-prices-cols h3 { font-size: var(--wp--preset--font-size--large) !important; margin-bottom: .25rem !important; }
+.vk-prices-intro { color: var(--wp--preset--color--hout); margin-top: 0 !important; margin-bottom: 1rem !important; }
+.vk-prices-section .vk-booking { margin-top: var(--wp--preset--spacing--40); }

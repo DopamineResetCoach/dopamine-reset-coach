@@ -30,7 +30,15 @@ function vk_block_definitions(): array {
 				'variant' => array( 'type' => 'string', 'default' => 'table', 'enum' => array( 'table', 'compact' ), 'label' => __( 'Weergave', 'valkenisse' ) ),
 			),
 		),
-		'hut-prices'       => array( __( 'Tarieven strandhuisjes', 'valkenisse' ), 'money-alt', 'vk_render_hut_prices', array() ),
+		'hut-prices'       => array(
+			__( 'Tarieven strandhuisjes', 'valkenisse' ),
+			'money-alt',
+			'vk_render_hut_prices',
+			array(
+				'hideBooking' => array( 'type' => 'boolean', 'default' => false, 'label' => __( 'Reserveringstekst verbergen', 'valkenisse' ) ),
+			),
+		),
+		'hut-booking'      => array( __( 'Wilt u reserveren? (strandhuisjes)', 'valkenisse' ), 'email-alt', 'vk_render_hut_booking', array() ),
 		'hut-included'     => array( __( 'Strandhuisje: inbegrepen', 'valkenisse' ), 'yes-alt', 'vk_render_hut_included', array() ),
 		'hut-request-form' => array( __( 'Aanvraagformulier strandhuisje', 'valkenisse' ), 'email-alt', 'vk_render_hut_request_form', array() ),
 		'rental-prices'    => array( __( 'Tarieven strandverhuur', 'valkenisse' ), 'money-alt', 'vk_render_rental_prices', array() ),

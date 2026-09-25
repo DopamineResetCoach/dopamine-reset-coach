@@ -48,7 +48,7 @@ Alles staat in het linkermenu onder **🌴 Strandpaviljoen**. Het beheer is ook 
 | **Openingstijden** | Strandpaviljoen → Openingstijden | Vast weekrooster. Laat "tot" leeg als de sluitingstijd wisselt. |
 | **Reserveren** | Strandpaviljoen → Contactgegevens → Reserveren | De knop **Reserveer nu** (in de homepage-hero en op Eten & Drinken). Bezoekers kiezen zelf: **bellen** of **mailen**. De mail staat al klaar met onderwerp en invulvelden (naam, datum, tijd, aantal personen, lunch/diner/borrel). Je kunt de vraag erboven aanpassen of de knop uitzetten. |
 | **Menukaart** | Strandpaviljoen → Menukaart | Eén item per gerecht of drankje, met prijs, omschrijving en kaartonderdeel. Een vinkje "tijdelijk niet leverbaar" verbergt een item. De kaart is een echte mobiele webpagina; een PDF is optioneel. |
-| **Strandhuisjes & tarieven** | Strandpaviljoen → Strandhuisjes | Seizoen, periode, wat er inbegrepen is en de prijzen. Voor een nieuw seizoen pas je het jaartal en de prijzen aan en klik je op Opslaan. Het aanvraagformulier kan hier uit ("alles verhuurd"). |
+| **Strandhuisjes & tarieven** | Strandpaviljoen → Strandhuisjes | Titel („Huurprijzen 2026"), periode, wat er inbegrepen is en de prijzen. Prijzen kun je groeperen (kolom *Groep*: Per dag / Per week / Per seizoen). Voor een nieuw seizoen pas je het jaartal en de prijzen aan en klik je op Opslaan. Het aanvraagformulier kan hier uit ("alles verhuurd"). |
 | **Aanvragen strandhuisjes** | Strandpaviljoen → Aanvragen | Elke aanvraag komt per e-mail binnen **en** wordt hier bewaard. |
 | **Verhuurprijzen** | Strandpaviljoen → Strandverhuur | Strandstoelen, ligbedden, parasols en windschermen. |
 | **Foto's** | Media → Toevoegen | Kies bij elke foto een **fotocategorie** (Paviljoen, Terras, Strand, Eten & drinken, Strandhuisjes, Historie) en vul een korte **alt-tekst** in. Alleen foto's met een categorie komen in de galerij. |
@@ -76,11 +76,10 @@ Gebruikt:
 
 ### Nog aan te leveren door familie Herwegh
 
-- [ ] **Telefoonnummer controleren.** De eigen site noemt `0118 561347`, maar sommige andere sites noemen `0118 561 637`.
+- [x] **Telefoonnummer** bevestigd door de familie: +31 (0)118 561347.
 - [ ] **Postadres controleren** (L. Simonsestraat 10, 4373 AV Biggekerke).
 - [ ] **Adres voor navigatie.** Vul eventueel ook de coördinaten in, dan klopt de kaart precies.
-- [ ] **Tarieven strandhuisjes** (dag, week en seizoen) plus het seizoensjaar.
-- [ ] **Tarieven strandverhuur.**
+- [x] **Huurprijzen 2026** voor strandhuisjes (per dag, per week in vier periodes, per seizoen) en strandverhuur (per dag) zijn ingevoerd. Voor 2027: pas de titel en de prijzen aan onder Strandpaviljoen → Strandhuisjes / Strandverhuur.
 - [ ] **Menukaart** met gerechten, dranken en prijzen.
 - [ ] **Seizoen/periode** van de openingstijden, en eventueel een gemiddelde sluitingstijd voor Google.
 - [ ] **Het familieverhaal in eigen woorden** (pagina Over ons) en historische foto's.
@@ -149,7 +148,7 @@ Er wordt niets automatisch vertaald. Feitelijke gegevens (telefoon, prijzen) wor
 - **Aanvraagformulier**: werkt zonder JavaScript en zonder formulierplugin. Het is beveiligd met een nonce, een honeypot, een minimale invultijd en maximaal 5 aanvragen per uur per IP-adres. De aanvrager krijgt een ontvangstbevestiging, en de tekst maakt duidelijk dat het een aanvraag is en geen definitieve reservering.
 - **ACF** is bewust niet nodig: de gratis versie heeft geen optiepagina's, dus de beheerschermen zijn in de plugin zelf gebouwd. Dat betekent één plugin minder.
 - **Controle** (tijdens de bouw):
-  - Alle 439 blokken in de patronen, templates en template-parts zijn gevalideerd met de officiële `@wordpress/blocks`-parser: 0 ongeldig en 0 migraties nodig.
+  - Alle 447 blokken in de patronen, templates en template-parts zijn gevalideerd met de officiële `@wordpress/blocks`-parser: 0 ongeldig en 0 migraties nodig.
   - Alle PHP-bestanden zijn gelint.
   - De kernlogica (status van vandaag, automatisch vervallen, validatie) is getest.
   - Er is een visuele controle gedaan op desktop (1440 px) en mobiel (390 px).

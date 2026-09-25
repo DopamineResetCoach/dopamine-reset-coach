@@ -7,7 +7,7 @@
  * Viewport Width: 1400
  * Inserter: false
  */
-echo valkenisse_page_hero( 'paviljoen-vandaag', __( 'Strandpaviljoen Valkenisse op het strand bij de duinen', 'valkenisse' ), __( 'Contact & route', 'valkenisse' ), __( 'Tot straks op het strand', 'valkenisse' ), __( 'Bij de duinovergang Vossenhol in Groot Valkenisse, vlak bij Zoutelande.', 'valkenisse' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo valkenisse_page_hero( 'duinovergang-vossenhol', __( 'De houten trap over de duinovergang Vossenhol, met het bord van Strandpaviljoen Valkenisse', 'valkenisse' ), __( 'Contact & route', 'valkenisse' ), __( 'Tot straks op het strand', 'valkenisse' ), __( 'Bij de duinovergang Vossenhol in Groot Valkenisse, vlak bij Zoutelande.', 'valkenisse' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 ?>
 
 <!-- wp:group {"tagName":"section","align":"full","className":"vk-section vk-contact-section","layout":{"type":"constrained"}} -->

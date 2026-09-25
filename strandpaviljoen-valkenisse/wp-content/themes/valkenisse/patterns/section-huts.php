@@ -11,7 +11,7 @@
 <section class="wp-block-group alignfull vk-section vk-huts"><!-- wp:columns {"align":"wide","className":"vk-huts__cols"} -->
 <div class="wp-block-columns alignwide vk-huts__cols"><!-- wp:column {"width":"56%","className":"vk-huts__visual"} -->
 <div class="wp-block-column vk-huts__visual" style="flex-basis:56%"><!-- wp:image {"aspectRatio":"4/5","scale":"cover","sizeSlug":"large","className":"vk-huts__photo vk-reveal"} -->
-<figure class="wp-block-image size-large vk-huts__photo vk-reveal"><img src="<?php echo valkenisse_photo( 'strandhuisjes' ); ?>" alt="<?php esc_attr_e( 'De strandhuisjes van Strandpaviljoen Valkenisse aan de voet van de duinen', 'valkenisse' ); ?>" style="aspect-ratio:4/5;object-fit:cover"/></figure>
+<figure class="wp-block-image size-large vk-huts__photo vk-reveal"><img src="<?php echo valkenisse_photo( 'strandhuisjes' ); ?>" alt="<?php esc_attr_e( 'Gele strandhuisjes van Herwegh aan de voet van de duinen, met strandstoelen, tafeltje, windscherm en luifel', 'valkenisse' ); ?>" style="aspect-ratio:4/5;object-fit:cover"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:column -->
 

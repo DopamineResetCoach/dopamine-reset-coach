@@ -1,0 +1,6 @@
+# Netlify: "Add new project" → "Import an existing project" → GitHub →
+# DopamineResetCoach/dopamine-reset-coach → Base directory: vankeulen-wordpress
+# (build command leeg laten). De kant-en-klare statische site staat in statisch/.
+[build]
+  publish = "statisch"
+  command = ""

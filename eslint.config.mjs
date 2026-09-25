@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // WordPress-website Restaurant Valkenisse (los project, geen Next.js).
+    "restaurant-valkenisse/**",
   ]),
 ]);
 

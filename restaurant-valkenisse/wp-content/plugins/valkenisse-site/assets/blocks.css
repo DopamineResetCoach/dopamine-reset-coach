@@ -1,0 +1,225 @@
+/* Restaurant Valkenisse – blokken. Kleuren en letters komen uit het thema (theme.json). */
+:root {
+	--valk-green: var(--wp--preset--color--green, #243b31);
+	--valk-sand: var(--wp--preset--color--sand, #e8ddcb);
+	--valk-sand-light: var(--wp--preset--color--sand-light, #f2ece2);
+	--valk-offwhite: var(--wp--preset--color--offwhite, #f8f5ef);
+	--valk-earth: var(--wp--preset--color--earth, #8c6a4f);
+	--valk-ink: var(--wp--preset--color--charcoal, #222623);
+	--valk-line: color-mix(in srgb, currentColor 18%, transparent);
+	--valk-serif: var(--wp--preset--font-family--serif, Georgia, serif);
+	--valk-radius: 2px;
+}
+
+.valk-icon { flex: none; }
+
+/* Knoppen ---------------------------------------------------------------- */
+.valk-btn {
+	display: inline-flex; align-items: center; justify-content: center; gap: .55em;
+	min-height: 48px; padding: .8em 1.4em; border: 1px solid currentColor; border-radius: var(--valk-radius);
+	font-weight: 600; font-size: .95rem; letter-spacing: .02em; text-decoration: none; color: inherit;
+	transition: background-color .2s, color .2s, border-color .2s;
+}
+.valk-btn:hover, .valk-btn:focus-visible { background: var(--valk-ink); border-color: var(--valk-ink); color: var(--valk-offwhite); }
+.valk-btn--primary { background: var(--valk-green); border-color: var(--valk-green); color: var(--valk-offwhite); }
+.valk-btn--primary:hover, .valk-btn--primary:focus-visible { background: var(--valk-ink); border-color: var(--valk-ink); }
+.valk-btn:disabled { opacity: .6; cursor: progress; }
+
+.valk-editor-hint { background: #fff8e5; border-left: 3px solid #dba617; padding: .8em 1em; font-size: .9rem; color: #3c3c3c; }
+
+/* Openingstijden --------------------------------------------------------- */
+.valk-today { display: flex; gap: .75em; align-items: flex-start; }
+.valk-today p { margin: 0; }
+.valk-today__dot { width: .6em; height: .6em; border-radius: 50%; background: #9aa39c; margin-top: .55em; flex: none; }
+.valk-today[data-status="open"] .valk-today__dot { background: #5fae7b; box-shadow: 0 0 0 4px color-mix(in srgb, #5fae7b 25%, transparent); }
+.valk-today[data-status="gesloten"] .valk-today__dot { background: #c2703d; }
+.valk-today__text { font-weight: 600; }
+.valk-today__kitchen, .valk-today__next { font-size: .9em; opacity: .8; }
+.valk-hours__link { display: inline-block; margin-top: .9em; font-size: .9rem; text-underline-offset: .25em; color: inherit; }
+.valk-hours--compact .valk-hours__link { margin-top: .6em; }
+.valk-hours__table { width: 100%; border-collapse: collapse; margin-top: 1em; font-size: .95rem; }
+.valk-hours__table th, .valk-hours__table td { text-align: left; padding: .55em 0; border-bottom: 1px solid var(--valk-line); font-weight: 400; }
+.valk-hours__table td { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.valk-hours__table .is-closed td { opacity: .6; }
+.valk-hours__table .is-kitchen th, .valk-hours__table .is-kitchen td { border-bottom: 0; font-style: italic; opacity: .85; }
+.valk-hours--full .valk-today { font-size: 1.1rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--valk-line); }
+.valk-hours__seasons { display: grid; gap: 2.5rem 3rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); margin-top: 2rem; }
+.valk-season__title { font-family: var(--valk-serif); font-size: 1.6rem; font-weight: 500; margin: 0; line-height: 1.2; }
+.valk-season__dates { margin: .2em 0 0; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.valk-season__note { font-size: .9rem; opacity: .8; margin-top: .6em; }
+.valk-season.is-current { position: relative; }
+.valk-badge { font-family: var(--wp--preset--font-family--sans, sans-serif); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; vertical-align: middle; padding: .25em .6em; background: var(--valk-green); color: var(--valk-offwhite); border-radius: 99px; margin-left: .4em; }
+.valk-hours__off { margin-top: 2rem; font-style: italic; opacity: .85; }
+.valk-hours__exceptions { padding-left: 1.1em; }
+
+/* Contact ---------------------------------------------------------------- */
+.valk-contact__address { font-style: normal; line-height: 1.7; margin-bottom: 1rem; }
+.valk-contact__address strong { font-family: var(--valk-serif); font-size: 1.5rem; font-weight: 500; }
+.valk-contact__lines { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+.valk-contact__lines li { display: flex; align-items: center; gap: .7em; padding: .35em 0; }
+.valk-contact__lines a { color: inherit; text-underline-offset: .25em; }
+.valk-contact__lines .valk-icon { opacity: .7; }
+.valk-contact__buttons { display: flex; flex-wrap: wrap; gap: .75rem; }
+.valk-contact__social { display: flex; gap: 1.2em; }
+.valk-contact__social a { color: inherit; }
+.valk-contact--compact .valk-contact__address strong { font-size: inherit; font-family: inherit; font-weight: 600; }
+
+/* Menukaart -------------------------------------------------------------- */
+.valk-menu__nav { position: sticky; top: var(--valk-header-h, 72px); z-index: 5; background: var(--valk-offwhite); border-bottom: 1px solid var(--valk-line); margin-bottom: 3rem; }
+.valk-menu__nav ul { display: flex; gap: .4rem; list-style: none; margin: 0; padding: .75rem 0; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+.valk-menu__nav ul::-webkit-scrollbar { display: none; }
+.valk-menu__nav a { display: block; white-space: nowrap; padding: .55em 1.05em; border: 1px solid var(--valk-line); border-radius: 99px; text-decoration: none; color: inherit; font-size: .9rem; scroll-snap-align: start; }
+.valk-menu__nav a:hover, .valk-menu__nav a:focus-visible { background: var(--valk-green); color: var(--valk-offwhite); border-color: var(--valk-green); }
+.valk-menu__section { scroll-margin-top: calc(var(--valk-header-h, 72px) + 80px); }
+.valk-menu__section--l2 + .valk-menu__section--l2 { margin-top: clamp(3rem, 6vw, 5.5rem); }
+.valk-menu__section--l3 { margin-top: 2.5rem; }
+.valk-menu__title { font-family: var(--valk-serif); font-weight: 500; line-height: 1.1; margin: 0 0 .4em; }
+h2.valk-menu__title { font-size: clamp(2.2rem, 4.5vw, 3.4rem); }
+h3.valk-menu__title { font-size: clamp(1.5rem, 2.6vw, 2rem); color: var(--valk-earth); }
+.valk-menu__intro { max-width: 40rem; opacity: .8; margin: 0 0 1.5rem; }
+.valk-menu__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 4rem; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .valk-menu__list { grid-template-columns: 1fr 1fr; } }
+.valk-dish { display: flex; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--valk-line); }
+.valk-dish__img { width: 76px; height: 76px; object-fit: cover; flex: none; border-radius: var(--valk-radius); }
+.valk-dish__body { flex: 1; min-width: 0; }
+.valk-dish__head { display: flex; align-items: baseline; gap: 1rem; }
+.valk-dish__name { font-family: var(--wp--preset--font-family--sans, sans-serif); font-size: 1.02rem; font-weight: 600; margin: 0; flex: 1; letter-spacing: 0; }
+.valk-dish__price { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.valk-dish__desc { margin: .3em 0 0; font-size: .93rem; opacity: .78; line-height: 1.55; }
+.valk-dish__meta { margin: .5em 0 0; display: flex; flex-wrap: wrap; gap: .4em; font-size: .78rem; }
+.valk-diet { border: 1px solid var(--valk-line); padding: .15em .6em; border-radius: 99px; color: var(--valk-green); }
+.valk-dish__allergens { opacity: .7; padding: .15em 0; }
+
+/* Studio's --------------------------------------------------------------- */
+.valk-studios { display: grid; gap: clamp(4rem, 9vw, 8rem); }
+.valk-studio { display: grid; gap: clamp(1.5rem, 4vw, 5rem); align-items: center; }
+@media (min-width: 900px) {
+	.valk-studio { grid-template-columns: 7fr 5fr; }
+	.valk-studio.is-reversed { grid-template-columns: 5fr 7fr; }
+	.valk-studio.is-reversed > :first-child { order: 2; }
+}
+.valk-studio__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.valk-studio__title { font-family: var(--valk-serif); font-weight: 500; font-size: clamp(2rem, 3.5vw, 2.8rem); margin: .1em 0 .5em; line-height: 1.1; }
+.valk-studio__text > :first-child { margin-top: 0; }
+.valk-studio__text .wp-block-gallery { margin-top: 1.5rem; }
+.valk-eyebrow { font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--valk-earth); margin: 0; font-weight: 600; }
+.valk-checklist { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .5rem 1.5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.valk-checklist li { position: relative; padding-left: 1.6em; font-size: .95rem; }
+.valk-checklist li::before { content: ""; position: absolute; left: 0; top: .45em; width: .75em; height: .4em; border-left: 1.5px solid var(--valk-green); border-bottom: 1.5px solid var(--valk-green); transform: rotate(-45deg); }
+
+/* Buffetten -------------------------------------------------------------- */
+.valk-buffets { display: grid; gap: 0 4rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.valk-buffet { padding: 2rem 0; border-top: 1px solid var(--valk-line); display: grid; gap: 1.2rem; }
+.valk-buffet__img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.valk-buffet__title { font-family: var(--valk-serif); font-weight: 500; font-size: 1.9rem; margin: 0 0 .4em; line-height: 1.15; }
+.valk-buffet__body p { margin: 0 0 .6em; }
+.valk-buffet__meta { display: flex; flex-wrap: wrap; gap: .4em 1.5em; font-size: .9rem; margin-top: 1rem !important; }
+.valk-buffet__price { font-weight: 600; color: var(--valk-green); }
+
+/* Galerij ---------------------------------------------------------------- */
+.valk-gallery__filter { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+.valk-gallery__filter button { font: inherit; font-size: .9rem; min-height: 44px; padding: .5em 1.1em; border: 1px solid var(--valk-line); border-radius: 99px; background: transparent; color: inherit; cursor: pointer; }
+.valk-gallery__filter button[aria-pressed="true"] { background: var(--valk-green); color: var(--valk-offwhite); border-color: var(--valk-green); }
+.valk-gallery__grid { list-style: none; margin: 0; padding: 0; columns: 1; column-gap: 12px; }
+@media (min-width: 600px) { .valk-gallery__grid { columns: 2; } }
+@media (min-width: 1000px) { .valk-gallery__grid { columns: 3; column-gap: 16px; } }
+.valk-gallery__item { break-inside: avoid; margin: 0 0 12px; }
+@media (min-width: 1000px) { .valk-gallery__item { margin-bottom: 16px; } }
+.valk-gallery__item a { display: block; overflow: hidden; }
+.valk-gallery__item img { display: block; width: 100%; height: auto; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.valk-gallery__item a:hover img, .valk-gallery__item a:focus-visible img { transform: scale(1.03); }
+.valk-lightbox { max-width: 100vw; max-height: 100vh; width: 100vw; height: 100dvh; margin: 0; padding: 0; border: 0; background: rgba(17, 20, 18, .95); color: #fff; }
+.valk-lightbox::backdrop { background: rgba(17, 20, 18, .9); }
+.valk-lightbox figure { margin: 0; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 1rem 2rem; box-sizing: border-box; }
+.valk-lightbox img { max-width: 100%; max-height: calc(100% - 3rem); object-fit: contain; }
+.valk-lightbox figcaption { margin-top: 1rem; font-size: .9rem; opacity: .8; text-align: center; }
+.valk-lightbox button { position: absolute; background: transparent; border: 0; color: #fff; font-size: 2.4rem; line-height: 1; width: 56px; height: 56px; cursor: pointer; }
+.valk-lightbox__close { top: .5rem; right: .5rem; }
+.valk-lightbox__prev { left: .25rem; top: 50%; transform: translateY(-50%); }
+.valk-lightbox__next { right: .25rem; top: 50%; transform: translateY(-50%); }
+
+/* Formulieren ------------------------------------------------------------ */
+.valk-form__grid { display: grid; gap: 1.1rem 1.5rem; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .valk-form__grid { grid-template-columns: 1fr 1fr; } }
+.valk-form__field.is-wide { grid-column: 1 / -1; }
+.valk-form__field label { display: block; font-size: .85rem; font-weight: 600; letter-spacing: .02em; margin-bottom: .4em; }
+.valk-form__optional { font-weight: 400; opacity: .65; }
+.valk-form input:not([type="checkbox"]), .valk-form select, .valk-form textarea {
+	width: 100%; box-sizing: border-box; min-height: 52px; padding: .8em .95em; font: inherit; font-size: 16px; /* voorkomt inzoomen op iPhone */
+	color: var(--valk-ink); background: #fff; border: 1px solid color-mix(in srgb, var(--valk-ink) 22%, transparent); border-radius: var(--valk-radius); appearance: none;
+}
+.valk-form select { background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 20px) 55%, calc(100% - 15px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+.valk-form input:focus-visible, .valk-form select:focus-visible, .valk-form textarea:focus-visible { outline: 2px solid var(--valk-green); outline-offset: 1px; border-color: var(--valk-green); }
+.valk-form input:user-invalid, .valk-form select:user-invalid, .valk-form textarea:user-invalid { border-color: #b3261e; }
+.valk-form__consent label { font-weight: 400; font-size: .9rem; display: flex; gap: .7em; align-items: flex-start; line-height: 1.5; }
+.valk-form__consent input { width: 20px; height: 20px; margin: .1em 0 0; flex: none; accent-color: var(--valk-green); }
+.valk-form__consent a { color: inherit; }
+.valk-form__submit { margin: 1.5rem 0 0; }
+.valk-form__submit .valk-btn { width: 100%; }
+@media (min-width: 640px) { .valk-form__submit .valk-btn { width: auto; } }
+.valk-form__hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.valk-form__error { background: #fbeaea; color: #7a1d17; border-left: 3px solid #b3261e; padding: .9em 1.1em; margin-bottom: 1.5rem; }
+.valk-form__success { background: var(--valk-sand-light); border-left: 3px solid var(--valk-green); padding: 1.5em 1.6em; color: var(--valk-ink); }
+.valk-form__success h3 { font-family: var(--valk-serif); font-weight: 500; font-size: 1.8rem; margin: 0 0 .3em; }
+.valk-form__success p { margin: 0; }
+
+/* Mededeling ------------------------------------------------------------- */
+.valk-notice { background: var(--valk-earth); color: #fff; text-align: center; font-size: .9rem; padding: .6em 1rem; position: relative; z-index: 60; }
+.valk-notice p { margin: 0; }
+.valk-notice a { color: inherit; font-weight: 600; }
+
+/* Mobiele actiebalk ------------------------------------------------------ */
+.valk-actionbar { display: none; }
+@media (max-width: 781px) {
+	.valk-actionbar {
+		display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+		background: var(--valk-offwhite); border-top: 1px solid color-mix(in srgb, var(--valk-ink) 12%, transparent);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+	.valk-actionbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 60px; font-size: .72rem; font-weight: 600; letter-spacing: .03em; color: var(--valk-ink); text-decoration: none; }
+	.valk-actionbar a.is-primary { background: var(--valk-green); color: var(--valk-offwhite); }
+	body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+}
+
+.valk-placeholder { background: linear-gradient(160deg, var(--valk-sand-light), var(--valk-sand)); display: flex; align-items: flex-end; justify-content: flex-end; }
+.valk-placeholder::after { content: "Foto volgt"; font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; opacity: .5; padding: 1rem; }
+
+/* Sfeerfoto's bij een menukaartcategorie */
+.valk-menu__photos { display: grid; gap: clamp(.75rem, 1.6vw, 1.25rem); margin: 1.5rem 0 2.5rem; }
+.valk-menu__photos--2 { grid-template-columns: 1fr; }
+.valk-menu__photos--3 { grid-template-columns: 1fr; }
+@media (min-width: 640px) {
+	.valk-menu__photos--2 { grid-template-columns: 1fr 1fr; }
+	.valk-menu__photos--3 { grid-template-columns: 2fr 1fr 1fr; }
+}
+.valk-menu__photo { margin: 0; overflow: hidden; }
+.valk-menu__photo img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 1.1s cubic-bezier(.2, .7, .2, 1); }
+.valk-menu__photo:hover img { transform: scale(1.03); }
+.valk-menu__photos--1 .valk-menu__photo img { aspect-ratio: 21 / 9; }
+@media (max-width: 639px) {
+	.valk-menu__photos--2 { grid-template-columns: 1fr 1fr; gap: .5rem; }
+	.valk-menu__photos--2 .valk-menu__photo img { aspect-ratio: 1; }
+}
+
+/* Menukaart als PDF */
+.valk-pdf__bar { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2rem; }
+.valk-pdf__meta { font-weight: 400; opacity: .75; }
+.valk-pdf__pages { display: grid; gap: clamp(1rem, 3vw, 2.5rem); max-width: 880px; margin: 0 auto; }
+.valk-pdf__page { margin: 0; background: var(--valk-sand-light); box-shadow: 0 1px 2px rgba(34, 38, 35, .08), 0 12px 40px rgba(34, 38, 35, .12); overflow: hidden; }
+.valk-pdf__page canvas { display: block; width: 100%; height: auto; }
+.valk-pdf__page:not(.is-ready) { background: linear-gradient(100deg, var(--valk-sand-light) 40%, var(--valk-offwhite) 50%, var(--valk-sand-light) 60%) 0 0 / 200% 100%; animation: valk-shimmer 1.6s linear infinite; }
+@keyframes valk-shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .valk-pdf__page:not(.is-ready) { animation: none; } }
+.valk-pdf__loading { text-align: center; padding: 3rem 1rem; opacity: .8; }
+.valk-pdf.is-error .valk-pdf__loading::before { content: "De menukaart kon niet worden weergegeven. "; }
+.valk-pdf__text { max-width: 880px; margin: 3rem auto 0; border-top: 1px solid var(--valk-line); padding-top: 1.25rem; }
+.valk-pdf__text > summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+.valk-pdf__text[open] > summary { margin-bottom: 2rem; }
+@media (max-width: 639px) {
+	.valk-pdf__bar .valk-btn { flex: 1 1 100%; }
+	.valk-pdf__pages { gap: .75rem; margin-inline: calc(-1 * var(--wp--style--root--padding-left, 1rem) + .5rem); }
+}
+@media (max-width: 639px) {
+	.valk-pdf__bar .valk-btn { min-height: 54px; }
+	.valk-pdf__meta { display: none; }
+}

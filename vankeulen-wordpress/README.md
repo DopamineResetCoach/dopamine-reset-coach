@@ -14,6 +14,20 @@ Geen page builder, geen ACF, geen jQuery, geen externe scripts of fonts. Er zijn
 
 ---
 
+## Lokaal bekijken (één commando)
+
+Vereist alleen [Node.js](https://nodejs.org/) 20 of nieuwer. Er wordt een tijdelijke WordPress gestart met het thema en de plugin, en alle pagina's worden automatisch aangemaakt.
+
+```bash
+# macOS / Linux
+./lokaal/start.sh
+
+# Windows: dubbelklik op lokaal\start.cmd, of in de opdrachtprompt:
+lokaal\start.cmd
+```
+
+Open daarna **http://127.0.0.1:9400**. U bent automatisch ingelogd (beheer: http://127.0.0.1:9400/wp-admin/). Stoppen met `Ctrl+C`; de testsite wordt dan weggegooid. E-mails van het formulier worden lokaal niet verstuurd, maar aanvragen staan wel onder Van Keulen → Aanvragen.
+
 ## Installatie (± 15 minuten)
 
 1. **Hosting**: PHP 8.1+ (8.3 aanbevolen), MySQL/MariaDB, **SSL (https)**, bij voorkeur met serverside caching (LiteSpeed, Nginx FastCGI of vergelijkbaar) en dagelijkse back-ups.

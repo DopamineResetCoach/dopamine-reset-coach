@@ -14,9 +14,11 @@ echo valkenisse_hero(
 	'Feesten &amp; partijen',
 	'Iets te vieren? Samen maken we er iets bijzonders van',
 	'Verjaardagen, bruiloften en andere feesten, buffetten en catering aan de Zeeuwse kust.',
-	'feest.svg',
+	'feesten-buffet.webp',
 	72,
-	valkenisse_buttons( array( array( 'Vraag vrijblijvend informatie aan', '#aanvraag', '' ), array( 'Bel ons', '#bellen', 'light' ) ), 'hero__buttons' )
+	valkenisse_buttons( array( array( 'Vraag vrijblijvend informatie aan', '#aanvraag', '' ), array( 'Bel ons', '#bellen', 'light' ) ), 'hero__buttons' ),
+	'is-style-hero',
+	'Buffet met tajine en paella op het terras van Restaurant Valkenisse'
 );
 echo "\n\n";
 

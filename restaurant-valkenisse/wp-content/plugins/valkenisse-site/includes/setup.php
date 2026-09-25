@@ -221,6 +221,16 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
+	// Foto bij "Iets te vieren?" (homepage) en bovenaan Feesten & Partijen.
+	$party = valkenisse_import_theme_photo( 'feesten-buffet.webp', 'Buffet met tajine en paella op het terras van Restaurant Valkenisse', array( 'feesten' ) );
+	if ( $party ) {
+		foreach ( array( 'home', 'feesten-partijen' ) as $slug ) {
+			if ( isset( $ids[ $slug ] ) ) {
+				valkenisse_attach_photo_to_page( (int) $ids[ $slug ], 'feesten-buffet.webp', $party );
+			}
+		}
+	}
+
 	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
 	if ( isset( $ids['menukaart'] ) ) {
 		$pdf = valkenisse_import_theme_photo( VALKENISSE_DIR . 'data/Menukaart-Restaurant-Valkenisse.pdf', 'Menukaart Restaurant Valkenisse' );

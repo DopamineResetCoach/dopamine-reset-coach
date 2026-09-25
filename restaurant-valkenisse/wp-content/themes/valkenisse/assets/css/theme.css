@@ -375,3 +375,11 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 .vk-intro .is-style-lead, .vk-stay .is-style-lead { color: var(--vk-ink); }
 /* WordPress zet de dimlaag op 40% (has-background-dim-40); het eigen verloop moet volledig zichtbaar zijn. */
 .wp-block-cover.is-style-hero .wp-block-cover__background.has-background-dim { opacity: 1 !important; }
+
+/* "Iets te vieren?": verloop achter de tekst zodat de drukke buffetfoto leesbaar blijft */
+.wp-block-cover.vk-party .wp-block-cover__background.has-background-dim { opacity: 1 !important; background:
+	linear-gradient(90deg, rgba(12, 19, 15, .8) 0%, rgba(12, 19, 15, .6) 38%, rgba(12, 19, 15, .15) 66%, rgba(12, 19, 15, 0) 82%) !important; }
+.vk-party h2, .vk-party p { text-shadow: 0 1px 3px rgba(8, 13, 10, .5), 0 2px 24px rgba(8, 13, 10, .4); }
+@media (max-width: 781px) {
+	.wp-block-cover.vk-party .wp-block-cover__background.has-background-dim { background: rgba(12, 19, 15, .62) !important; }
+}

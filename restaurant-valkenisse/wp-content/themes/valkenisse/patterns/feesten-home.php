@@ -9,7 +9,8 @@
  */
 
 $attrs = array(
-	'url'             => valkenisse_img( 'feest.svg' ),
+	'url'             => valkenisse_img( 'feesten-buffet.webp' ),
+	'alt'             => 'Buffet met tajine en paella op het terras van Restaurant Valkenisse',
 	'dimRatio'        => 50,
 	'overlayColor'    => 'green-deep',
 	'minHeight'       => 80,
@@ -21,7 +22,7 @@ $attrs = array(
 	'layout'          => array( 'type' => 'constrained' ),
 );
 echo '<!-- wp:cover ' . wp_json_encode( $attrs, JSON_UNESCAPED_SLASHES ) . ' -->' . "\n";
-echo '<section class="wp-block-cover alignfull has-custom-content-position is-position-center-left vk-party" style="min-height:80vh"><img class="wp-block-cover__image-background" alt="" src="' . valkenisse_img( 'feest.svg' ) . '" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-green-deep-background-color has-background-dim"></span><div class="wp-block-cover__inner-container">';
+echo '<section class="wp-block-cover alignfull has-custom-content-position is-position-center-left vk-party" style="min-height:80vh"><img class="wp-block-cover__image-background" alt="Buffet met tajine en paella op het terras van Restaurant Valkenisse" src="' . valkenisse_img( 'feesten-buffet.webp' ) . '" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-green-deep-background-color has-background-dim"></span><div class="wp-block-cover__inner-container">';
 echo valkenisse_group(
 	valkenisse_p( 'Iets te vieren?', 'is-style-eyebrow' ) . "\n\n" .
 	valkenisse_h( 'Samen maken we er iets bijzonders van' ) . "\n\n" .

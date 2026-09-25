@@ -81,6 +81,18 @@ function valkenisse_run_setup(): array {
 			$log[] = "Pagina aangemaakt: {$title}";
 		}
 	}
+	// Echte foto's uit het thema in de mediabibliotheek zetten (responsieve formaten, vervangbaar).
+	if ( isset( $ids['home'] ) ) {
+		$photo = valkenisse_import_theme_photo( 'restaurant-valkenisse.webp', 'Restaurant Valkenisse met terras tussen de bomen bij avondlicht', array( 'restaurant', 'terras' ) );
+		if ( $photo ) {
+			valkenisse_attach_photo_to_page( (int) $ids['home'], 'restaurant-valkenisse.webp', $photo );
+			if ( ! has_post_thumbnail( (int) $ids['home'] ) ) {
+				set_post_thumbnail( (int) $ids['home'], $photo );
+			}
+			$log[] = 'Foto van het restaurant in de mediabibliotheek gezet en op de homepage geplaatst';
+		}
+	}
+
 	update_option( 'show_on_front', 'page' );
 	update_option( 'page_on_front', $ids['home'] ?? 0 );
 	update_option( 'page_for_posts', $ids['nieuws'] ?? 0 );
@@ -199,6 +211,63 @@ function valkenisse_run_setup(): array {
 	flush_rewrite_rules();
 	update_option( 'valkenisse_setup_done', VALKENISSE_VERSION );
 	return $log;
+}
+
+/**
+ * Zet een foto uit de themamap in de mediabibliotheek (eenmalig) en geeft het ID terug.
+ */
+function valkenisse_import_theme_photo( string $file, string $alt, array $gallery_terms = array() ): int {
+	$existing = get_posts(
+		array(
+			'post_type'   => 'attachment',
+			'post_status' => 'inherit',
+			'meta_key'    => '_valk_theme_source', // phpcs:ignore WordPress.DB.SlowDBQuery
+			'meta_value'  => $file, // phpcs:ignore WordPress.DB.SlowDBQuery
+			'fields'      => 'ids',
+			'numberposts' => 1,
+		)
+	);
+	if ( $existing ) {
+		return (int) $existing[0];
+	}
+	$source = get_theme_file_path( 'assets/img/' . $file );
+	if ( ! is_readable( $source ) ) {
+		return 0;
+	}
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$tmp = wp_tempnam( $file );
+	copy( $source, $tmp );
+	$id = media_handle_sideload( array( 'name' => $file, 'tmp_name' => $tmp ), 0, $alt );
+	if ( is_wp_error( $id ) ) {
+		wp_delete_file( $tmp );
+		return 0;
+	}
+	update_post_meta( $id, '_wp_attachment_image_alt', $alt );
+	update_post_meta( $id, '_valk_theme_source', $file );
+	if ( $gallery_terms ) {
+		wp_set_object_terms( $id, $gallery_terms, 'fotocategorie' );
+	}
+	return (int) $id;
+}
+
+/**
+ * Vervangt in een pagina de themaverwijzing naar een foto door de foto uit de mediabibliotheek
+ * (met ID, zodat WordPress srcset/sizes toevoegt en de eigenaar hem kan vervangen).
+ */
+function valkenisse_attach_photo_to_page( int $page_id, string $file, int $attachment_id ): void {
+	$content   = (string) get_post_field( 'post_content', $page_id );
+	$theme_url = get_theme_file_uri( 'assets/img/' . $file );
+	$new_url   = (string) wp_get_attachment_url( $attachment_id );
+	if ( ! $new_url || ! str_contains( $content, $theme_url ) ) {
+		return;
+	}
+	$content = str_replace( '"url":"' . $theme_url . '"', '"url":"' . $new_url . '","id":' . $attachment_id, $content );
+	// Alleen het fotoblok met deze foto krijgt de wp-image-klasse.
+	$content = preg_replace( '#<img class="wp-block-cover__image-background"( alt="[^"]*" src="' . preg_quote( $theme_url, '#' ) . '")#', '<img class="wp-block-cover__image-background wp-image-' . $attachment_id . '"$1', $content, 1 );
+	$content = str_replace( $theme_url, $new_url, $content );
+	wp_update_post( array( 'ID' => $page_id, 'post_content' => wp_slash( $content ) ) );
 }
 
 /* Dashboardmelding met knop -------------------------------------------- */

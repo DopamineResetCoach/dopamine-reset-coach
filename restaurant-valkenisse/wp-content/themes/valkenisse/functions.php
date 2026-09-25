@@ -155,7 +155,7 @@ function valkenisse_image( string $file, string $alt, string $ratio = '', string
 }
 
 /** Hero bovenaan een pagina (fotoblok met titel). */
-function valkenisse_hero( string $eyebrow, string $title, string $lead, string $image, int $height = 64, string $extra = '', string $class = 'is-style-hero' ): string {
+function valkenisse_hero( string $eyebrow, string $title, string $lead, string $image, int $height = 64, string $extra = '', string $class = 'is-style-hero', string $alt = '' ): string {
 	$attrs = array(
 		'url'            => valkenisse_img( $image ),
 		'dimRatio'       => 40,
@@ -168,12 +168,15 @@ function valkenisse_hero( string $eyebrow, string $title, string $lead, string $
 		'className'      => $class,
 		'layout'         => array( 'type' => 'constrained' ),
 	);
+	if ( $alt ) {
+		$attrs = array_slice( $attrs, 0, 1, true ) + array( 'alt' => $alt ) + array_slice( $attrs, 1, null, true );
+	}
 	$inner  = valkenisse_p( esc_html( $eyebrow ), 'is-style-eyebrow' ) . "\n\n";
 	$inner .= valkenisse_h( $title, 1, $height >= 85 ? 'display' : 'xx-large', 'hero__title' ) . "\n\n";
 	$inner .= $lead ? valkenisse_p( $lead, 'is-style-lead' ) . "\n\n" : '';
 	$inner .= $extra;
 	return '<!-- wp:cover ' . wp_json_encode( $attrs, JSON_UNESCAPED_SLASHES ) . ' -->' . "\n"
-		. '<section class="wp-block-cover alignfull has-custom-content-position is-position-bottom-left ' . esc_attr( $class ) . '" style="min-height:' . $height . 'vh"><img class="wp-block-cover__image-background" alt="" src="' . valkenisse_img( $image ) . '" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-green-deep-background-color has-background-dim-40 has-background-dim"></span><div class="wp-block-cover__inner-container">'
+		. '<section class="wp-block-cover alignfull has-custom-content-position is-position-bottom-left ' . esc_attr( $class ) . '" style="min-height:' . $height . 'vh"><img class="wp-block-cover__image-background" alt="' . esc_attr( $alt ) . '" src="' . valkenisse_img( $image ) . '" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-green-deep-background-color has-background-dim-40 has-background-dim"></span><div class="wp-block-cover__inner-container">'
 		. $inner
 		. '</div></section>' . "\n" . '<!-- /wp:cover -->';
 }

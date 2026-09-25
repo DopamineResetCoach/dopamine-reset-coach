@@ -150,7 +150,10 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 .wp-block-cover.is-style-hero.is-style-hero .wp-block-cover__inner-container,
 .wp-block-cover.vk-party.vk-party .wp-block-cover__inner-container { max-width: var(--wp--style--global--wide-size); width: 100%; margin-inline: auto; }
 .wp-block-cover.is-style-hero .wp-block-cover__inner-container > * { max-width: 920px; margin-left: 0 !important; margin-right: auto !important; }
-.wp-block-cover.is-style-hero .wp-block-cover__background { opacity: 1; background: linear-gradient(to top, rgba(18, 29, 23, .78) 0%, rgba(18, 29, 23, .28) 45%, rgba(18, 29, 23, .12) 70%, rgba(18, 29, 23, .35) 100%) !important; }
+.wp-block-cover.is-style-hero .wp-block-cover__background { opacity: 1; background:
+	linear-gradient(90deg, rgba(14, 22, 18, .62) 0%, rgba(14, 22, 18, .38) 38%, rgba(14, 22, 18, 0) 68%),
+	linear-gradient(to top, rgba(14, 22, 18, .78) 0%, rgba(14, 22, 18, .25) 45%, rgba(14, 22, 18, .1) 70%, rgba(14, 22, 18, .4) 100%) !important; }
+.is-style-hero .hero__title, .is-style-hero .is-style-lead, .is-style-hero .is-style-eyebrow { text-shadow: 0 1px 24px rgba(10, 16, 13, .35); }
 .hero__title { margin-top: .35em !important; margin-bottom: .3em !important; }
 .hero--home .hero__title { font-size: clamp(3.1rem, 9.5vw, 8.5rem) !important; letter-spacing: -.02em; }
 .is-style-hero .is-style-lead { max-width: 36rem !important; font-size: clamp(1.1rem, 1.8vw, 1.35rem); opacity: .95; }
@@ -181,6 +184,8 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 	.hero__meta { margin-top: 1.4rem !important; padding-top: 1rem; }
 	.hero__meta .valk-hours__link { display: none; }
 	.hero--home .is-style-lead { font-size: 1.05rem; }
+	.wp-block-cover.is-style-hero .wp-block-cover__image-background { object-position: 62% center; }
+	.wp-block-cover.is-style-hero .wp-block-cover__background { background: linear-gradient(to top, rgba(14, 22, 18, .88) 0%, rgba(14, 22, 18, .6) 50%, rgba(14, 22, 18, .25) 75%, rgba(14, 22, 18, .45) 100%) !important; }
 }
 
 /* ==========================================================================

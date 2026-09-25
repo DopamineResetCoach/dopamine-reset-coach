@@ -58,8 +58,11 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 - [ ] **Social media**-links (indien aanwezig).
 - [ ] **Privacybeleid**: KvK-nummer, hostingpartij, datum; laten controleren.
 - [ ] **Terras**: de teksten noemen het terras (lunch binnen of op het terras) – klopt dit?
-- [ ] **Foto's**: alle illustraties met "FOTO VERVANGEN" vervangen door echte foto's (hero, restaurant, terras,
-      gerechten, studio's, feest, omgeving) en de galerij vullen. Download de bestaande foto's van de huidige site
+- [x] **Hoofdfoto homepage**: foto van het restaurant met terras (aangeleverd door de opdrachtgever, `assets/img/restaurant-valkenisse.webp`).
+      De setup zet hem in de mediabibliotheek, plaatst hem in de hero,
+      gebruikt hem als deelafbeelding (Open Graph) en zet hem in de galerij (Restaurant, Terras).
+- [ ] **Overige foto's**: de illustraties met "FOTO VERVANGEN" vervangen door echte foto's (restaurant, terras,
+      gerechten, studio's, feest, omgeving) en de galerij verder vullen. Download de bestaande foto's van de huidige site
       (`/fotos/binnen/`, `/fotos/gerechten/`) als uitgangspunt.
 - [ ] **Logo**: indien aanwezig uploaden via *Weergave → Editor → Patronen → Header → Sitelogo*. Zonder logo
       toont de site de naam als woordmerk.

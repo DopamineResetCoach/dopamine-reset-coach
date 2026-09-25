@@ -16,7 +16,7 @@ echo valkenisse_hero(
 	90,
 	valkenisse_buttons(
 		array(
-			array( 'Reserveer een tafel', '#reserveren', '' ),
+			array( 'Reserveer een tafel', '#reserveren', 'light' ),
 			array( 'Bekijk de menukaart', '/menukaart/', 'light' ),
 			array( 'Overnachten', '/overnachten/', 'light' ),
 		),

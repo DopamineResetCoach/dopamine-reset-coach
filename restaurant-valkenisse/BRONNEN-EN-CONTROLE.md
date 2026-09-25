@@ -71,6 +71,7 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 - [x] **Hoofdfoto Overnachten**: foto van een entree met terras (aangeleverd door de opdrachtgever,
       `assets/img/overnachten-studio.webp`), bovenaan de pagina Overnachten en in de galerij (Studio's).
 - [x] **Studiofoto's**: gang, badkamer en inloopdouche (aangeleverd) in de fotogalerij op Overnachten en in de galerij (Studio's).
+- [x] **Eten & drinken**: de dinerfoto (vleesgerecht) staat ook groot onder "Van zonnige lunch tot lange avond aan tafel" op de homepage en Restaurant.
 - [x] **Omgeving**: panoramafoto van strand, zee en duinen (aangeleverd) onder "Zee, strand en duinen binnen handbereik" op de homepage en Overnachten, en in de galerij (Omgeving).
 - [ ] **Controleren**: op de hoofdfoto van Overnachten staat huisnummer 62 en een entree op de begane grond, terwijl de huidige site
       vermeldt dat de studio's *boven* het restaurant (Valkenisseweg 76) liggen. Klopt de foto bij de studio's,

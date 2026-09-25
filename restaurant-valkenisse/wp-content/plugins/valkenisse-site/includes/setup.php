@@ -196,6 +196,16 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
+	// Grote gerechtfoto onder "Eten & drinken" (homepage en Restaurant).
+	$food = valkenisse_import_theme_photo( 'diner-vleesgerecht.webp', 'Vleesgerecht met jus, gepofte trostomaatjes en krokante uitjes', array( 'gerechten' ) );
+	if ( $food ) {
+		foreach ( array( 'home', 'restaurant' ) as $slug ) {
+			if ( isset( $ids[ $slug ] ) ) {
+				valkenisse_attach_plain_photo( (int) $ids[ $slug ], 'diner-vleesgerecht.webp', $food );
+			}
+		}
+	}
+
 	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
 	if ( isset( $ids['menukaart'] ) ) {
 		$pdf = valkenisse_import_theme_photo( VALKENISSE_DIR . 'data/Menukaart-Restaurant-Valkenisse.pdf', 'Menukaart Restaurant Valkenisse' );

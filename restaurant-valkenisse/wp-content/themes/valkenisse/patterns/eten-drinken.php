@@ -34,4 +34,7 @@ $head = valkenisse_group(
 	'wide',
 	array( 'type' => 'flex', 'flexWrap' => 'wrap', 'justifyContent' => 'space-between', 'verticalAlignment' => 'bottom' )
 );
-echo valkenisse_section( 'vk-food', $head . "\n\n" . valkenisse_columns( $cols, 'vk-tiles' ), 'sand-light' );
+$photo = '<!-- wp:image {"sizeSlug":"full","linkDestination":"none","align":"wide","className":"vk-food__photo"} -->' . "\n"
+	. '<figure class="wp-block-image alignwide size-full vk-food__photo"><img src="' . valkenisse_img( 'diner-vleesgerecht.webp' ) . '" alt="Vleesgerecht met jus, gepofte trostomaatjes en krokante uitjes"/></figure>' . "\n"
+	. '<!-- /wp:image -->';
+echo valkenisse_section( 'vk-food', $head . "\n\n" . $photo . "\n\n" . valkenisse_columns( $cols, 'vk-tiles' ), 'sand-light' );

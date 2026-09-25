@@ -56,7 +56,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Wij verkopen uw gegevens niet. Wij delen gegevens alleen met partijen die nodig zijn om de website en e-mail te laten werken, zoals onze hostingpartij (<mark class="vk-aanleveren">[DOOR VAN KEULEN AAN TE LEVEREN] naam hostingpartij</mark>). Met deze partijen zijn afspraken gemaakt over de beveiliging van uw gegevens.</p>
+<p>Wij verkopen uw gegevens niet. Wij delen gegevens alleen met partijen die nodig zijn om de website en e-mail te laten werken, zoals onze hostingpartij (<mark class="vk-aanleveren">[DOOR VAN KEULEN AAN TE LEVEREN] naam hostingpartij</mark>) en de dienst die het aanvraagformulier naar ons doorstuurt (<mark class="vk-aanleveren">[DOOR VAN KEULEN AAN TE LEVEREN] bijv. Web3Forms</mark>). Met deze partijen zijn afspraken gemaakt over de beveiliging van uw gegevens.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"fontSize":"large"} -->

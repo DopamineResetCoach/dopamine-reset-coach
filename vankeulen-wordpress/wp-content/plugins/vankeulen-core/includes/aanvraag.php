@@ -238,7 +238,7 @@ function vk_render_aanvraagformulier( $a ) {
 					</div>
 					<div class="vk-veld">
 						<label for="veld-telefoon">Telefoonnummer <?php echo $req; // phpcs:ignore ?></label>
-						<input type="tel" id="veld-telefoon" name="telefoon" value="<?php echo $v( 'telefoon' ); // phpcs:ignore ?>" required autocomplete="tel" maxlength="30" pattern="[0-9+()\s\-]{8,}"<?php echo $inv( 'telefoon' ); // phpcs:ignore ?>>
+						<input type="tel" id="veld-telefoon" name="telefoon" value="<?php echo $v( 'telefoon' ); // phpcs:ignore ?>" required autocomplete="tel" maxlength="30" pattern="[0-9+\(\)\s\-]{8,}"<?php echo $inv( 'telefoon' ); // phpcs:ignore ?>>
 						<?php echo $err( 'telefoon' ); // phpcs:ignore ?>
 					</div>
 				</div>

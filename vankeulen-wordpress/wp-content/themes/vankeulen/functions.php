@@ -226,3 +226,18 @@ add_filter(
 		return $p->get_updated_html();
 	}
 );
+
+/**
+ * Favicon (het logomerk) zolang er geen eigen site-icoon is ingesteld
+ * (Weergave → Editor → Site-icoon).
+ */
+add_action(
+	'wp_head',
+	function () {
+		if ( has_site_icon() ) {
+			return;
+		}
+		printf( '<link rel="icon" href="%s" type="image/svg+xml">' . "\n", esc_url( get_theme_file_uri( 'assets/images/favicon.svg' ) ) );
+	},
+	2
+);

@@ -373,7 +373,7 @@ pattern('pagina-privacybeleid', 'Pagina: Privacybeleid', 'Privacybeleid (AVG) â€
         h(2, 'Hoe lang bewaren wij uw gegevens?', size='large'),
         p('Aanvragen worden automatisch verwijderd na maximaal 12 maanden, tenzij er een stallingsovereenkomst uit voortkomt. Gegevens die wij op grond van de wet (bijvoorbeeld de fiscale bewaarplicht) moeten bewaren, bewaren wij zo lang als de wet voorschrijft.'),
         h(2, 'Delen met anderen', size='large'),
-        p('Wij verkopen uw gegevens niet. Wij delen gegevens alleen met partijen die nodig zijn om de website en e-mail te laten werken, zoals onze hostingpartij (' + ph('naam hostingpartij') + '). Met deze partijen zijn afspraken gemaakt over de beveiliging van uw gegevens.'),
+        p('Wij verkopen uw gegevens niet. Wij delen gegevens alleen met partijen die nodig zijn om de website en e-mail te laten werken, zoals onze hostingpartij (' + ph('naam hostingpartij') + ') en de dienst die het aanvraagformulier naar ons doorstuurt (' + ph('bijv. Web3Forms') + '). Met deze partijen zijn afspraken gemaakt over de beveiliging van uw gegevens.'),
         h(2, 'Cookies en Google Maps', size='large'),
         p('Deze website gebruikt geen tracking- of advertentiecookies. De kaart van Google Maps wordt pas geladen als u daar zelf op klikt. Lees meer in ons <a href="/cookiebeleid/">cookiebeleid</a>.'),
         h(2, 'Uw rechten', size='large'),

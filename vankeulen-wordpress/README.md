@@ -14,6 +14,32 @@ Geen page builder, geen ACF, geen jQuery, geen externe scripts of fonts. Er zijn
 
 ---
 
+## Statische versie (geen onderhoud, makkelijk te delen)
+
+In `statisch/` staat een kant-en-klare **statische** versie van de hele website: gewone HTML, CSS en afbeeldingen. Geen WordPress, database, plugins of updates – er valt dus niets bij te houden of te hacken. Werkt op iedere webhost, ook in een submap.
+
+**Online zetten (gratis, ± 2 minuten):**
+- **Netlify Drop**: ga naar https://app.netlify.com/drop en sleep de map `statisch` (of het uitgepakte zip-bestand) erin → u krijgt direct een deelbare link. Maak een gratis account aan om de site te bewaren (zonder account verloopt hij na korte tijd).
+- **Cloudflare Pages**: *Workers & Pages → Create → Pages → Upload assets* → map `statisch` uploaden.
+- Later het eigen domein `vankeulencaravanstalling.nl` koppelen in Netlify/Cloudflare (DNS bij de domeinregistrar aanpassen).
+
+Het bestand `_headers` (beveiligingsheaders, caching) en `_redirects` (oude `/default_bestanden/…`-adressen → home) worden door Netlify en Cloudflare automatisch gebruikt.
+
+**Aanvraagformulier:** zonder server kan de site zelf geen e-mail versturen.
+- Standaard opent het formulier het e-mailprogramma van de bezoeker met de ingevulde aanvraag (aan info@vankeulencaravanstalling.nl).
+- Beter: maak gratis een sleutel aan bij **[Web3Forms](https://web3forms.com)** met info@vankeulencaravanstalling.nl en bouw opnieuw met `--formulier-sleutel=…`. Aanvragen komen dan direct als e-mail binnen, zonder dat de bezoeker iets hoeft te doen. Noem Web3Forms dan in het privacybeleid (daar staat al een placeholder).
+
+**Wat statisch niet kan:** de eigenaar kan niet zelf teksten, beschikbaarheid of openingstijden wijzigen – dat loopt via de ontwikkelaar. Aanvragen worden niet in een beheeromgeving bewaard (alleen per e-mail).
+
+**Opnieuw bouwen na een wijziging** (voor de ontwikkelaar):
+```bash
+./lokaal/start.sh                      # WordPress lokaal starten (tweede terminal)
+node tools/statisch/bouw.mjs --bron=http://127.0.0.1:9400 \
+     --site-url=https://www.vankeulencaravanstalling.nl \
+     --formulier-sleutel=JOUW_WEB3FORMS_SLEUTEL   # optioneel
+```
+Teksten en gegevens past u aan in de lokale WordPress (inloggen gaat automatisch), daarna opnieuw bouwen en de map `statisch` opnieuw uploaden.
+
 ## Direct online bekijken (zonder installatie)
 
 [**Open de voorbeeldsite in WordPress Playground**](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/DopamineResetCoach/dopamine-reset-coach/claude/relaxed-lamport-0ga307/vankeulen-wordpress/lokaal/blueprint-online.json)

@@ -1,0 +1,187 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"useRootPaddingAwareAlignments": true,
+		"color": {
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"defaultDuotone": false,
+			"custom": false,
+			"customGradient": false,
+			"palette": [
+				{ "slug": "gebroken-wit", "name": "Gebroken wit", "color": "#F7F5F0" },
+				{ "slug": "wit", "name": "Wit", "color": "#FFFFFF" },
+				{ "slug": "zand-licht", "name": "Zand licht", "color": "#F1EBDF" },
+				{ "slug": "zand", "name": "Zand", "color": "#E6DAC3" },
+				{ "slug": "zand-donker", "name": "Zand donker", "color": "#B89D6E" },
+				{ "slug": "marine", "name": "Marineblauw", "color": "#14284B" },
+				{ "slug": "marine-donker", "name": "Marineblauw donker", "color": "#0B1830" },
+				{ "slug": "groen", "name": "Polder groen", "color": "#2D6A43" },
+				{ "slug": "groen-donker", "name": "Polder groen donker", "color": "#225234" },
+				{ "slug": "groen-licht", "name": "Groen licht", "color": "#DCE7DC" },
+				{ "slug": "antraciet", "name": "Antraciet", "color": "#272B30" },
+				{ "slug": "grijs", "name": "Grijs (tekst)", "color": "#5A6068" },
+				{ "slug": "lijn", "name": "Lijn", "color": "#DDD5C6" }
+			],
+			"gradients": [
+				{ "slug": "hero", "name": "Hero overlay", "gradient": "linear-gradient(90deg, rgba(11,24,48,0.88) 0%, rgba(11,24,48,0.62) 45%, rgba(11,24,48,0.15) 100%)" }
+			]
+		},
+		"layout": {
+			"contentSize": "760px",
+			"wideSize": "1240px"
+		},
+		"spacing": {
+			"units": [ "px", "rem", "em", "%", "vh", "vw" ],
+			"defaultSpacingSizes": false,
+			"spacingSizes": [
+				{ "slug": "10", "name": "XS", "size": "0.5rem" },
+				{ "slug": "20", "name": "S", "size": "0.75rem" },
+				{ "slug": "30", "name": "M", "size": "1rem" },
+				{ "slug": "40", "name": "L", "size": "clamp(1.25rem, 1rem + 1vw, 1.75rem)" },
+				{ "slug": "50", "name": "XL", "size": "clamp(1.75rem, 1.25rem + 2vw, 3rem)" },
+				{ "slug": "60", "name": "2XL", "size": "clamp(2.5rem, 1.75rem + 3.5vw, 5rem)" },
+				{ "slug": "70", "name": "3XL", "size": "clamp(3.5rem, 2.25rem + 5vw, 7rem)" }
+			]
+		},
+		"typography": {
+			"customFontSize": false,
+			"defaultFontSizes": false,
+			"dropCap": false,
+			"fluid": true,
+			"fontFamilies": [
+				{
+					"slug": "archivo",
+					"name": "Archivo",
+					"fontFamily": "Archivo, \"Helvetica Neue\", Arial, sans-serif",
+					"fontFace": [
+						{
+							"fontFamily": "Archivo",
+							"fontStyle": "normal",
+							"fontWeight": "100 900",
+							"fontDisplay": "swap",
+							"src": [ "file:./assets/fonts/archivo-latin-wght-normal.woff2" ]
+						}
+					]
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "name": "Klein", "size": "0.9rem", "fluid": false },
+				{ "slug": "base", "name": "Normaal", "size": "1.0625rem", "fluid": false },
+				{ "slug": "medium", "name": "Middel", "size": "1.25rem", "fluid": { "min": "1.125rem", "max": "1.3125rem" } },
+				{ "slug": "large", "name": "Groot", "size": "1.75rem", "fluid": { "min": "1.4rem", "max": "1.875rem" } },
+				{ "slug": "x-large", "name": "Extra groot", "size": "2.5rem", "fluid": { "min": "1.9rem", "max": "2.75rem" } },
+				{ "slug": "xx-large", "name": "Hero", "size": "4rem", "fluid": { "min": "2.35rem", "max": "4.25rem" } }
+			]
+		},
+		"border": {
+			"radius": true,
+			"color": true,
+			"style": true,
+			"width": true
+		},
+		"shadow": {
+			"defaultPresets": false,
+			"presets": [
+				{ "slug": "kaart", "name": "Kaart", "shadow": "0 1px 2px rgba(20,40,75,0.06), 0 8px 24px rgba(20,40,75,0.08)" }
+			]
+		},
+		"custom": {
+			"radius": "8px",
+			"header-hoogte": "76px"
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--gebroken-wit)",
+			"text": "var(--wp--preset--color--antraciet)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--archivo)",
+			"fontSize": "var(--wp--preset--font-size--base)",
+			"lineHeight": "1.65",
+			"fontWeight": "400"
+		},
+		"spacing": {
+			"blockGap": "1.25rem",
+			"padding": {
+				"left": "clamp(1rem, 4vw, 2rem)",
+				"right": "clamp(1rem, 4vw, 2rem)"
+			}
+		},
+		"elements": {
+			"heading": {
+				"color": { "text": "var(--wp--preset--color--marine)" },
+				"typography": {
+					"fontWeight": "750",
+					"lineHeight": "1.12",
+					"letterSpacing": "-0.02em"
+				}
+			},
+			"h1": { "typography": { "fontSize": "var(--wp--preset--font-size--xx-large)", "lineHeight": "1.04", "letterSpacing": "-0.03em" } },
+			"h2": { "typography": { "fontSize": "var(--wp--preset--font-size--x-large)" } },
+			"h3": { "typography": { "fontSize": "var(--wp--preset--font-size--large)", "letterSpacing": "-0.015em" } },
+			"h4": { "typography": { "fontSize": "var(--wp--preset--font-size--medium)", "letterSpacing": "-0.01em" } },
+			"link": {
+				"color": { "text": "var(--wp--preset--color--groen)" },
+				"typography": { "textDecoration": "underline" },
+				":hover": { "color": { "text": "var(--wp--preset--color--groen-donker)" } },
+				":focus": { "outline": { "color": "var(--wp--preset--color--marine)", "offset": "3px", "style": "solid", "width": "2px" } }
+			},
+			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--groen)",
+					"text": "var(--wp--preset--color--wit)"
+				},
+				"border": { "radius": "var(--wp--custom--radius)", "width": "2px", "style": "solid", "color": "var(--wp--preset--color--groen)" },
+				"spacing": { "padding": { "top": "0.9rem", "bottom": "0.9rem", "left": "1.4rem", "right": "1.4rem" } },
+				"typography": { "fontSize": "1rem", "fontWeight": "650", "lineHeight": "1.2", "textDecoration": "none" },
+				":hover": {
+					"color": { "background": "var(--wp--preset--color--groen-donker)", "text": "var(--wp--preset--color--wit)" },
+					"border": { "color": "var(--wp--preset--color--groen-donker)" }
+				},
+				":focus": { "outline": { "color": "var(--wp--preset--color--marine)", "offset": "3px", "style": "solid", "width": "2px" } }
+			},
+			"caption": {
+				"color": { "text": "var(--wp--preset--color--grijs)" },
+				"typography": { "fontSize": "var(--wp--preset--font-size--small)" }
+			}
+		},
+		"blocks": {
+			"core/button": {
+				"variations": {
+					"outline": {
+						"color": { "background": "transparent", "text": "currentColor" },
+						"border": { "color": "currentColor", "width": "2px", "style": "solid" }
+					}
+				}
+			},
+			"core/navigation": {
+				"typography": { "fontSize": "1rem", "fontWeight": "550" }
+			},
+			"core/image": {
+				"border": { "radius": "var(--wp--custom--radius)" }
+			},
+			"core/separator": {
+				"color": { "text": "var(--wp--preset--color--lijn)" }
+			},
+			"core/list": {
+				"spacing": { "padding": { "left": "1.25rem" } }
+			},
+			"core/post-title": {
+				"color": { "text": "inherit" }
+			}
+		}
+	},
+	"templateParts": [
+		{ "name": "header", "title": "Header", "area": "header" },
+		{ "name": "footer", "title": "Footer", "area": "footer" },
+		{ "name": "cta-aanvraag", "title": "Oproep: stallingsplaats aanvragen", "area": "uncategorized" }
+	],
+	"customTemplates": [
+		{ "name": "page-zonder-oproep", "title": "Pagina zonder aanvraag-oproep onderaan", "postTypes": [ "page" ] },
+		{ "name": "page-kaal", "title": "Pagina zonder paginakop (eigen opbouw)", "postTypes": [ "page" ] }
+	]
+}

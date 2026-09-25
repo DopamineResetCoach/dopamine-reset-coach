@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Losstaand WordPress-project (geen onderdeel van de Next.js-app).
+    "vankeulen-wordpress/**",
   ]),
 ]);
 

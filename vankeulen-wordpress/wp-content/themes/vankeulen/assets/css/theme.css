@@ -159,7 +159,7 @@ h1, h2, h3 { text-wrap: balance; }
 @media (max-width: 599px) {
 	.vk-hero { min-height: 82svh !important; }
 	.vk-hero .vk-knoppen .vk-knop { width: 100%; }
-	.vk-hero .wp-block-cover__background { background: linear-gradient(180deg, rgba(11, 24, 48, .55) 0%, rgba(11, 24, 48, .88) 60%) !important; }
+	.vk-hero .wp-block-cover__background { background: linear-gradient(180deg, rgba(11, 24, 48, .35) 0%, rgba(11, 24, 48, .78) 55%, rgba(11, 24, 48, .85) 100%) !important; }
 }
 
 /* Paginakop (subpagina's) */

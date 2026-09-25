@@ -31,7 +31,7 @@ $intro = valkenisse_group(
 );
 $gallery = '<!-- wp:gallery {"columns":3,"linkTo":"none","align":"wide","className":"vk-stay-gallery"} -->' . "\n" .
 	'<figure class="wp-block-gallery alignwide has-nested-images columns-3 is-cropped vk-stay-gallery">';
-foreach ( array( array( 'studio-interieur.svg', 'Interieur van de studio' ), array( 'studio-detail.svg', 'Detail van de studio' ), array( 'omgeving-duinen.svg', 'De duinen vlak bij de studio’s' ) ) as [ $valkenisse_img, $valkenisse_alt ] ) {
+foreach ( array( array( 'studio-gang.webp', 'Lichte gang met houten vloer en sfeervolle verlichting' ), array( 'studio-badkamer.webp', 'Badkamer met houten wastafelmeubel en spiegel' ), array( 'studio-douche.webp', 'Inloopdouche met regendouche en nis' ) ) as [ $valkenisse_img, $valkenisse_alt ] ) {
 	$gallery .= '<!-- wp:image {"lightbox":{"enabled":true}} -->' . "\n" . '<figure class="wp-block-image"><img src="' . valkenisse_img( $valkenisse_img ) . '" alt="' . esc_attr( $valkenisse_alt ) . '"/></figure>' . "\n" . '<!-- /wp:image -->' . "\n\n";
 }
 $gallery = rtrim( $gallery ) . '</figure>' . "\n" . '<!-- /wp:gallery -->';

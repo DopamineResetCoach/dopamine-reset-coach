@@ -173,6 +173,17 @@ function valkenisse_run_setup(): array {
 				set_post_thumbnail( (int) $ids['overnachten'], $stay );
 			}
 		}
+		// Fotogalerij van de studio's.
+		foreach ( array(
+			'studio-gang.webp'     => 'Lichte gang met houten vloer en sfeervolle verlichting',
+			'studio-badkamer.webp' => 'Badkamer met houten wastafelmeubel en spiegel',
+			'studio-douche.webp'   => 'Inloopdouche met regendouche en nis',
+		) as $file => $alt ) {
+			$photo = valkenisse_import_theme_photo( $file, $alt, array( 'studios' ) );
+			if ( $photo ) {
+				valkenisse_attach_gallery_photo( (int) $ids['overnachten'], $file, $photo );
+			}
+		}
 	}
 
 	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
@@ -305,6 +316,24 @@ function valkenisse_attach_photo_to_page( int $page_id, string $file, int $attac
 	$content = preg_replace( '#<img class="wp-block-cover__image-background"( alt="[^"]*" src="' . preg_quote( $theme_url, '#' ) . '")#', '<img class="wp-block-cover__image-background wp-image-' . $attachment_id . '"$1', $content, 1 );
 	$content = str_replace( $theme_url, $new_url, $content );
 	wp_update_post( array( 'ID' => $page_id, 'post_content' => wp_slash( $content ) ) );
+}
+
+/**
+ * Vervangt een galerijfoto uit het thema door de foto uit de mediabibliotheek (met ID en formaat "large").
+ */
+function valkenisse_attach_gallery_photo( int $page_id, string $file, int $attachment_id ): void {
+	$content   = (string) get_post_field( 'post_content', $page_id );
+	$theme_url = get_theme_file_uri( 'assets/img/' . $file );
+	$large     = wp_get_attachment_image_src( $attachment_id, 'large' );
+	if ( ! $large || ! str_contains( $content, $theme_url ) ) {
+		return;
+	}
+	$pattern = '#<!-- wp:image \\{"lightbox":\\{"enabled":true\\}\\} -->\\n<figure class="wp-block-image"><img src="' . preg_quote( $theme_url, '#' ) . '" alt="([^"]*)"/></figure>#';
+	$replace = '<!-- wp:image {"lightbox":{"enabled":true},"id":' . $attachment_id . ',"sizeSlug":"large","linkDestination":"none"} -->' . "\n" . '<figure class="wp-block-image size-large"><img src="' . esc_url( $large[0] ) . '" alt="$1" class="wp-image-' . $attachment_id . '"/></figure>';
+	$new     = preg_replace( $pattern, $replace, $content, 1 );
+	if ( $new && $new !== $content ) {
+		wp_update_post( array( 'ID' => $page_id, 'post_content' => wp_slash( $new ) ) );
+	}
 }
 
 /* Dashboardmelding met knop -------------------------------------------- */

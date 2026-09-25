@@ -70,7 +70,8 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 - [ ] **Dranken**: nog geen drankenkaart aangeleverd (categorie staat klaar en blijft verborgen zolang hij leeg is).
 - [x] **Hoofdfoto Overnachten**: foto van een entree met terras (aangeleverd door de opdrachtgever,
       `assets/img/overnachten-studio.webp`), bovenaan de pagina Overnachten en in de galerij (Studio's).
-- [ ] **Controleren**: op die foto staat huisnummer 62 en een entree op de begane grond, terwijl de huidige site
+- [x] **Studiofoto's**: gang, badkamer en inloopdouche (aangeleverd) in de fotogalerij op Overnachten en in de galerij (Studio's).
+- [ ] **Controleren**: op de hoofdfoto van Overnachten staat huisnummer 62 en een entree op de begane grond, terwijl de huidige site
       vermeldt dat de studio's *boven* het restaurant (Valkenisseweg 76) liggen. Klopt de foto bij de studio's,
       of moeten tekst of foto worden aangepast?
 - [ ] **Overige foto's**: de illustraties met "FOTO VERVANGEN" vervangen door echte foto's (restaurant, terras,

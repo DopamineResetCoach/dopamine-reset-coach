@@ -206,6 +206,19 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
+	// Foto's in de sectie "Blijf nog wat langer" op de homepage.
+	if ( isset( $ids['home'] ) ) {
+		foreach ( array(
+			'overnachten-studio.webp' => array( 'Zonnige entree van de studio met terras, bankje en olijfboompje', 'studios' ),
+			'studio-gang.webp'        => array( 'Lichte gang met houten vloer en sfeervolle verlichting', 'studios' ),
+		) as $file => [ $alt, $cat ] ) {
+			$photo = valkenisse_import_theme_photo( $file, $alt, array( $cat ) );
+			if ( $photo ) {
+				valkenisse_attach_plain_photo( (int) $ids['home'], $file, $photo );
+			}
+		}
+	}
+
 	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
 	if ( isset( $ids['menukaart'] ) ) {
 		$pdf = valkenisse_import_theme_photo( VALKENISSE_DIR . 'data/Menukaart-Restaurant-Valkenisse.pdf', 'Menukaart Restaurant Valkenisse' );
@@ -362,13 +375,20 @@ function valkenisse_attach_gallery_photo( int $page_id, string $file, int $attac
 function valkenisse_attach_plain_photo( int $page_id, string $file, int $attachment_id ): void {
 	$content   = (string) get_post_field( 'post_content', $page_id );
 	$theme_url = get_theme_file_uri( 'assets/img/' . $file );
-	$url       = (string) wp_get_attachment_url( $attachment_id );
-	if ( ! $url || ! str_contains( $content, $theme_url ) ) {
+	if ( ! str_contains( $content, $theme_url ) ) {
 		return;
 	}
-	$pattern = '#<!-- wp:image \\{("sizeSlug"[^\\n]*?)\\} -->\\n(<figure class="[^"]*">)<img src="' . preg_quote( $theme_url, '#' ) . '" alt="([^"]*)"/>#';
-	$replace = '<!-- wp:image {"id":' . $attachment_id . ',$1} -->' . "\n" . '$2<img src="' . esc_url( $url ) . '" alt="$3" class="wp-image-' . $attachment_id . '"/>';
-	$new     = preg_replace( $pattern, $replace, $content, 1 );
+	$pattern = '#<!-- wp:image \\{([^\\n]*?)\\} -->\\n(<figure class="[^"]*">)<img src="' . preg_quote( $theme_url, '#' ) . '" alt="([^"]*)"( style="[^"]*")?/>#';
+	$new     = preg_replace_callback(
+		$pattern,
+		static function ( array $m ) use ( $attachment_id ) {
+			$size = str_contains( $m[1], '"sizeSlug":"large"' ) ? 'large' : 'full';
+			$src  = wp_get_attachment_image_src( $attachment_id, $size );
+			return '<!-- wp:image {"id":' . $attachment_id . ',' . $m[1] . '} -->' . "\n" . $m[2] . '<img src="' . esc_url( $src ? $src[0] : '' ) . '" alt="' . $m[3] . '" class="wp-image-' . $attachment_id . '"' . ( $m[4] ?? '' ) . '/>';
+		},
+		$content,
+		1
+	);
 	if ( $new && $new !== $content ) {
 		wp_update_post( array( 'ID' => $page_id, 'post_content' => wp_slash( $new ) ) );
 	}

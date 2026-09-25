@@ -14,8 +14,8 @@ $text = valkenisse_p( 'Overnachten', 'is-style-eyebrow' ) . "\n\n" .
 	valkenisse_list( array( '2 personen', 'Eigen ingang', 'Gratis wifi', 'Gratis parkeren' ), 'is-style-checklist' ) . "\n\n" .
 	valkenisse_buttons( array( array( 'Bekijk onze studio’s', '/overnachten/', '' ) ) );
 $images = valkenisse_group(
-	valkenisse_image( 'studio-interieur.svg', 'Interieur van een studio boven Restaurant Valkenisse', '4/3', 'vk-stay__main is-style-reveal' ) . "\n\n" .
-	valkenisse_image( 'studio-detail.svg', 'Detail van een studio', '4/5', 'vk-stay__accent' ),
+	valkenisse_image( 'overnachten-studio.webp', 'Zonnige entree van de studio met terras, bankje en olijfboompje', '4/3', 'vk-stay__main is-style-reveal' ) . "\n\n" .
+	valkenisse_image( 'studio-gang.webp', 'Lichte gang met houten vloer en sfeervolle verlichting', '4/5', 'vk-stay__accent' ),
 	'vk-stay__images'
 );
 echo valkenisse_section( 'vk-stay', valkenisse_columns( array( array( '40%', $text ), array( '', $images ) ), 'vk-split vk-split--reverse', 'center' ) );

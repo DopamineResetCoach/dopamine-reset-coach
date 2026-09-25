@@ -266,6 +266,10 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 .hero--home .hero__buttons .wp-block-button__link:hover,
 .hero--home .hero__buttons .wp-block-button__link:focus-visible { background: #fff; border-color: #fff; color: var(--vk-green-deep); }
 
+/* Intro: liggende hoofdfoto met kleinere accentfoto */
+.vk-intro .vk-intro__images { padding: 0 8% 24% 0; }
+.vk-intro .vk-intro__accent { width: 36%; }
+
 /* Eten & drinken: grote gerechtfoto onder de kop */
 .vk-food__photo { margin-top: 0 !important; margin-bottom: clamp(1.5rem, 3vw, 2.5rem) !important; overflow: hidden; }
 .vk-food__photo img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; object-position: center 32%; }
@@ -354,3 +358,28 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 /* Kopgroepen links uitlijnen op de brede inhoudsrand. */
 .vk-section > .vk-head:not(.vk-head--center) { max-width: var(--wp--style--global--wide-size) !important; }
 .vk-section > .vk-head:not(.vk-head--center) > * { max-width: 44rem; }
+
+/* Leesbaarheid homepage-hero: iets donkerder verloop achter de tekst en duidelijkere schaduw */
+.wp-block-cover.hero--home .wp-block-cover__background { background:
+	linear-gradient(90deg, rgba(12, 19, 15, .58) 0%, rgba(12, 19, 15, .36) 34%, rgba(12, 19, 15, .08) 60%, rgba(12, 19, 15, 0) 76%),
+	linear-gradient(to top, rgba(12, 19, 15, .62) 0%, rgba(12, 19, 15, .16) 42%, rgba(12, 19, 15, 0) 68%, rgba(12, 19, 15, .38) 100%) !important; }
+.hero--home .hero__title, .hero--home .is-style-eyebrow, .hero--home .is-style-lead, .hero--home .hero__meta { text-shadow: 0 1px 3px rgba(8, 13, 10, .55), 0 2px 28px rgba(8, 13, 10, .45); }
+.hero--home .is-style-lead { font-weight: 500; opacity: 1; }
+.hero--home .is-style-eyebrow { color: #fff; }
+.hero--home .valk-today__kitchen { opacity: .92; }
+@media (max-width: 781px) {
+	.wp-block-cover.hero--home .wp-block-cover__background { background: linear-gradient(to top, rgba(12, 19, 15, .78) 0%, rgba(12, 19, 15, .5) 48%, rgba(12, 19, 15, .15) 72%, rgba(12, 19, 15, .4) 100%) !important; }
+}
+/* Rustige kleine teksten op de homepage iets donkerder */
+.vk-tile__text { opacity: .9; }
+.vk-intro .is-style-lead, .vk-stay .is-style-lead { color: var(--vk-ink); }
+/* WordPress zet de dimlaag op 40% (has-background-dim-40); het eigen verloop moet volledig zichtbaar zijn. */
+.wp-block-cover.is-style-hero .wp-block-cover__background.has-background-dim { opacity: 1 !important; }
+
+/* "Iets te vieren?": verloop achter de tekst zodat de drukke buffetfoto leesbaar blijft */
+.wp-block-cover.vk-party .wp-block-cover__background.has-background-dim { opacity: 1 !important; background:
+	linear-gradient(90deg, rgba(12, 19, 15, .8) 0%, rgba(12, 19, 15, .6) 38%, rgba(12, 19, 15, .15) 66%, rgba(12, 19, 15, 0) 82%) !important; }
+.vk-party h2, .vk-party p { text-shadow: 0 1px 3px rgba(8, 13, 10, .5), 0 2px 24px rgba(8, 13, 10, .4); }
+@media (max-width: 781px) {
+	.wp-block-cover.vk-party .wp-block-cover__background.has-background-dim { background: rgba(12, 19, 15, .62) !important; }
+}

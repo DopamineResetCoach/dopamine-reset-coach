@@ -137,7 +137,7 @@ function vankeulen_img_alts() {
 		'hero-terrein'    => 'Caravans binnen gestald in de loods van Van Keulen Caravanstalling in Biggekerke',
 		'caravan'         => 'Gestalde caravans in de droge loods bij Van Keulen',
 		'boot'            => 'Boot op trailer, klaar voor de bootstalling',
-		'aanhanger'       => 'Vouwwagen en aanhangwagen in de stalling',
+		'aanhanger'       => 'Opgezette vouwwagen en een aanhangwagen bij de Zeeuwse kust',
 		'strandhuisjes'   => 'Strandhuisjes aan de Zeeuwse kust',
 		'walcheren'       => 'Polderlandschap bij Biggekerke op Walcheren',
 		'loods'           => 'Binnenstalling: caravans in de loods van Van Keulen in Biggekerke',

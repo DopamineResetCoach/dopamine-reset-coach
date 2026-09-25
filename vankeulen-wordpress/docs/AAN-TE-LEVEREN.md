@@ -54,7 +54,7 @@ Echte foto's maken het verschil voor vertrouwen. Liggend (horizontaal), bij dagl
 | 1 | ✔ Caravans in de loods (aangeleverd) – nog gewenst: overzicht buitenterrein | Hero homepage, Google, social | `vankeulen-hero-terrein` |
 | 2 | ✔ Uitsnede van foto 1 | Kaart “Caravanstalling”, pagina | `vankeulen-caravan` |
 | 3 | Boot op trailer in de stalling | Bootstalling | `vankeulen-boot` |
-| 4 | Vouwwagen en/of aanhangwagen | Vouwwagen & aanhanger | `vankeulen-aanhanger` |
+| 4 | ✔ Vouwwagen en aanhangwagen (aangeleverd) | Vouwwagen & aanhanger | `vankeulen-aanhanger` |
 | 5 | Strandhuisjes (op het terrein of aan het strand) | Strandhuisjes-sectie en -pagina | `vankeulen-strandhuisjes` |
 | 6 | Omgeving Biggekerke / polder / kerk | Walcheren-pagina, kaart | `vankeulen-walcheren` |
 | 7 | ✔ Loods van binnen (foto 1) – nog gewenst: loods van buiten | Over ons | `vankeulen-loods` |

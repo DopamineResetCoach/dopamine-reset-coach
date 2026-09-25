@@ -32,6 +32,8 @@ Vink **Tonen** aan, typ de tekst en kies eventueel een datum waarna de melding v
 - **Volgorde:** vul bij een gerecht *Volgorde* in (laag = bovenaan). Categorieën hebben ook een volgorde
   (Menukaart → Categorieën → categorie bewerken). De *Beschrijving* van een categorie verschijnt als korte
   intro, bijvoorbeeld "Alle hoofdgerechten worden geserveerd met friet".
+- **Sfeerfoto's bij een categorie:** Menukaart → Categorieën → categorie bewerken (bijv. *Diner*) →
+  **Foto's kiezen** (1 tot 3 foto's). Ze verschijnen op de menukaart onder de titel van die categorie.
 - **Hele kaart in één keer:** Menukaart → **Importeren (CSV)** – maak een lijst in Excel met de kolommen
   `categorie;naam;omschrijving;prijs;dieet;allergenen` en sla op als CSV. Bestaande gerechten met dezelfde
   naam worden bijgewerkt (handig voor een nieuwe prijslijst).

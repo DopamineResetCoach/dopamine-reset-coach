@@ -129,8 +129,9 @@ function valkenisse_run_setup(): array {
 		array( 'Lunch', 'lunch', 10, '', '' ),
 		array( 'Diner', 'diner', 20, '', '' ),
 		array( 'Voorgerechten', 'voorgerechten', 21, '', 'diner' ),
-		array( 'Hoofdgerechten', 'hoofdgerechten', 22, 'Alle vlees- en visgerechten worden geserveerd met friet.', 'diner' ),
-		array( 'Desserts', 'desserts', 23, '', 'diner' ),
+		array( 'Vleesgerechten', 'vleesgerechten', 22, 'Alle vleesgerechten worden geserveerd met friet.', 'diner' ),
+		array( 'Visgerechten', 'visgerechten', 23, 'Alle visgerechten worden geserveerd met friet.', 'diner' ),
+		array( 'Desserts', 'desserts', 24, '', 'diner' ),
 		array( 'Pizza', 'pizza', 30, '', '' ),
 		array( 'Noord-Afrikaans menu', 'noord-afrikaans', 40, '', '' ),
 		array( 'Pannenkoeken, poffertjes & wafels', 'pannenkoeken-poffertjes-wafels', 50, '', '' ),
@@ -155,6 +156,21 @@ function valkenisse_run_setup(): array {
 	foreach ( array( 'Restaurant', 'Terras', 'Gerechten', "Studio's", 'Feesten', 'Omgeving' ) as $name ) {
 		if ( ! term_exists( sanitize_title( $name ), 'fotocategorie' ) ) {
 			wp_insert_term( $name, 'fotocategorie' );
+		}
+	}
+
+	// Sfeerfoto's bij de dinerkaart (aangeleverd door het restaurant).
+	$diner = get_term_by( 'slug', 'diner', 'menu_categorie' );
+	if ( $diner && ! get_term_meta( $diner->term_id, 'fotos', true ) ) {
+		$diner_photos = array_filter(
+			array(
+				valkenisse_import_theme_photo( 'diner-vleesgerecht.webp', 'Vleesgerecht met jus, gepofte trostomaatjes en krokante uitjes', array( 'gerechten' ) ),
+				valkenisse_import_theme_photo( 'diner-gamba-pasta.webp', "Gamba's met spaghetti, knoflookolie en geroosterde trostomaatjes", array( 'gerechten' ) ),
+			)
+		);
+		if ( $diner_photos ) {
+			update_term_meta( $diner->term_id, 'fotos', implode( ',', $diner_photos ) );
+			$log[] = "Twee foto's bij de dinerkaart geplaatst";
 		}
 	}
 

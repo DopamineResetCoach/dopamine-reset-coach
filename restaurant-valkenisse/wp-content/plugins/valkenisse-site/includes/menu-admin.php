@@ -154,6 +154,56 @@ foreach ( array( 'created_menu_categorie', 'edited_menu_categorie' ) as $hook ) 
 	);
 }
 
+/* Sfeerfoto's per categorie ------------------------------------------ */
+
+function valkenisse_term_photo_ids( int $term_id ): array {
+	$ids = array_filter( array_map( 'absint', explode( ',', (string) get_term_meta( $term_id, 'fotos', true ) ) ) );
+	return array_values( array_filter( $ids, static fn( $id ) => wp_attachment_is_image( $id ) ) );
+}
+
+add_action(
+	'menu_categorie_edit_form_fields',
+	static function ( WP_Term $term ) {
+		$ids = valkenisse_term_photo_ids( $term->term_id );
+		?>
+		<tr class="form-field">
+			<th scope="row">Foto's bij deze categorie</th>
+			<td>
+				<input type="hidden" id="valk-fotos" name="valk_fotos" value="<?php echo esc_attr( implode( ',', $ids ) ); ?>">
+				<div id="valk-fotos-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+					<?php foreach ( $ids as $id ) { echo wp_get_attachment_image( $id, 'thumbnail', false, array( 'style' => 'width:90px;height:90px;object-fit:cover' ) ); } ?>
+				</div>
+				<button type="button" class="button" id="valk-fotos-kies">Foto's kiezen</button>
+				<button type="button" class="button-link" id="valk-fotos-leeg" style="margin-left:8px">Foto's verwijderen</button>
+				<p class="description">1 tot 3 sfeerfoto's die op de menukaart onder de titel van deze categorie verschijnen.</p>
+			</td>
+		</tr>
+		<?php
+	},
+	20
+);
+
+add_action(
+	'admin_enqueue_scripts',
+	static function ( string $hook ) {
+		if ( 'term.php' !== $hook || 'menu_categorie' !== ( $_GET['taxonomy'] ?? '' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+		wp_enqueue_media();
+		wp_enqueue_script( 'valkenisse-term-photos', VALKENISSE_URL . 'assets/admin-term-photos.js', array( 'jquery', 'media-editor' ), VALKENISSE_VERSION, true );
+	}
+);
+
+add_action(
+	'edited_menu_categorie',
+	static function ( int $term_id ) {
+		if ( isset( $_POST['valk_fotos'] ) && current_user_can( 'manage_categories' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$ids = array_slice( array_filter( array_map( 'absint', explode( ',', sanitize_text_field( wp_unslash( $_POST['valk_fotos'] ) ) ) ) ), 0, 3 ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			update_term_meta( $term_id, 'fotos', implode( ',', $ids ) );
+		}
+	}
+);
+
 /** Categorieën in kaartvolgorde. */
 function valkenisse_menu_terms( int $parent = 0, array $only = array() ): array {
 	$args = array(

@@ -231,6 +231,23 @@ h3.valk-menu__title { font-size: clamp(1.5rem, 2.6vw, 2rem); color: var(--valk-e
 
 .valk-placeholder { background: linear-gradient(160deg, var(--valk-sand-light), var(--valk-sand)); display: flex; align-items: flex-end; justify-content: flex-end; }
 .valk-placeholder::after { content: "Foto volgt"; font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; opacity: .5; padding: 1rem; }
+
+/* Sfeerfoto's bij een menukaartcategorie */
+.valk-menu__photos { display: grid; gap: clamp(.75rem, 1.6vw, 1.25rem); margin: 1.5rem 0 2.5rem; }
+.valk-menu__photos--2 { grid-template-columns: 1fr; }
+.valk-menu__photos--3 { grid-template-columns: 1fr; }
+@media (min-width: 640px) {
+	.valk-menu__photos--2 { grid-template-columns: 1fr 1fr; }
+	.valk-menu__photos--3 { grid-template-columns: 2fr 1fr 1fr; }
+}
+.valk-menu__photo { margin: 0; overflow: hidden; }
+.valk-menu__photo img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 1.1s cubic-bezier(.2, .7, .2, 1); }
+.valk-menu__photo:hover img { transform: scale(1.03); }
+.valk-menu__photos--1 .valk-menu__photo img { aspect-ratio: 21 / 9; }
+@media (max-width: 639px) {
+	.valk-menu__photos--2 { grid-template-columns: 1fr 1fr; gap: .5rem; }
+	.valk-menu__photos--2 .valk-menu__photo img { aspect-ratio: 1; }
+}
 </style>
 <style id="wp-block-details-inline-css">
 .wp-block-details{box-sizing:border-box}.wp-block-details summary{cursor:pointer}

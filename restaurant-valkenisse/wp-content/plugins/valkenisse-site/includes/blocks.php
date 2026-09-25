@@ -428,10 +428,31 @@ function valkenisse_menu_section_html( WP_Term $term, int $level, bool $photos, 
 		$level,
 		esc_attr( $term->slug ),
 		esc_html( $term->name ),
-		$intro,
+		$intro . valkenisse_menu_photos_html( $term ),
 		$items ? '<ul class="valk-menu__list">' . $items . '</ul>' : '',
 		$children
 	);
+}
+
+/** Sfeerfoto's bij een categorie (in te stellen bij Menukaart → Categorieën). */
+function valkenisse_menu_photos_html( WP_Term $term ): string {
+	$ids = valkenisse_term_photo_ids( $term->term_id );
+	if ( ! $ids ) {
+		return '';
+	}
+	$html = '';
+	foreach ( $ids as $id ) {
+		$html .= '<figure class="valk-menu__photo">' . wp_get_attachment_image(
+			$id,
+			'large',
+			false,
+			array(
+				'loading' => 'lazy',
+				'sizes'   => count( $ids ) > 1 ? '(min-width: 782px) 50vw, 100vw' : '(min-width: 1320px) 1320px, 100vw',
+			)
+		) . '</figure>';
+	}
+	return '<div class="valk-menu__photos valk-menu__photos--' . min( count( $ids ), 3 ) . '">' . $html . '</div>';
 }
 
 function valkenisse_dish_html( WP_Post $dish, bool $photos ): string {

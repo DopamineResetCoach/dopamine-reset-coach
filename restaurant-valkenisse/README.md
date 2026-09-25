@@ -62,7 +62,7 @@ Vereist: WordPress 6.6 of hoger (getest op **7.1.2**), PHP 8.1+.
   (formulier / alleen bellen / eigen extern systeem).
 - **Mededeling**: korte melding boven elke pagina met automatische einddatum.
 - **Menukaart** = inhoudstype *Gerecht* (naam, omschrijving, prijs, categorie, dieetlabels, allergenen,
-  optionele foto). Prijs snel wijzigen via *Snel bewerken* in het overzicht. CSV-import voor de volledige
+  optionele foto). Per categorie 1–3 sfeerfoto's (bijv. bij *Diner*). Prijs snel wijzigen via *Snel bewerken* in het overzicht. CSV-import voor de volledige
   kaart. Categorieën met volgorde en intro-tekst.
 - **Studio's**, **Feesten** (buffetten/arrangementen) en **Aanvragen** als herkenbare menu's.
 - **Foto's**: in de mediabibliotheek vinkt u per foto een galerijcategorie aan → foto verschijnt in de galerij.

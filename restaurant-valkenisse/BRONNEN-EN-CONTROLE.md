@@ -61,6 +61,12 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 - [x] **Hoofdfoto homepage**: foto van het restaurant met terras (aangeleverd door de opdrachtgever, `assets/img/restaurant-valkenisse.webp`).
       De setup zet hem in de mediabibliotheek, plaatst hem in de hero,
       gebruikt hem als deelafbeelding (Open Graph) en zet hem in de galerij (Restaurant, Terras).
+- [x] **Dinerkaart**: twee gerechtfoto's (vleesgerecht met jus; gamba's met spaghetti) aangeleverd door de
+      opdrachtgever. De setup zet ze in de mediabibliotheek en toont ze onder de titel "Diner" op de menukaart.
+- [ ] **Dinerkaart – gerechten**: de categorieën Voorgerechten, Vleesgerechten, Visgerechten en Desserts staan klaar,
+      maar de gerechten en prijzen moeten nog worden ingevoerd (de huidige pagina /menukaart/diner/ was niet bereikbaar).
+      In zoekresultaten stond dat vleesgerechten met friet en courgette/barbecue- of pepersaus, en visgerechten met
+      friet, gebakken groenten en salade worden geserveerd – controleer dit en vul zo nodig de categorie-intro's aan.
 - [ ] **Overige foto's**: de illustraties met "FOTO VERVANGEN" vervangen door echte foto's (restaurant, terras,
       gerechten, studio's, feest, omgeving) en de galerij verder vullen. Download de bestaande foto's van de huidige site
       (`/fotos/binnen/`, `/fotos/gerechten/`) als uitgangspunt.

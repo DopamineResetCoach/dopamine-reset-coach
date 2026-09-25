@@ -68,6 +68,11 @@ Voor al deze adressen zijn 301-doorverwijzingen ingesteld.
 - [ ] **Noord-Afrikaans menu**: in de aangeleverde tekst stond bij de tajines met kip en vis "wordt geserveerd met brood of"
       – de zin houdt op. Nu staat er "geserveerd met brood". Aanvullen als er een keuze is (bijv. brood of couscous).
 - [ ] **Dranken**: nog geen drankenkaart aangeleverd (categorie staat klaar en blijft verborgen zolang hij leeg is).
+- [x] **Hoofdfoto Overnachten**: foto van een entree met terras (aangeleverd door de opdrachtgever,
+      `assets/img/overnachten-studio.webp`), bovenaan de pagina Overnachten en in de galerij (Studio's).
+- [ ] **Controleren**: op die foto staat huisnummer 62 en een entree op de begane grond, terwijl de huidige site
+      vermeldt dat de studio's *boven* het restaurant (Valkenisseweg 76) liggen. Klopt de foto bij de studio's,
+      of moeten tekst of foto worden aangepast?
 - [ ] **Overige foto's**: de illustraties met "FOTO VERVANGEN" vervangen door echte foto's (restaurant, terras,
       gerechten, studio's, feest, omgeving) en de galerij verder vullen. Download de bestaande foto's van de huidige site
       (`/fotos/binnen/`, `/fotos/gerechten/`) als uitgangspunt.

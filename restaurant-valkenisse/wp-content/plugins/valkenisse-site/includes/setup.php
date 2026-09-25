@@ -164,6 +164,17 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
+	// Foto bovenaan de pagina Overnachten.
+	if ( isset( $ids['overnachten'] ) ) {
+		$stay = valkenisse_import_theme_photo( 'overnachten-studio.webp', 'Zonnige entree van de studio met terras, bankje en olijfboompje', array( 'studios' ) );
+		if ( $stay ) {
+			valkenisse_attach_photo_to_page( (int) $ids['overnachten'], 'overnachten-studio.webp', $stay );
+			if ( ! has_post_thumbnail( (int) $ids['overnachten'] ) ) {
+				set_post_thumbnail( (int) $ids['overnachten'], $stay );
+			}
+		}
+	}
+
 	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
 	if ( isset( $ids['menukaart'] ) ) {
 		$pdf = valkenisse_import_theme_photo( VALKENISSE_DIR . 'data/Menukaart-Restaurant-Valkenisse.pdf', 'Menukaart Restaurant Valkenisse' );

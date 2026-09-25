@@ -14,9 +14,11 @@ echo valkenisse_hero(
 	'Overnachten in Valkenisse',
 	'Slapen vlak bij duinen en zee',
 	'Twee comfortabele studio’s voor twee personen, boven het restaurant en met een eigen ingang.',
-	'studio-interieur.svg',
+	'overnachten-studio.webp',
 	80,
-	valkenisse_buttons( array( array( 'Beschikbaarheid aanvragen', '#aanvraag', '' ), array( 'Bel ons', '#bellen', 'light' ) ), 'hero__buttons' )
+	valkenisse_buttons( array( array( 'Beschikbaarheid aanvragen', '#aanvraag', '' ), array( 'Bel ons', '#bellen', 'light' ) ), 'hero__buttons' ),
+	'is-style-hero',
+	'Zonnige entree van de studio met terras, bankje en olijfboompje'
 );
 echo "\n\n";
 

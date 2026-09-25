@@ -35,7 +35,9 @@ $vk_hero_alt = esc_attr__( 'Strandpaviljoen Valkenisse met het terras op het str
 <!-- wp:button {"className":"is-style-outline vk-btn-on-photo"} -->
 <div class="wp-block-button is-style-outline vk-btn-on-photo"><a class="wp-block-button__link wp-element-button" href="/strandhuisjes/"><?php esc_html_e( 'Ontdek onze strandhuisjes', 'valkenisse' ); ?></a></div>
 <!-- /wp:button --></div>
-<!-- /wp:buttons --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:valkenisse/reserve {"style":"light","className":"vk-hero__reserve"} /--></div>
 <!-- /wp:group -->
 
 <!-- wp:paragraph {"className":"vk-hero__scroll"} -->

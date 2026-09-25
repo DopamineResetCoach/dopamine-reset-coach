@@ -211,6 +211,9 @@ p { text-wrap: pretty; }
 }
 .vk-hero__text { font-size: var(--wp--preset--font-size--large); max-width: 34rem; opacity: .95; margin-bottom: 2rem !important; }
 .vk-hero__buttons { gap: .75rem; }
+.vk-hero__reserve { margin-top: 1.5rem !important; }
+.vk-hero .wp-block-cover__inner-container > * { overflow: visible; }
+.vk-reserve-block { margin-block: 1.75rem 2.5rem !important; }
 .vk-hero .vk-breadcrumbs { margin-bottom: 1.25rem !important; opacity: .85; color: #fff; }
 .vk-hero .vk-breadcrumbs a { color: #fff; }
 

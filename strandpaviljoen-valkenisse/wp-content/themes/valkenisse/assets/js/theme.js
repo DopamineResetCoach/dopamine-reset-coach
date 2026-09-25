@@ -41,6 +41,20 @@
 		items.forEach( function ( el ) { el.classList.add( 'is-visible' ); } );
 	}
 
+	// "Reserveer nu"-keuzemenu sluiten bij een klik ernaast of met Escape.
+	document.addEventListener( 'click', function ( e ) {
+		document.querySelectorAll( '.vk-reserve__menu[open]' ).forEach( function ( menu ) {
+			if ( ! menu.contains( e.target ) ) { menu.open = false; }
+		} );
+	} );
+	document.addEventListener( 'keydown', function ( e ) {
+		if ( e.key !== 'Escape' ) { return; }
+		document.querySelectorAll( '.vk-reserve__menu[open]' ).forEach( function ( menu ) {
+			menu.open = false;
+			menu.querySelector( 'summary' ).focus();
+		} );
+	} );
+
 	// "Menu" in de mobiele knoppenbalk opent het navigatiemenu.
 	document.addEventListener( 'click', function ( e ) {
 		var trigger = e.target.closest( '[data-vk-open-menu]' );

@@ -201,6 +201,7 @@ function vk_icon( string $name ): string {
 		'mail'  => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
 		'menu'  => '<path d="M4 7h16M4 12h16M4 17h16"/>',
 		'hut'   => '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>',
+		'calendar' => '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
 		'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 		'sun'   => '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
 		'check' => '<path d="m5 12 5 5 9-10"/>',

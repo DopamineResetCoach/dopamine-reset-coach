@@ -566,6 +566,51 @@ function vk_render_contact_buttons( array $attrs = array() ): string {
 	return $html . '</div>';
 }
 
+/**
+ * "Dineren, lunchen of borrelen? Reserveer nu": de bezoeker kiest zelf bellen of mailen.
+ * Werkt zonder JavaScript (<details>); telefoon en e-mail komen uit de centrale contactgegevens.
+ */
+function vk_render_reserve( array $attrs = array() ): string {
+	if ( ! vk_get( 'reserve_enabled' ) || ( ! vk_tel_url() && ! vk_mail_url() ) ) {
+		return '';
+	}
+	$style    = 'light' === ( $attrs['style'] ?? 'solid' ) ? 'light' : 'solid';
+	$question = trim( vk_tr( (string) vk_get( 'reserve_question' ), 'reserve_question' ) );
+	$subject  = vk_tr( (string) vk_get( 'reserve_mail_subject' ), 'reserve_mail_subject' ) ?: __( 'Reservering', 'valkenisse' );
+	$body     = implode(
+		"\n",
+		array(
+			__( 'Naam:', 'valkenisse' ),
+			__( 'Datum:', 'valkenisse' ),
+			__( 'Tijd:', 'valkenisse' ),
+			__( 'Aantal personen:', 'valkenisse' ),
+			__( 'Lunch, diner of borrel:', 'valkenisse' ),
+			__( 'Telefoonnummer:', 'valkenisse' ),
+		)
+	);
+
+	$html = '<div class="vk-reserve vk-reserve--' . $style . '">';
+	if ( '' !== $question ) {
+		$html .= '<p class="vk-reserve__question">' . esc_html( $question ) . '</p>';
+	}
+	$html .= '<details class="vk-reserve__menu"><summary class="vk-btn vk-btn--primary">' . vk_icon( 'calendar' ) . '<span>' . esc_html__( 'Reserveer nu', 'valkenisse' ) . '</span></summary>';
+	$html .= '<div class="vk-reserve__options" role="group" aria-label="' . esc_attr__( 'Kies hoe je wilt reserveren', 'valkenisse' ) . '">';
+	$html .= '<p class="vk-reserve__label">' . esc_html__( 'Hoe wil je reserveren?', 'valkenisse' ) . '</p>';
+	if ( vk_tel_url() ) {
+		$html .= '<a class="vk-reserve__option" href="' . esc_url( vk_tel_url() ) . '">' . vk_icon( 'phone' ) . '<span><strong>' . esc_html__( 'Bellen', 'valkenisse' ) . '</strong><small>' . esc_html( (string) vk_get( 'phone' ) ) . '</small></span></a>';
+	}
+	if ( vk_mail_url() ) {
+		$mailto = vk_mail_url() . '?subject=' . rawurlencode( $subject ) . '&body=' . rawurlencode( $body );
+		$html  .= '<a class="vk-reserve__option" href="' . esc_url( $mailto ) . '">' . vk_icon( 'mail' ) . '<span><strong>' . esc_html__( 'Mailen', 'valkenisse' ) . '</strong><small>' . esc_html( antispambot( (string) vk_get( 'email' ) ) ) . '</small></span></a>';
+	}
+	$note = (string) vk_get( 'phone_note' );
+	if ( '' !== $note ) {
+		$html .= '<p class="vk-reserve__note">' . vk_text( vk_tr( $note, 'phone_note' ) ) . '</p>';
+	}
+	$html .= '</div></details></div>';
+	return $html;
+}
+
 function vk_render_map( array $attrs = array() ): string {
 	wp_enqueue_script( 'vk-map' );
 

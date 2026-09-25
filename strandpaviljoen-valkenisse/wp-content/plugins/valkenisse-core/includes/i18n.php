@@ -30,6 +30,8 @@ function vk_translatable_settings(): array {
 		'huts_booking',
 		'huts_full_text',
 		'rental_note',
+		'reserve_question',
+		'reserve_mail_subject',
 	);
 }
 

@@ -204,6 +204,14 @@ function vk_settings_schema(): array {
 					),
 				),
 				array(
+					'title'  => __( 'Reserveren (eten & drinken)', 'valkenisse' ),
+					'fields' => array(
+						array( 'key' => 'reserve_enabled', 'label' => __( 'Knop "Reserveer nu" tonen', 'valkenisse' ), 'type' => 'checkbox', 'default' => 1, 'description' => __( 'Bezoekers kiezen daarna zelf: bellen of mailen.', 'valkenisse' ) ),
+						array( 'key' => 'reserve_question', 'label' => __( 'Vraag boven de knop', 'valkenisse' ), 'type' => 'text', 'default' => __( 'Dineren, lunchen of borrelen?', 'valkenisse' ) ),
+						array( 'key' => 'reserve_mail_subject', 'label' => __( 'Onderwerp van de reserveringsmail', 'valkenisse' ), 'type' => 'text', 'default' => __( 'Reservering', 'valkenisse' ) ),
+					),
+				),
+				array(
 					'title'  => __( 'Online & bedrijf', 'valkenisse' ),
 					'fields' => array(
 						array( 'key' => 'facebook', 'label' => __( 'Facebook-pagina (URL)', 'valkenisse' ), 'type' => 'url', 'default' => '' ),

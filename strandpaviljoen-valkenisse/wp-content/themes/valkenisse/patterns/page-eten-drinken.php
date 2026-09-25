@@ -15,6 +15,8 @@ echo valkenisse_page_hero( 'eten-terras', __( 'Gerechten en drankjes op het terr
 <p class="vk-lead"><?php esc_html_e( 'Bij Strandpaviljoen Valkenisse schuif je aan in de gemoedelijke sfeer van een familiepaviljoen, met het strand direct voor de deur. Hieronder vind je onze actuele kaart.', 'valkenisse' ); ?></p>
 <!-- /wp:paragraph -->
 
+<!-- wp:valkenisse/reserve {"className":"vk-reserve-block"} /-->
+
 <!-- wp:heading {"className":"vk-h2-small"} -->
 <h2 class="wp-block-heading vk-h2-small"><?php esc_html_e( 'Onze kaart', 'valkenisse' ); ?></h2>
 <!-- /wp:heading -->

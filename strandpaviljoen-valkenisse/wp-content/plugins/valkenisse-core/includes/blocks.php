@@ -71,6 +71,14 @@ function vk_block_definitions(): array {
 				'style'   => array( 'type' => 'string', 'default' => 'solid', 'enum' => array( 'solid', 'light', 'header' ), 'label' => __( 'Stijl', 'valkenisse' ) ),
 			),
 		),
+		'reserve'          => array(
+			__( 'Reserveer nu (bellen of mailen)', 'valkenisse' ),
+			'calendar-alt',
+			'vk_render_reserve',
+			array(
+				'style' => array( 'type' => 'string', 'default' => 'solid', 'enum' => array( 'solid', 'light' ), 'label' => __( 'Stijl (light = op een foto)', 'valkenisse' ) ),
+			),
+		),
 		'map'              => array( __( 'Kaart met locatie', 'valkenisse' ), 'location-alt', 'vk_render_map', array() ),
 		'breadcrumbs'      => array( __( 'Kruimelpad', 'valkenisse' ), 'arrow-right-alt2', 'vk_render_breadcrumbs', array() ),
 		'social-links'     => array( __( 'Social media', 'valkenisse' ), 'share', 'vk_render_social_links', array() ),

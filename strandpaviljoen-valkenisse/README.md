@@ -46,6 +46,7 @@ Alles staat in het linkermenu onder **🌴 Strandpaviljoen**. Het beheer is ook 
 | **Vandaag open of dicht** | Dashboard-widget "☀️ Vandaag op het strand", of Strandpaviljoen → Vandaag | Eén keuze: *normaal rooster / geopend vanaf … / geopend tot ± … / 🌧 gesloten vanwege het weer / gesloten / eigen tekst*. De melding bovenaan de site, de homepage, de footer en Google worden allemaal bijgewerkt. Standaard vervalt de keuze om middernacht. |
 | **Tijdelijke mededeling** | Strandpaviljoen → Vandaag | Extra regel in de balk bovenaan, eventueel met link en einddatum. |
 | **Openingstijden** | Strandpaviljoen → Openingstijden | Vast weekrooster. Laat "tot" leeg als de sluitingstijd wisselt. |
+| **Reserveren** | Strandpaviljoen → Contactgegevens → Reserveren | De knop **Reserveer nu** (in de homepage-hero en op Eten & Drinken). Bezoekers kiezen zelf: **bellen** of **mailen**. De mail staat al klaar met onderwerp en invulvelden (naam, datum, tijd, aantal personen, lunch/diner/borrel). Je kunt de vraag erboven aanpassen of de knop uitzetten. |
 | **Menukaart** | Strandpaviljoen → Menukaart | Eén item per gerecht of drankje, met prijs, omschrijving en kaartonderdeel. Een vinkje "tijdelijk niet leverbaar" verbergt een item. De kaart is een echte mobiele webpagina; een PDF is optioneel. |
 | **Strandhuisjes & tarieven** | Strandpaviljoen → Strandhuisjes | Seizoen, periode, wat er inbegrepen is en de prijzen. Voor een nieuw seizoen pas je het jaartal en de prijzen aan en klik je op Opslaan. Het aanvraagformulier kan hier uit ("alles verhuurd"). |
 | **Aanvragen strandhuisjes** | Strandpaviljoen → Aanvragen | Elke aanvraag komt per e-mail binnen **en** wordt hier bewaard. |
@@ -144,11 +145,11 @@ Er wordt niets automatisch vertaald. Feitelijke gegevens (telefoon, prijzen) wor
 
 ## Techniek
 
-- **Blokken** (categorie "Strandpaviljoen Valkenisse" in de editor): Melding van vandaag, Vandaag op het strand, Openingstijden, Tarieven strandhuisjes/strandverhuur, Strandhuisje: inbegrepen, Aanvraagformulier, Menukaart, Vacatures, Fotogalerij (met filters en lightbox), Gastreacties, Contactgegevens, Knoppen bellen/route/e-mail, Kaart, Kruimelpad, Social media, Copyright, Taalkeuze en Mobiele knoppenbalk. Ze worden server-side gerenderd, met een live voorbeeld in de editor.
+- **Blokken** (categorie "Strandpaviljoen Valkenisse" in de editor): Melding van vandaag, Reserveer nu (bellen of mailen), Vandaag op het strand, Openingstijden, Tarieven strandhuisjes/strandverhuur, Strandhuisje: inbegrepen, Aanvraagformulier, Menukaart, Vacatures, Fotogalerij (met filters en lightbox), Gastreacties, Contactgegevens, Knoppen bellen/route/e-mail, Kaart, Kruimelpad, Social media, Copyright, Taalkeuze en Mobiele knoppenbalk. Ze worden server-side gerenderd, met een live voorbeeld in de editor.
 - **Aanvraagformulier**: werkt zonder JavaScript en zonder formulierplugin. Het is beveiligd met een nonce, een honeypot, een minimale invultijd en maximaal 5 aanvragen per uur per IP-adres. De aanvrager krijgt een ontvangstbevestiging, en de tekst maakt duidelijk dat het een aanvraag is en geen definitieve reservering.
 - **ACF** is bewust niet nodig: de gratis versie heeft geen optiepagina's, dus de beheerschermen zijn in de plugin zelf gebouwd. Dat betekent één plugin minder.
 - **Controle** (tijdens de bouw):
-  - Alle 436 blokken in de patronen, templates en template-parts zijn gevalideerd met de officiële `@wordpress/blocks`-parser: 0 ongeldig en 0 migraties nodig.
+  - Alle 439 blokken in de patronen, templates en template-parts zijn gevalideerd met de officiële `@wordpress/blocks`-parser: 0 ongeldig en 0 migraties nodig.
   - Alle PHP-bestanden zijn gelint.
   - De kernlogica (status van vandaag, automatisch vervallen, validatie) is getest.
   - Er is een visuele controle gedaan op desktop (1440 px) en mobiel (390 px).

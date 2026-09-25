@@ -14,6 +14,13 @@ Geen page builder, geen ACF, geen jQuery, geen externe scripts of fonts. Er zijn
 
 ---
 
+## Direct online bekijken (zonder installatie)
+
+[**Open de voorbeeldsite in WordPress Playground**](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/DopamineResetCoach/dopamine-reset-coach/claude/relaxed-lamport-0ga307/vankeulen-wordpress/lokaal/blueprint-online.json)
+
+Er start een tijdelijke WordPress in uw browser; thema en plugin worden rechtstreeks uit deze GitHub-branch geladen. Het laden duurt ± 30–60 seconden. U bent automatisch ingelogd. Niets wordt opgeslagen: na het sluiten van het tabblad is de testsite weg.
+Na het samenvoegen van de branch: vervang in de link en in `lokaal/blueprint-online.json` `claude/relaxed-lamport-0ga307` door `main`.
+
 ## Lokaal bekijken (één commando)
 
 Vereist alleen [Node.js](https://nodejs.org/) 20 of nieuwer. Er wordt een tijdelijke WordPress gestart met het thema en de plugin, en alle pagina's worden automatisch aangemaakt.

@@ -2,11 +2,17 @@
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"meta": {
 		"title": "Van Keulen Caravanstalling – voorbeeldsite",
-		"description": "Thema en plugin rechtstreeks uit GitHub; alle pagina's worden automatisch aangemaakt."
+		"description": "Thema en plugin rechtstreeks uit GitHub; alle pagina's worden automatisch aangemaakt.",
+		"author": "Van Keulen Caravanstalling"
 	},
 	"landingPage": "/",
-	"preferredVersions": { "php": "8.3", "wp": "latest" },
-	"features": { "networking": true },
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
 	"login": true,
 	"steps": [
 		{
@@ -18,7 +24,10 @@
 				"refType": "branch",
 				"path": "vankeulen-wordpress/wp-content/themes/vankeulen"
 			},
-			"options": { "activate": true, "targetFolderName": "vankeulen" }
+			"options": {
+				"activate": true,
+				"targetFolderName": "vankeulen"
+			}
 		},
 		{
 			"step": "installPlugin",
@@ -29,7 +38,10 @@
 				"refType": "branch",
 				"path": "vankeulen-wordpress/wp-content/plugins/vankeulen-core"
 			},
-			"options": { "activate": true, "targetFolderName": "vankeulen-core" }
+			"options": {
+				"activate": true,
+				"targetFolderName": "vankeulen-core"
+			}
 		},
 		{
 			"step": "runPHP",

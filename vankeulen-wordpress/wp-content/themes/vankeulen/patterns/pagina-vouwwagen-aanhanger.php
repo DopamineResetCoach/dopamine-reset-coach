@@ -26,8 +26,8 @@
 <!-- /wp:column -->
 
 <!-- wp:column {"verticalAlignment":"center","width":"44%"} -->
-<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:44%"><?php $img_aanhanger = vankeulen_img_block( 'aanhanger' ); ?><!-- wp:image {<?php echo $img_aanhanger['json']; ?>"aspectRatio":"4/3","scale":"cover","sizeSlug":"large","linkDestination":"none","className":"is-style-vk-foto"} -->
-<figure class="wp-block-image size-large is-style-vk-foto"><img src="<?php echo $img_aanhanger['url']; ?>" alt="<?php echo $img_aanhanger['alt']; ?>" class="<?php echo trim( $img_aanhanger['class'] ); ?>" style="aspect-ratio:4/3;object-fit:cover"/></figure>
+<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:44%"><?php $img_vouwwagen = vankeulen_img_block( 'vouwwagen' ); ?><!-- wp:image {<?php echo $img_vouwwagen['json']; ?>"aspectRatio":"4/3","scale":"cover","sizeSlug":"large","linkDestination":"none","className":"is-style-vk-foto"} -->
+<figure class="wp-block-image size-large is-style-vk-foto"><img src="<?php echo $img_vouwwagen['url']; ?>" alt="<?php echo $img_vouwwagen['alt']; ?>" class="<?php echo trim( $img_vouwwagen['class'] ); ?>" style="aspect-ratio:4/3;object-fit:cover"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns --></div>

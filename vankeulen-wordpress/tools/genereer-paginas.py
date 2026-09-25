@@ -239,7 +239,7 @@ pattern('pagina-vouwwagen-aanhanger', 'Pagina: Vouwwagen & aanhanger stalling', 
         ('56%', [h(2, 'Geen plek thuis? Stal hem in Biggekerke'),
                  p('Een vouwwagen of aanhangwagen gebruikt u maar een paar keer per jaar, maar thuis staat hij altijd in de weg. Bij Van Keulen Caravanstalling staat hij op Walcheren tot u hem weer nodig hebt.', size='medium'),
                  knoppen(knop(soort='aanvragen', type='vouwwagen'), knop(soort='bellen', stijl='secundair'))]),
-        ('44%', [img('aanhanger', '4/3')]),
+        ('44%', [img('vouwwagen', '4/3')]),
         center=True)]),
     sectie([
         group([

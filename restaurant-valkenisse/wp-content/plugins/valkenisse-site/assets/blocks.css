@@ -200,3 +200,26 @@ h3.valk-menu__title { font-size: clamp(1.5rem, 2.6vw, 2rem); color: var(--valk-e
 	.valk-menu__photos--2 { grid-template-columns: 1fr 1fr; gap: .5rem; }
 	.valk-menu__photos--2 .valk-menu__photo img { aspect-ratio: 1; }
 }
+
+/* Menukaart als PDF */
+.valk-pdf__bar { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2rem; }
+.valk-pdf__meta { font-weight: 400; opacity: .75; }
+.valk-pdf__pages { display: grid; gap: clamp(1rem, 3vw, 2.5rem); max-width: 880px; margin: 0 auto; }
+.valk-pdf__page { margin: 0; background: var(--valk-sand-light); box-shadow: 0 1px 2px rgba(34, 38, 35, .08), 0 12px 40px rgba(34, 38, 35, .12); overflow: hidden; }
+.valk-pdf__page canvas { display: block; width: 100%; height: auto; }
+.valk-pdf__page:not(.is-ready) { background: linear-gradient(100deg, var(--valk-sand-light) 40%, var(--valk-offwhite) 50%, var(--valk-sand-light) 60%) 0 0 / 200% 100%; animation: valk-shimmer 1.6s linear infinite; }
+@keyframes valk-shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .valk-pdf__page:not(.is-ready) { animation: none; } }
+.valk-pdf__loading { text-align: center; padding: 3rem 1rem; opacity: .8; }
+.valk-pdf.is-error .valk-pdf__loading::before { content: "De menukaart kon niet worden weergegeven. "; }
+.valk-pdf__text { max-width: 880px; margin: 3rem auto 0; border-top: 1px solid var(--valk-line); padding-top: 1.25rem; }
+.valk-pdf__text > summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+.valk-pdf__text[open] > summary { margin-bottom: 2rem; }
+@media (max-width: 639px) {
+	.valk-pdf__bar .valk-btn { flex: 1 1 100%; }
+	.valk-pdf__pages { gap: .75rem; margin-inline: calc(-1 * var(--wp--style--root--padding-left, 1rem) + .5rem); }
+}
+@media (max-width: 639px) {
+	.valk-pdf__bar .valk-btn { min-height: 54px; }
+	.valk-pdf__meta { display: none; }
+}

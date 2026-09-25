@@ -5,8 +5,8 @@
 ( function ( wp ) {
 	const { registerBlockType } = wp.blocks;
 	const { createElement: el, Fragment } = wp.element;
-	const { InspectorControls, useBlockProps } = wp.blockEditor;
-	const { PanelBody, SelectControl, ToggleControl, CheckboxControl, RangeControl, TextControl, TextareaControl, Notice } = wp.components;
+	const { InspectorControls, useBlockProps, MediaUpload, MediaUploadCheck } = wp.blockEditor;
+	const { PanelBody, SelectControl, ToggleControl, CheckboxControl, RangeControl, TextControl, TextareaControl, Notice, Button } = wp.components;
 	const ServerSideRender = wp.serverSideRender;
 	const data = window.valkenisseData || { menu: [], fotos: [], admin: '' };
 
@@ -85,6 +85,25 @@
 				el( RangeControl, { label: "Maximaal aantal foto's", min: 3, max: 200, value: props.attributes.maximum, onChange: ( maximum ) => props.setAttributes( { maximum } ) } )
 			),
 		],
+		'menukaart-pdf': ( props ) => [
+			el( PanelBody, { title: 'Menukaart-PDF', key: 'p' },
+				el( 'p', null, props.attributes.pdfId ? 'Er is een PDF gekozen. Nieuwe kaart? Kies hieronder de nieuwe PDF.' : 'Kies de PDF van de menukaart.' ),
+				el( MediaUploadCheck, null,
+					el( MediaUpload, {
+						allowedTypes: [ 'application/pdf' ],
+						value: props.attributes.pdfId,
+						onSelect: ( media ) => props.setAttributes( { pdfId: media.id } ),
+						render: ( { open } ) => el( Button, { variant: 'primary', onClick: open }, props.attributes.pdfId ? 'Andere PDF kiezen' : 'PDF kiezen' ),
+					} )
+				),
+				el( ToggleControl, {
+					label: 'Tekstversie tonen (uitklapbaar)',
+					help: 'Aanbevolen: zo kunnen Google en schermlezers de gerechten ook lezen. De tekst komt uit het menu Menukaart.',
+					checked: props.attributes.tekstversie,
+					onChange: ( tekstversie ) => props.setAttributes( { tekstversie } ),
+				} )
+			),
+		],
 		buffetten: ( props ) => [
 			el( PanelBody, { title: 'Tekst boven de buffetten', key: 't' },
 				el( TextControl, { label: 'Kop', value: props.attributes.titel, onChange: ( titel ) => props.setAttributes( { titel } ) } ),
@@ -109,7 +128,7 @@
 		],
 	};
 
-	[ 'openingstijden', 'contact', 'menukaart', 'studios', 'buffetten', 'galerij', 'formulier', 'actiebalk', 'mededeling' ].forEach( ( slug ) => {
+	[ 'openingstijden', 'contact', 'menukaart', 'menukaart-pdf', 'studios', 'buffetten', 'galerij', 'formulier', 'actiebalk', 'mededeling' ].forEach( ( slug ) => {
 		const name = 'valkenisse/' + slug;
 		registerBlockType( name, {
 			edit( props ) {

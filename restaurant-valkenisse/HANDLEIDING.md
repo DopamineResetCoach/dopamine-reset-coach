@@ -22,7 +22,17 @@ De tijden veranderen dan automatisch op de homepage, in het menu, de footer, de 
 **Menu: Openingstijden → tabblad Mededeling** – bijvoorbeeld "Zaterdag vanaf 17:00 gesloten wegens besloten feest".
 Vink **Tonen** aan, typ de tekst en kies eventueel een datum waarna de melding vanzelf verdwijnt.
 
-## Gerechten en prijzen
+## De menukaart op de website (PDF)
+De pagina **Menukaart** toont de menukaart-PDF: bezoekers zien alle pagina's direct op de website en kunnen
+hem downloaden.
+
+**Nieuwe kaart plaatsen:** Pages → Menukaart → klik op het blok *Menukaart (PDF)* → rechts **Andere PDF kiezen**
+→ upload de nieuwe PDF → **Bijwerken**. De pagina's op de website veranderen automatisch mee.
+
+Onder de PDF staat een uitklapbare *Tekstversie*. Die komt uit het menu **Menukaart** hieronder en zorgt dat Google
+en schermlezers de gerechten kunnen lezen. Houd die gelijk met de PDF, of zet hem uit in het blok (niet aanbevolen).
+
+## Gerechten en prijzen (tekstversie)
 **Menu: Menukaart**
 
 - **Prijs snel wijzigen:** ga met de muis over een gerecht → **Snel bewerken** → pas de prijs aan → **Bijwerken**.

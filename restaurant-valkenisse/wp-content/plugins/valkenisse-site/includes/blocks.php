@@ -21,6 +21,9 @@ function valkenisse_register_blocks(): void {
 	);
 	wp_register_script( 'valkenisse-hours', VALKENISSE_URL . 'assets/hours.js', array(), VALKENISSE_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 	wp_register_script( 'valkenisse-gallery', VALKENISSE_URL . 'assets/gallery.js', array(), VALKENISSE_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+	if ( function_exists( 'wp_register_script_module' ) ) {
+		wp_register_script_module( 'valkenisse-pdf-viewer', VALKENISSE_URL . 'assets/pdf-viewer.js', array(), VALKENISSE_VERSION );
+	}
 	wp_register_script( 'valkenisse-forms', VALKENISSE_URL . 'assets/forms.js', array(), VALKENISSE_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 
 	$common = array(
@@ -61,6 +64,16 @@ function valkenisse_register_blocks(): void {
 				'fotos'       => array( 'type' => 'boolean', 'default' => true ),
 			),
 			'render_callback' => 'valkenisse_render_menu_block',
+		),
+		'menukaart-pdf'  => array(
+			'title'       => 'Menukaart (PDF)',
+			'description' => 'Toont de menukaart-PDF als pagina\'s op de website, met downloadknop. Nieuwe kaart? Kies hier een nieuwe PDF.',
+			'icon'        => 'media-document',
+			'attributes'  => array(
+				'pdfId'      => array( 'type' => 'number', 'default' => 0 ),
+				'tekstversie' => array( 'type' => 'boolean', 'default' => true ),
+			),
+			'render_callback' => 'valkenisse_render_menu_pdf_block',
 		),
 		'studios'        => array(
 			'title'       => "Studio's",
@@ -475,6 +488,45 @@ function valkenisse_dish_html( WP_Post $dish, bool $photos ): string {
 		$price ? '<span class="valk-dish__price">' . esc_html( $price ) . '</span>' : '',
 		$desc ? '<p class="valk-dish__desc">' . esc_html( $desc ) . '</p>' : '',
 		( $tags || $allerg ) ? '<p class="valk-dish__meta">' . $tags . ( $allerg ? '<span class="valk-dish__allergens">Allergenen: ' . esc_html( $allerg ) . '</span>' : '' ) . '</p>' : ''
+	);
+}
+
+/* -------------------------------------------------------------------------
+ * Menukaart als PDF
+ * ---------------------------------------------------------------------- */
+
+function valkenisse_render_menu_pdf_block( array $attrs ): string {
+	$id  = (int) ( $attrs['pdfId'] ?? 0 );
+	$url = $id ? (string) wp_get_attachment_url( $id ) : '';
+	if ( ! $url ) {
+		return current_user_can( 'edit_posts' )
+			? valkenisse_wrapper( 'valk-pdf', '<p class="valk-editor-hint">Nog geen menukaart-PDF gekozen. Selecteer dit blok en kies rechts <strong>PDF kiezen</strong>.</p>' )
+			: '';
+	}
+	if ( function_exists( 'wp_enqueue_script_module' ) ) {
+		wp_enqueue_script_module( 'valkenisse-pdf-viewer' );
+	}
+	$size   = size_format( (int) filesize( get_attached_file( $id ) ), 1 );
+	$bar    = '<div class="valk-pdf__bar">'
+		. '<a class="valk-btn valk-btn--primary" href="' . esc_url( $url ) . '" download>' . valkenisse_icon( 'menu' ) . 'Download de menukaart <span class="valk-pdf__meta">(PDF' . ( $size ? ', ' . esc_html( $size ) : '' ) . ')</span></a>'
+		. '<a class="valk-btn" href="' . esc_url( $url ) . '" target="_blank" rel="noopener">Openen in nieuw venster</a>'
+		. '</div>';
+	$pages  = '<div class="valk-pdf__pages"><p class="valk-pdf__loading">De menukaart wordt geladen… Lukt dat niet? <a href="' . esc_url( $url ) . '">Open de menukaart als PDF</a>.</p></div>';
+	$text   = '';
+	if ( ! empty( $attrs['tekstversie'] ) ) {
+		$menu = valkenisse_render_menu_block( array( 'categorieen' => array(), 'navigatie' => false, 'fotos' => false ) );
+		if ( $menu ) {
+			$text = '<details class="valk-pdf__text"><summary>Tekstversie van de menukaart</summary>' . $menu . '</details>';
+		}
+	}
+	return valkenisse_wrapper(
+		'valk-pdf',
+		$bar . $pages . $text,
+		'div',
+		array(
+			'data-pdf'    => esc_url( $url ),
+			'data-worker' => esc_url( VALKENISSE_URL . 'assets/vendor/pdfjs/pdf.worker.min.js' ),
+		)
 	);
 }
 

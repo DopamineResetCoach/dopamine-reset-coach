@@ -14,12 +14,12 @@ function valkenisse_redirect_map(): array {
 		array(
 			// Exacte paden (zonder domein, met slash aan het eind).
 			'/ons-menu/'                                   => '/menukaart/',
-			'/menukaart/lunch/'                            => '/menukaart/#lunch',
-			'/menukaart/diner/'                            => '/menukaart/#diner',
-			'/menukaart/pizza/'                            => '/menukaart/#pizza',
-			'/menukaart/noord-afrikaans-menu/'             => '/menukaart/#noord-afrikaans',
-			'/menukaart/pannenkoeken-poffertjes-wafels/'   => '/menukaart/#pannenkoeken-poffertjes-wafels',
-			'/menukaart/kindermenu/'                       => '/menukaart/#kindermenu',
+			'/menukaart/lunch/'                            => '/menukaart/',
+			'/menukaart/diner/'                            => '/menukaart/',
+			'/menukaart/pizza/'                            => '/menukaart/',
+			'/menukaart/noord-afrikaans-menu/'             => '/menukaart/',
+			'/menukaart/pannenkoeken-poffertjes-wafels/'   => '/menukaart/',
+			'/menukaart/kindermenu/'                       => '/menukaart/',
 			'/omgeving/'                                   => '/#omgeving',
 			'/fotos/'                                      => '/galerij/',
 			// Voorvoegsels (alles eronder).

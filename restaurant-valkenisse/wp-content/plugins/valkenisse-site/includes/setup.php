@@ -164,6 +164,17 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
+	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
+	if ( isset( $ids['menukaart'] ) ) {
+		$pdf = valkenisse_import_theme_photo( VALKENISSE_DIR . 'data/Menukaart-Restaurant-Valkenisse.pdf', 'Menukaart Restaurant Valkenisse' );
+		$content = (string) get_post_field( 'post_content', (int) $ids['menukaart'] );
+		if ( $pdf && str_contains( $content, '<!-- wp:valkenisse/menukaart-pdf /-->' ) ) {
+			$content = str_replace( '<!-- wp:valkenisse/menukaart-pdf /-->', '<!-- wp:valkenisse/menukaart-pdf {"pdfId":' . $pdf . '} /-->', $content );
+			wp_update_post( array( 'ID' => (int) $ids['menukaart'], 'post_content' => wp_slash( $content ) ) );
+			$log[] = 'Menukaart-PDF op de pagina Menukaart geplaatst';
+		}
+	}
+
 	// Sfeerfoto's bij de dinerkaart (aangeleverd door het restaurant).
 	$diner = get_term_by( 'slug', 'diner', 'menu_categorie' );
 	if ( $diner && ! get_term_meta( $diner->term_id, 'fotos', true ) ) {
@@ -234,7 +245,7 @@ function valkenisse_import_theme_photo( string $file, string $alt, array $galler
 			'post_type'   => 'attachment',
 			'post_status' => 'inherit',
 			'meta_key'    => '_valk_theme_source', // phpcs:ignore WordPress.DB.SlowDBQuery
-			'meta_value'  => $file, // phpcs:ignore WordPress.DB.SlowDBQuery
+			'meta_value'  => basename( $file ), // phpcs:ignore WordPress.DB.SlowDBQuery
 			'fields'      => 'ids',
 			'numberposts' => 1,
 		)
@@ -242,10 +253,11 @@ function valkenisse_import_theme_photo( string $file, string $alt, array $galler
 	if ( $existing ) {
 		return (int) $existing[0];
 	}
-	$source = get_theme_file_path( 'assets/img/' . $file );
+	$source = str_contains( $file, '/' ) ? $file : get_theme_file_path( 'assets/img/' . $file );
 	if ( ! is_readable( $source ) ) {
 		return 0;
 	}
+	$file = basename( $file );
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -256,7 +268,9 @@ function valkenisse_import_theme_photo( string $file, string $alt, array $galler
 		wp_delete_file( $tmp );
 		return 0;
 	}
-	update_post_meta( $id, '_wp_attachment_image_alt', $alt );
+	if ( wp_attachment_is_image( $id ) ) {
+		update_post_meta( $id, '_wp_attachment_image_alt', $alt );
+	}
 	update_post_meta( $id, '_valk_theme_source', $file );
 	if ( $gallery_terms ) {
 		wp_set_object_terms( $id, $gallery_terms, 'fotocategorie' );

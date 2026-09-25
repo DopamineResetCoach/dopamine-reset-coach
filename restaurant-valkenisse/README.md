@@ -79,7 +79,7 @@ Vereist: WordPress 6.6 of hoger (getest op **7.1.2**), PHP 8.1+.
 | `#boeken` | boekingslink studio's (indien ingevuld), anders het aanvraagformulier |
 
 ### Blokken van de plugin (categorie "Restaurant Valkenisse" in de editor)
-Openingstijden (vandaag / seizoen / volledig), Contactgegevens, Menukaart, Studio's, Buffetten,
+Openingstijden (vandaag / seizoen / volledig), Contactgegevens, Menukaart, Menukaart (PDF – toont de PDF als pagina's via pdf.js 4.10 legacy, lokaal gehost, alleen op die pagina geladen; met uitklapbare tekstversie), Studio's, Buffetten,
 Fotogalerij (filters + lightbox), Aanvraagformulier (reservering / studio / feest / contact),
 Mobiele actiebalk, Mededeling. Alle blokken worden op de server opgebouwd; geen build-stap nodig.
 

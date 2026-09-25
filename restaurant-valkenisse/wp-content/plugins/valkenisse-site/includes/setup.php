@@ -186,6 +186,16 @@ function valkenisse_run_setup(): array {
 		}
 	}
 
+	// Panoramafoto in de sectie "Ontdek de omgeving" (homepage en Overnachten).
+	$panorama = valkenisse_import_theme_photo( 'omgeving-panorama.webp', 'Strand, zee en duinen aan de Zeeuwse kust bij avondzon', array( 'omgeving' ) );
+	if ( $panorama ) {
+		foreach ( array( 'home', 'overnachten' ) as $slug ) {
+			if ( isset( $ids[ $slug ] ) ) {
+				valkenisse_attach_plain_photo( (int) $ids[ $slug ], 'omgeving-panorama.webp', $panorama );
+			}
+		}
+	}
+
 	// Menukaart-PDF in de mediabibliotheek en op de pagina Menukaart.
 	if ( isset( $ids['menukaart'] ) ) {
 		$pdf = valkenisse_import_theme_photo( VALKENISSE_DIR . 'data/Menukaart-Restaurant-Valkenisse.pdf', 'Menukaart Restaurant Valkenisse' );
@@ -330,6 +340,24 @@ function valkenisse_attach_gallery_photo( int $page_id, string $file, int $attac
 	}
 	$pattern = '#<!-- wp:image \\{"lightbox":\\{"enabled":true\\}\\} -->\\n<figure class="wp-block-image"><img src="' . preg_quote( $theme_url, '#' ) . '" alt="([^"]*)"/></figure>#';
 	$replace = '<!-- wp:image {"lightbox":{"enabled":true},"id":' . $attachment_id . ',"sizeSlug":"large","linkDestination":"none"} -->' . "\n" . '<figure class="wp-block-image size-large"><img src="' . esc_url( $large[0] ) . '" alt="$1" class="wp-image-' . $attachment_id . '"/></figure>';
+	$new     = preg_replace( $pattern, $replace, $content, 1 );
+	if ( $new && $new !== $content ) {
+		wp_update_post( array( 'ID' => $page_id, 'post_content' => wp_slash( $new ) ) );
+	}
+}
+
+/**
+ * Vervangt een losse afbeelding uit het thema (blok "Afbeelding") door de foto uit de mediabibliotheek.
+ */
+function valkenisse_attach_plain_photo( int $page_id, string $file, int $attachment_id ): void {
+	$content   = (string) get_post_field( 'post_content', $page_id );
+	$theme_url = get_theme_file_uri( 'assets/img/' . $file );
+	$url       = (string) wp_get_attachment_url( $attachment_id );
+	if ( ! $url || ! str_contains( $content, $theme_url ) ) {
+		return;
+	}
+	$pattern = '#<!-- wp:image \\{("sizeSlug"[^\\n]*?)\\} -->\\n(<figure class="[^"]*">)<img src="' . preg_quote( $theme_url, '#' ) . '" alt="([^"]*)"/>#';
+	$replace = '<!-- wp:image {"id":' . $attachment_id . ',$1} -->' . "\n" . '$2<img src="' . esc_url( $url ) . '" alt="$3" class="wp-image-' . $attachment_id . '"/>';
 	$new     = preg_replace( $pattern, $replace, $content, 1 );
 	if ( $new && $new !== $content ) {
 		wp_update_post( array( 'ID' => $page_id, 'post_content' => wp_slash( $new ) ) );

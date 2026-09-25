@@ -258,6 +258,11 @@ body.has-hero:not(.is-scrolled):not(.menu-open) .site-header .site-header__cta .
 	.vk-mosaic > .wp-block-column:last-child .wp-block-image img { height: 100%; aspect-ratio: auto !important; }
 }
 
+/* Omgeving: panoramafoto */
+.vk-area__panorama { margin-top: var(--wp--preset--spacing--40) !important; }
+.vk-area__panorama img { width: 100%; aspect-ratio: 2000 / 697; object-fit: cover; }
+@media (max-width: 781px) { .vk-area__panorama img { aspect-ratio: 4 / 3; object-position: 58% center; } }
+
 /* Bezoek (openingstijden + contact) */
 .vk-visit__cols { gap: var(--wp--preset--spacing--50) !important; }
 .vk-visit__label { font-family: var(--wp--preset--font-family--sans) !important; font-size: var(--wp--preset--font-size--x-small) !important; font-weight: 600 !important; letter-spacing: .2em; text-transform: uppercase; color: var(--vk-earth); margin-bottom: 1rem !important; }
